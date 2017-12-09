@@ -1,0 +1,172 @@
+.navbar-fixed {
+  position: fixed;
+  top: -3em;
+  z-index:1;
+}
+
+/*----------------------
+  $NAVBAR
+    basic navbar styling
+  ----------------------*/
+.topNav {
+  width: 100%;
+  /*color: #bbb;*/
+  
+  background: #2e2e2e;
+  font-weight: bold;
+  letter-spacing: 0.025em; 
+}
+
+.topNav ul {
+  text-align: center;
+  margin: 0; }
+
+.topNav ul li {
+  display: inline-block;
+  padding: 0 3em;
+  line-height: 3em; }
+
+.topNav ul li:hover {
+  background: #00939C;
+   }
+.topNav ul li a:hover {
+  text-decoration: none;
+   }
+
+.setColor {
+  color: #f2f2f2;
+} 
+
+.navImg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 3px;
+}
+
+@media only screen and (max-width: 768px) {
+    .topNav ul li {
+      padding: 0 1em;
+     line-height: 2em; 
+    }
+   .topNav {
+      width: 100%;
+      /*color: #bbb;*/
+      
+      background: #2e2e2e;
+      font-weight: bold;
+      letter-spacing: 0em; 
+    }
+    .setColor {
+      font-size: 10px;
+    } 
+    .navbar-fixed {
+        position: relative;
+    }
+    .navImg {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 3px;
+    }
+
+}
+
+@media only screen and (max-width: 400px) {
+  .topNav ul li {
+      padding: 0 0.45em;
+     line-height: 2em; 
+    }
+    .setColor {
+      font-size: 8px;
+    } 
+    .navImg {
+      margin-bottom: 2px;
+      width: 28px;
+      height: 28px;
+    }
+}
+/*----------------------
+  $BODY
+  ----------------------*/
+/*body {
+  background: #0B6AD4; }
+*/
+/*----------------------
+  $MISC
+  ----------------------*/
+.filler {
+  width: 1px;
+  height: 100px;
+   }
+
+.two {
+  height: 3000px; }
+
+/*# sourceMappingURL=test.css.map */
+
+
+/*---------- star rating ----------*/
+.star-rating, .back-stars, .front-stars {
+  display: flex; 
+  direction: ltr;
+}
+
+.star-rating {
+  /*align-items: center;*/
+  font-size: 1em;
+  /*justify-content: center;*/
+  /*margin-top: 50px; */
+}
+
+.back-stars {
+  color: gray;
+  position: relative;
+  text-shadow: 4px 4px 10px #843a3a;
+   }
+
+.front-stars {
+  color: #FFBC0B;
+  overflow: hidden;
+  position: absolute;
+  text-shadow: 2px 2px 5px #d29b09;
+  top: 0;
+   }
+
+/*# sourceMappingURL=test.css.map */
+/**/
+
+   .dropdown {
+    position: relative;
+    display: inline-block;
+   }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+
+    /*  for tournoments group */
+  .row span {
+    margin: 10px;
+    padding: 10px;
+  }
