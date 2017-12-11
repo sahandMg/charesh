@@ -19,6 +19,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
 use Hekmatinasser\Verta\Verta;
@@ -950,7 +951,7 @@ class MatchController extends Controller
             $name = Auth::user();
             $auth = 1;
 //
-//            dd($table[0][1]);
+//            dd(Team::where('teamName',unserialize($bracketDetail->LTable)[0][0][0][0])->first()->path);
 //            dd(unserialize($bracketDetail->LTable));
             return view('matchReg.mosabegheBracketsL',compact('name','tournament','route','users','auth','table','teams','bracketDetail','roundSign'));
 

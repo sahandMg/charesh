@@ -27,7 +27,7 @@
                  <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
                      <div>
                          <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                         <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}"> <img src="../../public/storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+                         <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
                          {{--<img src="storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" >--}}
                          <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
                              <div class="back-stars">
@@ -47,7 +47,7 @@
                              </div>
                          </div>
                      </div>
-                     <a href=""><img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$match->path}}" alt="Responsive image" style="width: 100%;"></a>
+                     <a href=""><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
                      <div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">
                          <p style="padding: 0px;margin: 0px;">{{$match->endTimeDays}} روز مانده </p>
                      </div>
@@ -119,7 +119,7 @@
     }
   </style>
 
- <script type="text/javascript" src="../../public/js/main.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
 
  <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">

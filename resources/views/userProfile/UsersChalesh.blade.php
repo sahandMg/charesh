@@ -26,7 +26,7 @@
 
                      <div>
                          <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                         <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}">   <img src="../../public/storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+                         <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}">   <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
 
                          <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
                              <div class="back-stars">
@@ -47,10 +47,10 @@
                          </div>
                      </div>
                      @if($match->canceled == 0)
-                     <a href="{{route('matchRegistered',['id'=>$match->id , 'url'=>$match->code])}}"><img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$match->path}}" alt="Responsive image" style="width: 100%;"></a>
+                     <a href="{{route('matchRegistered',['id'=>$match->id , 'url'=>$match->code])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
                      @else
 
-                         <img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$match->path}}" alt="Responsive image" style="width: 100%;">
+                         <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
                          @endif
 
                          <div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">
@@ -143,8 +143,8 @@
   </style>
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
- <script type="text/javascript" src="../../public/js/main.js"></script>
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
+ <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>

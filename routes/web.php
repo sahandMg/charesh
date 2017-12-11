@@ -30,7 +30,7 @@ Route::get('chlbz/home/token',function (){
 Route::group(['prefix'=>'admin'],function (){
 
 
-    Route::get('bargraph','API\UserController@status')->name('barGraph')->middleware('admin');
+    Route::get('status','API\UserController@status')->name('barGraph');
 
     Route::get('more-info',['as'=>'moreInfo','uses'=>'API\UserController@moreInfo']);
 
@@ -73,7 +73,7 @@ Route::group(['prefix'=>'app'],function (){
 //Route::post('user/settings',['as'=>'userSetting','uses'=>'AuthController@post_userSetting'])->middleware('throttle:10,1');
 
 // ------------- contact ----------------
-Route::group(['prefix'=>'chlbz'],function (){
+//Route::group(['prefix'=>'chlbz'],function (){
 
     Route::get('contact',['as'=>'contact','uses'=>'PageController@contact']);
     Route::post('contact',['as'=>'contact','uses'=>'PageController@postContact'])->middleware('throttle:10,1');
@@ -101,10 +101,10 @@ Route::group(['prefix'=>'chlbz'],function (){
     Route::get('home',['as'=>'home','uses'=>'PageController@home']);
     Route::get('view-more-{num}',['as'=>'viewMore','uses'=>'PageController@viewMore']);
 
-});
+//});
 
-Route::get('/',function(){})->middleware('beforeHome');
-
+//Route::get('/',function(){})->middleware('beforeHome');
+Route::get('/',['as'=>'home','uses'=>'PageController@home']);
 // ---------------- Challenge group -----------------------
 
 Route::group(['prefix'=>'challenge'],function () {
@@ -331,9 +331,9 @@ Route::group(['prefix'=>'user'],function(){
 
 Route::get('round-{id}-{round?}',['as'=>'round','uses'=>'MatchController@GetRound' ]);
 Route::post('league-table-{id}',['as'=>'LeagueTable','uses'=>'OrganizeController@LeagueTable']);
-Route::get('/all','API\UserController@all');
-Route::get('/online','API\UserController@online');
-Route::get('/guests','API\UserController@guests');
+Route::get('all','API\UserController@all')->name('allUsers');
+Route::get('online','API\UserController@online')->name('online');
+Route::get('guests','API\UserController@guests')->name('guests');
 Route::get('check-round-{id}-{round?}',['as'=>'checkRound','uses'=>'OrganizeController@checkRound']);
 
 Route::get('/get-matches','MatchController@getMatches');

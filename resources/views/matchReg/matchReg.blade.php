@@ -32,7 +32,7 @@
      <div>
           <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$tournament->matchName}}</h4>
          <h4 class="card-title" style="padding-top: 10px;padding-right: 300px;padding-left: 10px;float:right;">تاریخ برگزاری {{$tournament->startTime}}</h4>
-         <a href="{{route('organizeProfile',['id'=>$org->name])}}"> <img src="../../public/storage/images/{{$org->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+         <a href="{{route('organizeProfile',['id'=>$org->name])}}"> <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
           {{--<img src="storage/images/{{$img}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" >--}}
          {{--@if($tournament->endTime == 0)--}}
              {{--<div v-if="showFinishImage">--}}
@@ -60,7 +60,7 @@
               </div>
           </div>
       </div>
-      <img class="card-img-top rounded" src="../../public/storage/images/{{$tournament->path}}" alt="Card image cap" height="400px;">
+      <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$tournament->path)}}" alt="Card image cap" height="400px;">
       <div class="card-block">
        <div class="row" >
            <span class="badge badge-default">{{$tournament->cost}} تومان</span>
@@ -95,7 +95,7 @@
            </div>
            <div class="col-2">
              <h5>قوانین</h5>
-             <a href="../../public/storage/pdfs/{{$tournament->rules}}" style="padding: 15px;"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></a>
+             <a href="{{URL::asset('storage/pdfs/'.$tournament->rules)}}" style="padding: 15px;"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></a>
            </div>
            @if($tournament->mode == 'حضوری')
              <div class="col-6">
@@ -186,7 +186,7 @@
 
 
         {{--<p style="color: red;">لطفا قبل از ثبت نام قوانین مسابقه را بطور کامل مطالعه کنید .</p>--}}
-        <p style="color:red;direction: rtl">لطفا پیش از ثبت نام،<a href="../../public/storage/pdfs/{{$tournament->rules}}"> قوانین مسابقه </a>را به طور کامل مطالعه نمایید </p>
+        <p style="color:red;direction: rtl">لطفا پیش از ثبت نام،<a href="{{URL::asset('storage/pdfs/'.$tournament->rules)}}"> قوانین مسابقه </a>را به طور کامل مطالعه نمایید </p>
 
         <br>
        <button type="submit" class="btn btn-success" id="btnReg">ثبت نام</button>
@@ -227,7 +227,7 @@
                    <input type="hidden" name="single" value="single">
                    <input type="hidden" name="name" value="{{$tournament->matchName}}">
                    <input type="hidden" name="id" value="{{$tournament->id}}">
-                   <p style="color:red;direction: rtl">لطفا پیش از ثبت نام،<a href="../../public/storage/pdfs/{{$tournament->rules}}"> قوانین مسابقه </a>را به طور کامل مطالعه نمایید </p>
+                   <p style="color:red;direction: rtl">لطفا پیش از ثبت نام،<a href="{{URL::asset('storage/pdfs/',$tournament->rules)}}"> قوانین مسابقه </a>را به طور کامل مطالعه نمایید </p>
                    {{--<p style="color: red;">لطفا قبل از ثبت نام قوانین مسابقه رو بطور کامل مطالعه کنید .</p>--}}
                    <button type="submit" class="btn btn-success" id="btnReg">ثبت نام</button>
 
@@ -256,7 +256,7 @@
 <br>
 
 
-<script src="../../public/js/flipclock.js"></script>
+<script src="{{URL::asset('js/flipclock.js')}}"></script>
 
 <script>
 
@@ -387,7 +387,7 @@
 
 </script>
 
-<script type="text/javascript" src="../../public/js/main.js"></script>
+<script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
 
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}

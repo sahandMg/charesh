@@ -10,7 +10,7 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-    <script type="text/javascript" src="../../public/js/nicEdit.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/nicEdit.js')}}"></script>
     {{--<script type="text/javascript">--}}
         {{--//        <![CDATA[--}}
         {{--bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });--}}
@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="../../public//js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -48,17 +48,31 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 
 
-
-    <link rel="stylesheet" type="text/css" href="../../public/CSS/flipclock.css">
-    <link rel="stylesheet" type="text/css"  href="../../public/CSS/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/flipclock.css')}}">
+    <link rel="stylesheet" type="text/css"  href="{{URL::asset('CSS/bootstrap.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet"   type="text/css"   href="../../public/CSS/main.css">
-    <link rel="stylesheet" type="text/css" href="../../public/CSS/bracket.css">
+    <link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+
+
+
+    @if( isset($request) && $request->route()->getName() == 'ElBracket2')
+
+        @elseif(isset($request) && $request->route()->getName() == 'matchElBracket')
+
+        @elseif(isset($request) && $request->route()->getName() == 'ElBracket')
+
+        @elseif(isset($request) && $request->route()->getName() == 'MatchGElBracket')
+
+    @else
+
+
     <!-- include libraries(jQuery, bootstrap) -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    @endif
+
+
 
     <style type="text/css">
         .dropdown {
@@ -101,7 +115,7 @@
 
     <div class="row">
         <div class="col-md-4 col-sm-6">
-            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="../../public/images/logo.png" alt="">
+            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/logo.png')}}" alt="">
         </div>
         <div class="col-md-8 col-sm-6" style="margin: 0px;height: 20px;">
             <h3 class="pull-right" style="margin:50px;padding: 0px;">راهی <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات</h3>
@@ -118,7 +132,7 @@
                 <div class="dropdown">
                     <a onclick="myFunction()" href="" class="setColor">
 
-                        <span style="color:orangered;">{{ $name->unread}} <span style="color: white">|</span> </span> {{$name->username}}  <img src="../../public/storage/images/{{$name->path}}" class="rounded" height="40" width="40" style="margin-bottom: 3px;">
+                        <span style="color:orangered;">{{ $name->unread}} <span style="color: white">|</span> </span> {{$name->username}}  <img src="{{URL::asset('storage/images/'.$name->path)}}" class="rounded" height="40" width="40" style="margin-bottom: 3px;">
 
                     </a>
                     <div class="dropdown-content">

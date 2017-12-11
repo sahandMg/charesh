@@ -24,11 +24,11 @@
 
   <h3 style="padding: 30px;">نحوه برگزاری مسابقه</h3>
 
-    @if($tournament->matchType != "انفرادی")
+
     <div class="sub-main">
         <a href="{{route('groupBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}"><button   class="button-one">  گروهی - حذفی</button></a>
     </div>
-@endif
+
     <div class="sub-main">
         <a href="{{route('ElBracket2',['id'=>$tournament->id,'url'=>$tournament->code])}}"><button   class="button-two">  حذفی</button></a>
     </div>
@@ -53,8 +53,8 @@
 
 
 
-  <script type="text/javascript" src="../../public/js/main.js"></script>
-  <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+  <script type="text/javascript" src="{{URL::asset('js/main.js'}}"></script>
+  <script type="text/javascript" src="{{URL::asset('js/bootstrap.js'}}"></script>
 
   {{--<script>--}}
       {{--new Vue({--}}

@@ -184,7 +184,7 @@
                 }
 
                 vm = this
-                axios.get('/digimatch/public/all').then(function (response) {
+                axios.get({!!json_encode(route('allUsers'))!!}).then(function (response) {
 
                   vm.allUsers = response.data
 
@@ -229,7 +229,7 @@
                     all.removeChild(all.lastChild)
                 }
                 vm = this
-                axios.get('/digimatch/public/online').then(function (response) {
+                axios.get({!!json_encode(route('online'))!!}).then(function (response) {
 
                     vm.onlineUsers = response.data
                     for(var i=0 ; i<vm.onlineUsers.length ; i++){
@@ -273,7 +273,7 @@
 
 
                 vm = this
-                axios.get('/digimatch/public/guests').then(function (response) {
+                axios.get({!!json_encode(route('guests'))!!}).then(function (response) {
 
                     vm.guests = response.data
 

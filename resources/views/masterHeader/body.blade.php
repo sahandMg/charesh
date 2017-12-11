@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="../../public//js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -49,17 +49,28 @@
     </script>
 
 
-    <link rel="stylesheet" type="text/css" href="../../public/CSS/flipclock.css">
-    <link rel="stylesheet" type="text/css"  href="../../public/CSS/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/flipclock.css')}}">
+    <link rel="stylesheet" type="text/css"  href="{{URL::asset('CSS/bootstrap.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet"   type="text/css"   href="../../public/CSS/main.css">
-    <link rel="stylesheet" type="text/css" href="../../public/CSS/bracket.css">
+    <link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/main.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
     <!-- include libraries(jQuery, bootstrap) -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
 
 
+
+    @if(isset($request) && $request->route()->getName() == 'matchElBracket')
+
+
+
+    @elseif(isset($request) && $request->route()->getName() == 'MatchGElBracket')
+
+    @else
+
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+
+    @endif
 
 
 </head>
@@ -71,7 +82,7 @@
 
     <div class="row">
         <div class="col-md-4 col-sm-6">
-            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="../../public/images/logo.png" alt="">
+            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/logo.png')}}" alt="">
         </div>
         <div class="col-md-8 col-sm-6" style="margin: 0px;height: 20px;">
             <h3 class="pull-right" style="margin:50px;padding: 0px;">راهی <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات</h3>

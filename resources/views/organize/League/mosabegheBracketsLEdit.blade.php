@@ -1,21 +1,17 @@
 @extends('masterUserHeader.body')
 @section('content')
- <div class="row" style=" direction: rtl;">
-        <div>
-            <div class="Vnav">
-                <ul>
-                    <li><a class="active" href="{{route('orgMatches')}}">پنل مدیریت</a></li>
-                    <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                    <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                    <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
-                </ul>
-            </div>
-
-
+    <div class="row" style=" direction: rtl;">
+        <!— right menu —>
+        <div class="col-2">
+            <ul class="Vnav">
+                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
+                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+            </ul>
         </div>
-        <br>
-      <br>
-     <div class="container" style="direction: rtl;" id="app">
+        <!— content —>
+        <div class="container col-8" id="app">
          @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
          <br>
 
@@ -87,11 +83,29 @@
                              <th scope="row">{{$t}}</th>
                         @if(unserialize($bracketDetail->LTable) != null)
 
-                                 <td> <img class="rounded" height="30" src="../../public/storage/images/{{App\Match::where('team_id',App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][0][$t-1][0])->first()->id)->first()->image}}" alt=""> {{unserialize($bracketDetail->LTable)[0][0][$t-1][0]}}</td>
+                             @if($tournament->matchType == 'انفرادی')
 
+                                     <td> <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->LTable)[0][0][$t-1][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][0][$t-1][0]}}</td>
+
+                                     {{--<img class="rounded" height="30" src="../../public/storage/images/{{App\Match::where('team_id',App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][0][$i][0])->first()->id)->first()->image}}" alt=""> {{unserialize($bracketDetail->LTable)[0][0][$i][0]}}--}}
                             @else
-                                 <td>{{$teams[$t-1]->teamName}}</td>
+
+                                     <td> <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][0][$t-1][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][0][$t-1][0]}}</td>
+
                             @endif
+
+
+                        @else
+
+                                 @if($tournament->matchType == 'انفرادی')
+
+                                    <td>   <img  class="rounded" height="30" src="{{URL::asset('storage/images/'.$teams[$t-1]->path)}}" alt=""> {{$teams[$t-1]->username}}</td>
+
+                                 @else
+
+                                     <td>   <img  class="rounded" height="30" src="{{URL::asset('storage/images/'.$teams[$t-1]->path)}}" alt=""> {{$teams[$t-1]->teamName}}</td>
+                                 @endif
+                        @endif
 
 
                              {{-- l column number without teamName & point column --}}
@@ -100,18 +114,18 @@
 
 
 
-                             @if(unserialize($bracketDetail->LTable) != null)
-                             <td  data-editable class="editable">  {{unserialize($bracketDetail->LTable)[0][0][$t-1][$l+1]}} </td>
-                            @else
-                                 <td  data-editable class="editable"> 0 </td>
-                                 {{--@if($s>0)--}}
-                                     {{--@for($f=0 ; $f<$s ; $f++)--}}
-                                         {{--<td  data-editable class="editable">0</td>--}}
-                                     {{--@endfor--}}
-                                 {{--@endif--}}
+                                    @if(unserialize($bracketDetail->LTable) != null)
+                                            <td  data-editable class="editable">  {{unserialize($bracketDetail->LTable)[0][0][$t-1][$l+1]}} </td>
+                                    @else
+                                         <td  data-editable class="editable"> 0 </td>
+                                         {{--@if($s>0)--}}
+                                             {{--@for($f=0 ; $f<$s ; $f++)--}}
+                                                 {{--<td  data-editable class="editable">0</td>--}}
+                                             {{--@endfor--}}
+                                         {{--@endif--}}
 
 
-                             @endif
+                                     @endif
 
                              @endfor
 
@@ -229,10 +243,45 @@
    .editable {
     color: red;
    }
- </style>
 
- <script type="text/javascript" src="../../public/js/main.js"></script>
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+
+
+   .Vnav {
+       margin-top: 20px;
+       margin-right: 40px;
+       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+       z-index: 0.1;
+       background-color: #f1f1f1;
+       max-height: 200px;
+       list-style-type: none;
+       /*margin: 0;*/
+       padding: 0;
+       width: 200px;
+       /*background-color: #f1f1f1;*/
+   }
+
+
+   .Vnav li a {
+       display: block;
+       color: #000;
+       padding: 8px 16px;
+       text-decoration: none;
+   }
+
+   .Vnav li.active {
+       background-color: #008CBA;
+       color: white;
+   }
+
+   .Vnav li a:hover:not(.active) {
+       background-color: #555;
+       color: white;
+   }
+
+    </style>
+
+ <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
+ <script type="text/javascript" src="{{URL::asset('js/bootstrap.js'}}"></script>
 
 
   <script>
@@ -421,23 +470,57 @@
         @if($roundSign == 0)
                 @for($i=0 ; $i < count($teams) ; $i++)
 
+                         @if($tournament->matchType == 'انفرادی')
+
+                            @if(array_search($teams[$i]->username,$teamArr) === false)
+
+                                <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{!! $teams[$i]->username !!}">
+                                    <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$teams[$i]->path)}}" height="30" > {{$teams[$i]->username}}
+                                </div>
+                            @endif
 
 
-                        <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{!! $teams[$i]->teamName !!}">
-                            <img class="rounded" draggable="false" src="../../public/storage/images/{{$teams[$i]->path}}" height="30" > {{$teams[$i]->teamName}}
-                        </div>
+                        @else
+
+                            @if(array_search($teams[$i]->teamName,$teamArr) === false)
+
+                                <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{!! $teams[$i]->teamName !!}">
+                                    <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$teams[$i]->path)}}" height="30" > {{$teams[$i]->teamName}}
+                                </div>
+                            @endif
+
+                        @endif
+
+
                 @endfor
 
         @else
 
+
                     @for($i=0 ; $i < count($teams) ; $i++)
-                        @if(array_search($teams[$i]->teamName,$teamArr) === false)
+
+                        @if($tournament->matchType == 'انفرادی')
+
+                                @if(array_search($teams[$i]->username,$teamArr) === false)
+
+                                    <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{!! $teams[$i]->username !!}">
+                                        <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$teams[$i]->path)}}" height="30" > {{$teams[$i]->username}}
+                                    </div>
+                                @endif
+
+
+                        @else
+
+                            @if(array_search($teams[$i]->teamName,$teamArr) === false)
 
                                 <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{!! $teams[$i]->teamName !!}">
-                                    <img class="rounded" draggable="false" src="../../public/storage/images/{{$teams[$i]->path}}" height="30" > {{$teams[$i]->teamName}}
+                                    <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$teams[$i]->path)}}" height="30" > {{$teams[$i]->teamName}}
                                 </div>
-                         @endif
-                      @endfor
+                            @endif
+
+                        @endif
+
+                    @endfor
 
         @endif
 
@@ -453,11 +536,45 @@
                 {{-- Check wether rows are filled --}}
                 @if(unserialize($bracketDetail->LTable)[0][1][$i][0] != null && unserialize($bracketDetail->LTable)[0][1][$i][4] != null)
 
+
+                    {{--Check single or team --}}
+                    {{--@if(App\Match::where([['user_id',App\User::where('username',unserialize($bracketDetail->LTable)[0][0][$i][0])->first()->id],['tournament_id',$tournament->id]])->first()->team_id == 0)--}}
+
+                        {{--<tr id="match{{$i}}">--}}
+                            {{--<th scope="row"></th>--}}
+                            {{--<td id="Player{{$s}}" ondrop="drop(event,this)" ondragover="allowDrop(event)">--}}
+                                {{--<div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{unserialize($bracketDetail->LTable)[0][1][$i][0]}}">--}}
+
+                                    {{--<img class="rounded" height="30" src="../../public/storage/images/{{App\Match::where([['user_id',App\User::where('username',unserialize($bracketDetail->LTable)[0][1][$i][0])->first()->id],['tournament_id',$tournament->id]])->first()->image}}"> {{unserialize($bracketDetail->LTable)[0][1][$i][0]}}--}}
+
+
+                                {{--</div>--}}
+                            {{--</td>--}}
+                            {{--<td data-editable class="editable" id="table{{$s}}">  {{unserialize($bracketDetail->LTable)[0][1][$i][1]}}</td>--}}
+                            {{--<td>{{unserialize($bracketDetail->LTable)[0][1][$i][2]}}</td>--}}
+                            {{--<td data-editable id="table{{$s+1}}" class="editable">{{unserialize($bracketDetail->LTable)[0][1][$i][3]}}</td>--}}
+                            {{--<td id="Player{{$s+1}}" ondrop="drop(event,this)" ondragover="allowDrop(event)">--}}
+                                {{--<div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{unserialize($bracketDetail->LTable)[0][1][$i][4]}}">--}}
+                                    {{--<img class="rounded" height="30" src="../../public/storage/images/{{App\Match::where([['user_id',App\User::where('username',unserialize($bracketDetail->LTable)[0][1][$i][4])->first()->id],['tournament_id',$tournament->id]])->first()->image}}"> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}--}}
+                                {{--</div>--}}
+                            {{--</td>--}}
+                        {{--</tr>--}}
+
+                    {{--@else--}}
+
+
+
                         <tr id="match{{$i}}">
                             <th scope="row"></th>
                             <td id="Player{{$s}}" ondrop="drop(event,this)" ondragover="allowDrop(event)">
                                 <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{unserialize($bracketDetail->LTable)[0][1][$i][0]}}">
-                                    <img class="round" draggable="false" height="30" src="../../public/storage/images/{{\App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][1][$i][0] )->first()->path}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][0]}}
+
+                                    @if($tournament->matchType == 'انفرادی')
+                                    <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\User::where('userName',unserialize($bracketDetail->LTable)[0][1][$i][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][0]}}
+                                    @else
+                                        <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][1][$i][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][0]}}
+                                    @endif
+
                                 </div>
                             </td>
                             <td data-editable class="editable" id="table{{$s}}"> {{unserialize($bracketDetail->LTable)[0][1][$i][1]}}</td>
@@ -465,10 +582,19 @@
                             <td data-editable id="table{{$s+1}}" class="editable">{{unserialize($bracketDetail->LTable)[0][1][$i][3]}}</td>
                             <td id="Player{{$s+1}}" ondrop="drop(event,this)" ondragover="allowDrop(event)">
                                 <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{unserialize($bracketDetail->LTable)[0][1][$i][4]}}">
-                                    <img class="round" draggable="false" height="30" src="../../public/storage/images/{{\App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][1][$i][4] )->first()->path}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}
+
+                                    @if($tournament->matchType == 'انفرادی')
+                                        <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\User::where('userName',unserialize($bracketDetail->LTable)[0][1][$i][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}
+                                    @else
+                                        <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][1][$i][4])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}
+                                    @endif
+
                                 </div>
                             </td>
                         </tr>
+
+                    {{--@endif--}}
+
                         <p hidden>{{$s+=2}}</p>
 
                 @else

@@ -30,7 +30,7 @@
                     <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
                         <div>
                             <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                            <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}"> <img src="../../public/storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+                            <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
                             <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
                                 <div class="back-stars">
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -52,9 +52,9 @@
 
 
                         @if($match->canceled == 1)
-                            <img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$match->path}}" alt="Responsive image" style="width: 100%;">
+                            <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
                         @else
-                            <a href="{{route('matchRegistered',['id'=>$match->id,$match->code])}}"><img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$match->path}}" alt="Responsive image" style="width: 100%;"></a>
+                            <a href="{{route('matchRegistered',['id'=>$match->id,$match->code])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
 
                         @endif
 
@@ -195,8 +195,8 @@
             box-shadow: 0 0 2px #c00;
         }
     </style>
-    <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
-    <script type="text/javascript" src="../../public/js/main.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
 
     {{--<script>--}}
 

@@ -112,8 +112,8 @@
 
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
- <script type="text/javascript" src="../../public/js/main.js"></script>
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+  <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
+  <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>

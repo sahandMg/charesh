@@ -1,18 +1,18 @@
 @extends('masterUserHeader.body')
 @section('content')
 
-  <div class="row" style=" direction: rtl;" id="app">
-    <!-- right menu -->
-      <div class="Vnav">
-          <ul>
-              <li><a class="active" href="{{route('orgMatches')}}">پنل مدیریت</a></li>
-              <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-              <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
-          </ul>
-      </div>
-  <!-- content -->
-   <div class="container" style="width: 100%">
+    <div class="row" style=" direction: rtl;" id="app">
+        <!— right menu —>
+        <div class="col-2">
+            <ul class="Vnav">
+                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
+                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+            </ul>
+        </div>
+        <!— content —>
+        <div class="container col-8" id="app">
     <br>
    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
 
@@ -162,45 +162,42 @@
 
 
   <style>
-    .Vnav {
-      margin-top: 20px;
-      margin-right: 40px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 0.1;
-      background-color: #f1f1f1;
-      max-height: 200px;
-    }
+      .Vnav {
+          margin-top: 20px;
+          margin-right: 40px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 0.1;
+          background-color: #f1f1f1;
+          max-height: 200px;
+          list-style-type: none;
+          /*margin: 0;*/
+          padding: 0;
+          width: 200px;
+          /*background-color: #f1f1f1;*/
+      }
 
-    .Vnav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 200px;
-        background-color: #f1f1f1;
 
-    }
+      .Vnav li a {
+          display: block;
+          color: #000;
+          padding: 8px 16px;
+          text-decoration: none;
+      }
 
-    .Vnav li a {
-        display: block;
-        color: #000;
-        padding: 8px 16px;
-        text-decoration: none;
-    }
+      .Vnav li.active {
+          background-color: #008CBA;
+          color: white;
+      }
 
-    .Vnav li a.active {
-        background-color: #008CBA;
-        color: white;
-    }
-
-    .Vnav li a:hover:not(.active) {
-        background-color: #555;
-        color: white;
-    }
+      .Vnav li a:hover:not(.active) {
+          background-color: #555;
+          color: white;
+      }
   </style>
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
- <script type="text/javascript" src="../../public/js/main.js"></script>
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
+ <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>

@@ -6,7 +6,7 @@
 
 
 
-      <link rel="stylesheet" href="../../public/CSS/style.css">
+      <link rel="stylesheet" href="{{URL::asset('CSS/style.css')}}">
 
 
 </head>

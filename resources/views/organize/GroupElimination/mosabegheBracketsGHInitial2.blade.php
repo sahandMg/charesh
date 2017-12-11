@@ -38,9 +38,20 @@
             <div class="row" id="allTeams"  ondrop="drop(event,this)" ondragover="allowDrop(event)" style="padding: 30px;direction: ltr;border-style: solid;">
 
                 @foreach($teams as $team)
-                <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->teamName}}">
-                    <img class="rounded" draggable="false" src="../../public/storage/images/{{$team->path}}" height="30" > {{$team->teamName}}
+
+                    @if($tournament->matchType == 'انفرادی')
+
+                <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->username}}">
+                    <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->username}}
                 </div>
+
+                    @else
+
+                        <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->teamName}}">
+                            <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->teamName}}
+                        </div>
+                    @endif
+
             @endforeach
 
             </div>
@@ -123,8 +134,11 @@
                                     <tr>
                                         <th scope="row">{{$t}}</th>
                                         <td  id="G{{$i}}{{$t}}" ondrop="drop(event,this)" ondragover="allowDrop(event)">
-                                            <img class="round" height="30" src="../../public/storage/images/{{\App\Match::where('team_id',App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->id)->first()->image}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}
-
+                                            @if($tournament->matchType == 'انفرادی')
+                                                <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}
+                                            @else
+                                                <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}
+                                            @endif
                                         </td>
 
                                         <td>0</td>

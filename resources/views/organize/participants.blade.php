@@ -1,18 +1,18 @@
 @extends('masterUserHeader.body')
 @section('content')
 
-  <div class="row" style=" direction: rtl;">
-    <!-- right menu -->
-      <div class="Vnav">
-          <ul>
-              <li><a class="active" href="{{route('orgMatches')}}">پنل مدیریت</a></li>
-              <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-              <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
-          </ul>
-      </div>
-  <!-- content -->
-   <div class="container">
+    <div class="row" style=" direction: rtl;" id="app">
+        <!— right menu —>
+        <div class="col-2">
+            <ul class="Vnav">
+                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
+                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+            </ul>
+        </div>
+        <!— content —>
+        <div class="container col-8">
     <br>
        @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
 
@@ -27,7 +27,7 @@
         @if(count($teams)>0)
         @foreach($teams as $team)
           <div class="row" style="padding: 25px;float: left;direction: ltr;">
-           <img class="card-img-top rounded" src="../../public/storage/images/{{$team->path}}" alt="Card image cap" height="50px;">
+           <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$team->path)}}" alt="Card image cap" height="50px;">
            <h3 style="padding: 8px;"> {{$team->teamName}} </h3>
           </div>
           <div class="row" style="border: 2px solid;border-radius: 10px;">
@@ -50,7 +50,7 @@
 
             @foreach($matches as $match)
                 <div class="row" style="padding: 25px;float: left;direction: ltr;">
-                    <img class="card-img-top rounded" src="../../public/storage/images/{{$match->user->path}}" alt="Card image cap" height="50px;">
+                    <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">
 
                 </div>
                 <div class="row" style="border: 2px solid;border-radius: 10px;">
@@ -81,40 +81,37 @@
 
 
   <style>
-    .Vnav {
-      margin-top: 20px;
-      margin-right: 40px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 0.5;
-      background-color: #f1f1f1;
-      max-height: 200px;
-    }
+      .Vnav {
+          margin-top: 20px;
+          margin-right: 40px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 0.1;
+          background-color: #f1f1f1;
+          max-height: 200px;
+          list-style-type: none;
+          /*margin: 0;*/
+          padding: 0;
+          width: 200px;
+          /*background-color: #f1f1f1;*/
+      }
 
-    .Vnav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 200px;
-        background-color: #f1f1f1;
-        
-    }
 
-    .Vnav li a {
-        display: block;
-        color: #000;
-        padding: 8px 16px;
-        text-decoration: none;
-    }
+      .Vnav li a {
+          display: block;
+          color: #000;
+          padding: 8px 16px;
+          text-decoration: none;
+      }
 
-    .Vnav li a.active {
-        background-color: #008CBA;
-        color: white;
-    }
+      .Vnav li.active {
+          background-color: #008CBA;
+          color: white;
+      }
 
-    .Vnav li a:hover:not(.active) {
-        background-color: #555;
-        color: white;
-    }
+      .Vnav li a:hover:not(.active) {
+          background-color: #555;
+          color: white;
+      }
   </style>
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}

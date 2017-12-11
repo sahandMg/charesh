@@ -4,7 +4,7 @@
 <div class="container" style="direction: rtl;padding-top: 30px;">
     @include('masterMatch.body',['tournament'=> $tournament,'route'=>$route])
 
-   <center><img src="../../public/images/participants.jpg" style="padding: 10px;"></center>
+   <center><img src="{{URL::asset('images/participants.jpg')}}" style="padding: 10px;"></center>
    <div class="row" style="padding-top: 30px;direction: ltr;">
 
 
@@ -13,7 +13,7 @@
            @for($i=0 ; $i< count($player);$i++)
 
     <div class="row wrapper" style="padding: 25px;">
-     <img class="card-img-top rounded" src="../../public/storage/images/{{$player[$i]->path}}" alt="Card image cap" height="50px;">
+     <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$player[$i]->path)}}" alt="Card image cap" height="50px;">
      <h3 style="padding: 8px;"> {{$player[$i]->username}} </h3>
     </div>
 
@@ -39,7 +39,7 @@
 
            @for($i=0 ; $i< count($team);$i++)
                <div class="row wrapper" style="padding: 25px;">
-                   <img class="card-img-top rounded" src="../../public/storage/images/{{$team[$i]->path}}" alt="Card image cap" height="50px;">
+                   <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$team[$i]->path)}}" alt="Card image cap" height="50px;">
                    <h3 style="padding: 8px;"> {{$team[$i]->teamName}} </h3>
                    <div class="tooltip" style="text-align: center;">
                        @for($t=0 ; $t<count($groupMem[$i]);$t++)

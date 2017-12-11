@@ -1,21 +1,17 @@
 @extends('masterUserHeader.body')
 @section('content')
-    <div class="row" style=" direction: rtl;">
-        <!-- right menu -->
-        <div>
-            <div class="Vnav">
-                <ul>
-                    <li><a class="active" href="{{route('orgMatches')}}">پنل مدیریت</a></li>
-                    <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                    <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                    <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
-                </ul>
-            </div>
-
-
+    <div class="row" style=" direction: rtl;" id="app">
+        <!— right menu —>
+        <div class="col-2">
+            <ul class="Vnav">
+                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
+                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+            </ul>
         </div>
-        <!-- content -->
-        <div class="container">
+        <!— content —>
+        <div class="container col-8">
             <br>
             @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
             <div>
@@ -85,19 +81,16 @@
         margin-top: 20px;
         margin-right: 40px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
+        z-index: 0.1;
         background-color: #f1f1f1;
         max-height: 200px;
-    }
-
-    .Vnav ul {
         list-style-type: none;
-        margin: 0;
+        /*margin: 0;*/
         padding: 0;
         width: 200px;
-        background-color: #f1f1f1;
-
+        /*background-color: #f1f1f1;*/
     }
+
 
     .Vnav li a {
         display: block;
@@ -106,7 +99,7 @@
         text-decoration: none;
     }
 
-    .Vnav li a.active {
+    .Vnav li.active {
         background-color: #008CBA;
         color: white;
     }

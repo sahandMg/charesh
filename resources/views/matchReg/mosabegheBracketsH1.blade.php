@@ -21,9 +21,9 @@
 
 
 
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  {{--<script src="js/jquery-3.2.1.js"></script>--}}
- <script type="text/javascript" src="../../public/js/jquery.bracket.min.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/jquery.bracket.min.js')}}"></script>
 
 <script type="text/javascript">
 /* Custom data objects passed as teams */

@@ -6,7 +6,7 @@
 
         <div class="card-group" style="padding-top: 20px;">
             <div class="card">
-                <img class="card-img-top" src="../../public/storage/images/{{$org->background_path}}" alt="Card image cap" height="400px;">
+                <img class="card-img-top" src="{{URL::asset('storage/images/'.$org->background_path)}}" alt="Card image cap" height="400px;">
                 <div class="rounded" style="position: absolute;top:350px;left: 45px;padding: 2px;">
                     <div class="star-rating" title="{{$org->rating*10}}%" style="margin-top: 40px;float: right;margin-left: 10px;">
                         <div class="back-stars">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </div>
-                    <img class="rounded" src="../../public/storage/images/{{$org->logo_path}}" alt="Card image cap" height="100px;" width="100px;">
+                    <img class="rounded" src="{{URL::asset('storage/images/'.$org->logo_path)}}" alt="Card image cap" height="100px;" width="100px;">
                 </div>
                 <div class="card-block">
                     <h4 class="card-title" style="margin-right: 150px;">{{$org->name}}</h4>
@@ -67,7 +67,7 @@
                             <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
                                 <div>
                                     <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;"> {{$org->tournaments[$i]->matchName}}</h4>
-                                    <a href=""><img src="../../public/storage/images/{{$org->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" ></a>
+                                    <a href=""><img src="{{URL::asset('storage/images/'.$org->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" ></a>
                                     <div class="star-rating" title="70%" style="padding-top: 13px;float: left;">
                                         <div class="back-stars">
                                             <i class="fa fa-star" aria-hidden="true"></i>
@@ -87,9 +87,9 @@
                                     </div>
                                 </div>
                                 @if($org->tournaments[$i]->canceled == 1)
-                                    <img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$org->tournaments[$i]->path}}" alt="Responsive image" style="width: 100%;">
+                                    <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}" alt="Responsive image" style="width: 100%;">
                                     @else
-                                    <a href="{{route('matchRegistered',['id'=>$org->tournaments[$i]->id,'url'=>$org->tournaments[$i]->code])}}"><img class="card-img-top rounded mx-auto" src="../../public/storage/images/{{$org->tournaments[$i]->path}}" alt="Responsive image" style="width: 100%;"></a>
+                                    <a href="{{route('matchRegistered',['id'=>$org->tournaments[$i]->id,'url'=>$org->tournaments[$i]->code])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>
                                     @endif
 
 
@@ -147,8 +147,8 @@
     </div>
 
     {{--<script type="text/javascript" src="../../public/js/jquery-3.2.1.js"></script>--}}
-    <script type="text/javascript" src="../../public/js/main.js"></script>
-    <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
     </script>

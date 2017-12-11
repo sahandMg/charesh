@@ -74,12 +74,27 @@
 
                        <tr >
                            <th scope="row">{{$t}}</th>
-                           @if(unserialize($bracketDetail->bracketTable) != null)
-                                   <td id="G{{$i}}{{$t}}"> <img class="round" height="30" src="../../public/storage/images/{{\App\Match::where('team_id',App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->id)->first()->image}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}} </td>
-                                   @for($count=1 ; $count<= $bracketDetail->columnNumber-2 ; $count++)
-                                   <td >{{$tableData[$i-1][$t-1][$count]}}</td>
+                           @if(unserialize($bracketDetail->GroupBracketTableEdit) != null)
 
-                                    @endfor
+                               @if($tournament->matchType == 'انفرادی')
+                                   <td>   <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
+                               @else
+                                   <td> <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
+                               @endif
+                               {{--<td><img class="round" height="30" src="../../public/storage/images/{{\App\Match::where('team_id',App\Team::where('teamName',$teamName[$i-1][$t-1])->first()->id)->first()->image}}" alt=""> {{$teamName[$i-1][$t-1]}}</td>--}}
+                               <td  data-editable class="editable">{{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][1]}}</td>
+                           @endif
+
+
+                           @if(unserialize($bracketDetail->GroupBracketTableEdit) == null)
+
+                               @if($tournament->matchType == 'انفرادی')
+                                   <td>   <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
+                               @else
+                                   <td> <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
+                               @endif
+
+                               <td  data-editable class="editable">0</td>
                            @endif
                            {{--@if($s>0)--}}
                                {{--@for($f=0 ; $f<$s ; $f++)--}}
@@ -109,9 +124,9 @@
 
  
 
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  {{--<script src="js/jquery-1.11.3.js"></script>--}}
- <script src="../../public/js/brackets.min.js"></script>
+ <script src="{{URL::asset('js/brackets.min.js')}}"></script>
 
 
 @endsection

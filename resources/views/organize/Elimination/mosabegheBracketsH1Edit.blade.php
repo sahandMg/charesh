@@ -3,21 +3,17 @@
     <link rel="stylesheet" type="text/css" href="../../public/CSS/bracket.css">
 
     <div class="row" style=" direction: rtl;">
-        <!-- right menu -->
-        <div>
-            <div class="Vnav">
-                <ul>
-                    <li><a class="active" href="{{route('orgMatches')}}">پنل مدیریت</a></li>
-                    <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                    <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                    <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
-                </ul>
-            </div>
-
-
+        <!— right menu —>
+        <div class="col-2">
+            <ul class="Vnav">
+                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
+                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+            </ul>
         </div>
-        <!-- content -->
-        <div class="container"  id="app" >
+        <!— content —>
+        <div class="container col-8" id="app">
             <br>
             @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
 
@@ -52,7 +48,11 @@
             <div class="row" id="allTeams" style="padding: 30px;direction: ltr;border-style: solid;">
                 @foreach($teams as $team)
                     <div style="padding: 5px;">
-                        <img class="rounded" src="../../public/storage/images/{{$team->path}}" height="30" > {{$team->teamName}}
+                        @if($tournament->matchType == 'انفرادی')
+                            <img class="rounded" src="../../public/storage/images/{{$team->path}}" height="30" > {{$team->username}}
+                        @else
+                            <img class="rounded" src="../../public/storage/images/{{$team->path}}" height="30" > {{$team->teamName}}
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -63,7 +63,7 @@
 
         </div>
     </div>
-    <div id="customHandlers" style="direction: ltr;margin-left: 20px;"></div>
+    <div id="customHandlers" style="direction: ltr;margin-left: 20px;z-index:0.5;"></div>
     <br>
     <br>
     <br>
@@ -80,19 +80,16 @@
             margin-top: 20px;
             margin-right: 40px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
+            z-index: 0.1;
             background-color: #f1f1f1;
             max-height: 200px;
-        }
-
-        .Vnav ul {
             list-style-type: none;
-            margin: 0;
+            /*margin: 0;*/
             padding: 0;
             width: 200px;
-            background-color: #f1f1f1;
-
+            /*background-color: #f1f1f1;*/
         }
+
 
         .Vnav li a {
             display: block;
@@ -101,7 +98,7 @@
             text-decoration: none;
         }
 
-        .Vnav li a.active {
+        .Vnav li.active {
             background-color: #008CBA;
             color: white;
         }
@@ -114,9 +111,9 @@
 
 
 
-    <script type="text/javascript" src="../../public/js/main.js"></script>
+    <script type="text/javascript" src="{{URL::asset('main.js')}}"></script>
     {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
-    <script type="text/javascript" src="../../public/js/jquery.bracket.min.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/jquery.bracket.min.js')}}"></script>
 
     <script type="text/javascript">
 
