@@ -7,8 +7,10 @@ use App\Group;
 use App\Match;
 use App\Message;
 use App\Team;
+use Illuminate\Support\Facades\Redirect;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Facades\App;
+use PdfCrowd;
 use Spatie\Browsershot\Browsershot;
 use App\Tournament;
 use App\Organize;
@@ -185,40 +187,68 @@ class UserController extends Controller
     }
 
 
-    public function generatePdf($id, $url)
+    public function generatePdf2($id, $url)
     {
 
 
-        $teamId = Match::where([['user_id',Auth::id()],['tournament_id',$id]])->first()->team_id;
-        $teammates =  Group::where([['tournament_id',$id],['team_id',$teamId]])->pluck('name');
+//        $teamId = Match::where([['user_id',Auth::id()],['tournament_id',$id]])->first()->team_id;
+//        $teammates =  Group::where([['tournament_id',$id],['team_id',$teamId]])->pluck('name');
+//
+//        if(count($teammates) == 0){
+//            $names= [Auth::user()->username];
+//
+//        }else {
+//
+//            for ($i = 0; $i < count($teammates); $i++) {
+//
+//                $names[$i] = '<li>' . $teammates[$i] . '</li><br>';
+//
+//            }
+//        }
+//
+//        $tournament = Tournament::where('id', $id)->first();
+//        $name = $tournament->matchName;
+//        $time = $tournament->startTime;
+//        $cost = $tournament->cost;
+//        $credit = Auth::user()->credit;
+//        $owner = Auth::user()->username;
+//        $data=['name'=>$name,'time'=>$time,'cost'=>$cost,'credit'=>$credit,'names'=>$names,'owner'=>$owner,'tournament'=>$tournament];
+////        dd($names);
+//        $pdf = PDF::loadView('pdf', $data);
+//
+//        return $pdf->stream("بلیط مسابقه $name.pdf");
+//
 
-        if(count($teammates) == 0){
-            $names= [Auth::user()->username];
 
-        }else {
+        return view('pdf');
+    }
 
-            for ($i = 0; $i < count($teammates); $i++) {
+    public function generatePdf($id,$url){
 
-                $names[$i] = '<li>' . $teammates[$i] . '</li><br>';
+        require 'pdfcrowd.php';
 
-            }
+//        dd(request());
+        try
+        {
+            // create an API client instance
+            $client = new Pdfcrowd("sahand", "fd0975eddb7511bdb1ed7eeb3617f9f3");
+
+            // convert a web page and store the generated PDF into a $pdf variable
+            $pdf = $client->convertURI("http://165.227.170.114/challenge/ticket2-$id-$url");
+
+            // set HTTP response headers
+            header("Content-Type: application/pdf");
+            header("Cache-Control: max-age=0");
+            header("Accept-Ranges: none");
+            header("Content-Disposition: attachment; filename=\"google_com.pdf\"");
+
+            // send the generated PDF
+            echo $pdf;
         }
-
-        $tournament = Tournament::where('id', $id)->first();
-        $name = $tournament->matchName;
-        $time = $tournament->startTime;
-        $cost = $tournament->cost;
-        $credit = Auth::user()->credit;
-        $owner = Auth::user()->username;
-        $data=['name'=>$name,'time'=>$time,'cost'=>$cost,'credit'=>$credit,'names'=>$names,'owner'=>$owner,'tournament'=>$tournament];
-//        dd($names);
-        $pdf = PDF::loadView('pdf', $data);
-
-        return $pdf->stream("بلیط مسابقه $name.pdf");
-
-
-//        return view('pdf');
-
+        catch(PdfcrowdException $why)
+        {
+            echo "Pdfcrowd Error: " . $why;
+        }
     }
 
 

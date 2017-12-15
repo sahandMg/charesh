@@ -19,7 +19,6 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
 use Hekmatinasser\Verta\Verta;
@@ -79,22 +78,22 @@ class MatchController extends Controller
 //        }
 
 
-            $tournament = new Junk();
-            $time = time();
+        $tournament = new Junk();
+        $time = time();
 
-            $tournament->matchName = $request->matchName;
-            $tournament->url = $time.$request->url;
-            $tournament->startTime = $request->startTime;
-            $tournament->endTime = $request->endTime;
-            $tournament->comment = $request->comment;
-
-
-
-            $today = Carbon::now();
-            $endDate = $today->addDays($tournament->endTime);
+        $tournament->matchName = $request->matchName;
+        $tournament->url = $time.$request->url;
+        $tournament->startTime = $request->startTime;
+        $tournament->endTime = $request->endTime;
+        $tournament->comment = $request->comment;
 
 
-            $tournament->endRemain = $endDate;
+
+        $today = Carbon::now();
+        $endDate = $today->addDays($tournament->endTime);
+
+
+        $tournament->endRemain = $endDate;
 
 
         if($request->file('path')){
@@ -525,7 +524,7 @@ class MatchController extends Controller
 //        return view('matchReg.matchRule',compact('name','tournament','route'));
 //    }
 
-    public function MatchBracket($id,$url){
+    public function MatchBracket(Request $request,$id,$url){
 
         $name = Auth::user();
         session(['routeName'=>'bracket']);
@@ -549,7 +548,7 @@ class MatchController extends Controller
         }
     }
 
-    public function MatchGElBracket($id,$url){
+    public function MatchGElBracket(Request $request,$id,$url){
 
         $name = Auth::user();
         session(['routeName'=>'bracket']);
@@ -564,12 +563,12 @@ class MatchController extends Controller
 // $route = 'bracket';
 
 //            dd($table['teams']);
-            return view('matchReg.mosabegheBrackets2H',compact('name','tournament','route','users','auth','table','teams'));
+            return view('matchReg.mosabegheBrackets2H',compact('request','name','tournament','route','users','auth','table','teams'));
 
         }else{
 
             $auth = 0;
-            return view('matchReg.mosabegheBrackets2H',compact('tournament','route','users','auth','table'));
+            return view('matchReg.mosabegheBrackets2H',compact('request','tournament','route','users','auth','table'));
         }
     }
 
@@ -577,9 +576,9 @@ class MatchController extends Controller
 
 
 
-            $table = unserialize(GroupBracket::where('tournament_id',$id)->first()->ElBracketTableEdit);
+        $table = unserialize(GroupBracket::where('tournament_id',$id)->first()->ElBracketTableEdit);
 
-            return $table;
+        return $table;
 
 
     }
@@ -595,7 +594,7 @@ class MatchController extends Controller
 
     }
 
-    public function MatchElBracket($id,$url){
+    public function MatchElBracket(Request $request,$id,$url){
 
 
         $name = Auth::user();
@@ -611,12 +610,12 @@ class MatchController extends Controller
 
             $teams = Tournament::where('id', $id)->first()->teams;
 //            dd($table['teams']);
-            return view('matchReg.mosabegheBracketsH1',compact('name','tournament','route','users','auth','table','teams'));
+            return view('matchReg.mosabegheBracketsH1',compact('request','name','tournament','route','users','auth','table','teams'));
 
         }else{
 
             $auth = 0;
-            return view('matchReg.mosabegheBracketsH1',compact('tournament','route','users','auth','table'));
+            return view('matchReg.mosabegheBracketsH1',compact('request','tournament','route','users','auth','table'));
         }
 
     }
@@ -827,27 +826,27 @@ class MatchController extends Controller
                     $team->tournament_id = $request->matchId;
                     if (null != $request->file('TeamLogo')) {
 
-                    $team->path = $time . $request->file('TeamLogo')->getClientOriginalName();
-                    $request->file('TeamLogo')->move('storage/images', $time . $request->file('TeamLogo')->getClientOriginalName());
-                }else{
-                    $team->path = 'Blank100_100.png' ;
-                }
+                        $team->path = $time . $request->file('TeamLogo')->getClientOriginalName();
+                        $request->file('TeamLogo')->move('storage/images', $time . $request->file('TeamLogo')->getClientOriginalName());
+                    }else{
+                        $team->path = 'Blank100_100.png' ;
+                    }
                     $team->save();
 
 
-                for ($i = 0; $i < count($_POST) - $sub; $i++) {
+                    for ($i = 0; $i < count($_POST) - $sub; $i++) {
 
 
-                    $group = new Group();
+                        $group = new Group();
 
-                    $group->name = $request["teammate$i"];
+                        $group->name = $request["teammate$i"];
 //                $group->user_id = Auth::id();
-                    $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
-                    $group->tournament_id = $request->matchId;
-                    $group->organize_id = $match->organize->id;
-                    $group->save();
+                        $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
+                        $group->tournament_id = $request->matchId;
+                        $group->organize_id = $match->organize->id;
+                        $group->save();
 
-                }
+                    }
 
 
 //                for ($i = 0; $i < count($_POST) - $sub; $i++) {
@@ -879,7 +878,7 @@ class MatchController extends Controller
 
 
 //                }
-            }else{
+                }else{
                     return redirect()->back()->with(['message' => 'تعداد بلیط های درخواستی بیشتر از بلیط های مسابقه می باشد']);
                 }
             }else{
@@ -935,7 +934,21 @@ class MatchController extends Controller
         $tournament = Tournament::where('id' , $id)->first();
         $route = 'bracket';
         $bracketDetail =  Tournament::where('id',$id)->first()->leagueBracket;
-        $teams = Tournament::where('id', $id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$id)->first()->teams;
+
+        }
+//        dd($teams);
         $table = unserialize(LeagueBracket::where('tournament_id',$id)->first()->LTable);
 
         if(unserialize($bracketDetail->LTable)[0][1] == null){
@@ -951,8 +964,9 @@ class MatchController extends Controller
             $name = Auth::user();
             $auth = 1;
 //
-//            dd(Team::where('teamName',unserialize($bracketDetail->LTable)[0][0][0][0])->first()->path);
-//            dd(unserialize($bracketDetail->LTable));
+//            dd($table[0][1]);
+//            dd(unserialize($bracketDetail->LTable)[0][0][0][0]);
+//            dd(User::where('username',unserialize($bracketDetail->LTable)[0][0][0][0])->first());
             return view('matchReg.mosabegheBracketsL',compact('name','tournament','route','users','auth','table','teams','bracketDetail','roundSign'));
 
         }else{
@@ -996,7 +1010,20 @@ class MatchController extends Controller
         $route = 'bracket';
         $table = unserialize(LeagueBracket::where('tournament_id',$request->id)->first()->LTable);
 //        session(['bracketDetail'=> Tournament::where('id',$id)->first()->leagueBracket]);
-        $teams = Tournament::where('id',$request->id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$request->id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$request->id)->first()->teams;
+
+        }
 //        dd((unserialize($bracketDetail->LTable)));
         if($brackets != null) {
 
@@ -1113,53 +1140,53 @@ class MatchController extends Controller
 
     }
 
-  public function selectMatchBracket($id,$url){
+    public function selectMatchBracket($id,$url){
 
-      $bracket = BracketController::where('tournament_id',$id)->first();
+        $bracket = BracketController::where('tournament_id',$id)->first();
 
 
 //      dd($bracket);
-       if($bracket != null ) {
+        if($bracket != null ) {
 
-           if ($bracket->group == 1) {
-
-
-               return redirect()->route('matchGroupBracket', ['id' => $id, 'url' => $url]);
+            if ($bracket->group == 1) {
 
 
-           } elseif ($bracket->elimination == 1) {
-
-               return redirect()->route('matchElBracket', ['id' => $id, 'url' => $url]);
-
-           } else {
-
-               return redirect()->route('LeagueTable2', ['id' => $id, 'url' => $url]);
-
-           }
-           }else {
-
-               return redirect()->route('noBracket', ['id' => $id, 'url' => $url]);
-           }
+                return redirect()->route('matchGroupBracket', ['id' => $id, 'url' => $url]);
 
 
+            } elseif ($bracket->elimination == 1) {
+
+                return redirect()->route('matchElBracket', ['id' => $id, 'url' => $url]);
+
+            } else {
+
+                return redirect()->route('LeagueTable2', ['id' => $id, 'url' => $url]);
+
+            }
+        }else {
+
+            return redirect()->route('noBracket', ['id' => $id, 'url' => $url]);
+        }
 
 
-  }
 
-  public function noBracket($id,$url){
 
-      $name = Auth::user();
-      $tournament = Tournament::where('id',$id)->first();
-      $route = 'bracket';
-      if(Auth::check()){
+    }
 
-          $auth = 1;
-      }else{
-          $auth = 0 ;
-      }
-      return view('matchReg.noBracket',compact('name','tournament','auth','route'));
+    public function noBracket($id,$url){
 
-  }
+        $name = Auth::user();
+        $tournament = Tournament::where('id',$id)->first();
+        $route = 'bracket';
+        if(Auth::check()){
+
+            $auth = 1;
+        }else{
+            $auth = 0 ;
+        }
+        return view('matchReg.noBracket',compact('name','tournament','auth','route'));
+
+    }
 
 
 

@@ -6,12 +6,14 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\User;
 use Illuminate\Contracts\Session\Session;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use GuzzleHttp\Client;
 //use Tymon\JWTAuth\JWTAuth;
+use Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -91,29 +93,67 @@ class AuthController extends Controller
 // -------------------- API REQUESTS --------------------------
     public function ApiRegister(Request $request){
 
-        $user = new User();
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->reset_password = str_shuffle("ajleyqwncx3497");
-        $user->path = 'Blank100*100.png';
-        $user->save();
-        $token = JWTAuth::fromUser($user);
-        $data=['username' => $request->username,
-            'email'=>$request->email,
-            'link' => str_random(30),
-            'id'=>$user->id];
+        $validator = Validator::make($request->all(),[
 
-        Mail::send('email.registerMail',$data,function ($message) use($data){
+            'username' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+            'repeat' => 'required|same:password'
+        ]);
 
-            $message->from('s23.moghadam@gmail.com');
-            $message->to($data['email']);
-        });
-       return ['token' => $token];
+        if($validator->fails()){
+
+            if(isset(json_decode($validator->errors(),true)['email'])){
 
 
+                return 'email';
 
-    }
+            }elseif(isset(json_decode($validator->errors(),true)['username'])){
+
+                return 'username';
+
+            }elseif(isset(json_decode($validator->errors(),true)['password'])){
+
+                return 'password';
+
+            }elseif (isset(json_decode($validator->errors(),true)['repeat'])){
+
+                return 'repeat';
+            }
+
+        }
+
+
+            $user = new User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->reset_password = str_shuffle("ajleyqwncx3497");
+            $user->path = 'Blank100*100.png';
+            $user->save();
+            $token = JWTAuth::fromUser($user);
+            $data=['username' => $request->username,
+                'email'=>$request->email,
+                'link' => str_random(30),
+                'id'=>$user->id];
+
+            Mail::send('email.registerMail',$data,function ($message) use($data){
+
+                $message->from('s23.moghadam@gmail.com');
+                $message->to($data['email']);
+            });
+            return ['token' => $token];
+
+
+
+        }
+
+
+
+
+
+
+
 
     public function ApiLogin(Request $request){
 

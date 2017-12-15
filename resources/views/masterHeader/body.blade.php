@@ -82,7 +82,7 @@
 
     <div class="row">
         <div class="col-md-4 col-sm-6">
-            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/logo.png')}}" alt="">
+            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/Logo.png')}}" alt="">
         </div>
         <div class="col-md-8 col-sm-6" style="margin: 0px;height: 20px;">
             <h3 class="pull-right" style="margin:50px;padding: 0px;">راهی <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات</h3>

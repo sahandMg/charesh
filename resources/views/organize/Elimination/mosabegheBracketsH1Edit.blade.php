@@ -1,6 +1,6 @@
 @extends('masterUserHeader.body')
 @section('content')
-    <link rel="stylesheet" type="text/css" href="../../public/CSS/bracket.css">
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
 
     <div class="row" style=" direction: rtl;">
         <!— right menu —>
@@ -49,9 +49,9 @@
                 @foreach($teams as $team)
                     <div style="padding: 5px;">
                         @if($tournament->matchType == 'انفرادی')
-                            <img class="rounded" src="../../public/storage/images/{{$team->path}}" height="30" > {{$team->username}}
+                            <img class="rounded" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->username}}
                         @else
-                            <img class="rounded" src="../../public/storage/images/{{$team->path}}" height="30" > {{$team->teamName}}
+                            <img class="rounded" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->teamName}}
                         @endif
                     </div>
                 @endforeach

@@ -15,8 +15,8 @@
 </head>
 <body>
 <center>
-    <label for="username">نام کاربری</label>
-    <h3 id="username">{{$username->username}} </h3>
+    {{--<label for="username">نام کاربری</label>--}}
+    {{--<h3 id="username">{{$username->username}} </h3>--}}
     <label for="email">ایمیل</label>
     <h3 id="email">{{$email}}</h3>
     <label for="message">پیام</label>

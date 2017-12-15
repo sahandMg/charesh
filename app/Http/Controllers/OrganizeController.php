@@ -339,7 +339,7 @@ class OrganizeController extends Controller
 
 
 
-            $bracket = BracketController::where('tournament_id',$id)->first();
+        $bracket = BracketController::where('tournament_id',$id)->first();
 
         if(count($bracket) > 0) {
 
@@ -382,7 +382,7 @@ class OrganizeController extends Controller
         $message = '';
 //        if (!$bracket) {
 //
-            return view('organize.GroupElimination.mosabegheBracketsGHInitial1', compact('name', 'tournament', 'route', 'message'));
+        return view('organize.GroupElimination.mosabegheBracketsGHInitial1', compact('name', 'tournament', 'route', 'message'));
 //        } elseif (!$bracket->bracketTable && !$bracket->GroupBracketTableEdit) {
 //
 //            $bracket->delete();
@@ -465,7 +465,22 @@ class OrganizeController extends Controller
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
         $bracketDetail = Tournament::where('id', $id)->first()->groupBracket;
-        $teams = Tournament::where('id', $id)->first()->teams;
+//        dd(unserialize($bracketDetail->bracketTable ));
+        if($tournament->matchType == 'انفرادی'){
+
+
+            $matches = Tournament::where('id',$id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$id)->first()->teams;
+
+        }
 
 //        dd(unserialize($bracketDetail->bracketTable));
         return view('organize.GroupElimination.mosabegheBracketsGHInitial2', compact('name', 'tournament', 'route', 'teams', 'bracketDetail'));
@@ -476,10 +491,13 @@ class OrganizeController extends Controller
     public function post_makeGroupBracket2(Request $request)
     {
 
-        $table = GroupBracket::where('tournament_id', $request->id)->first();
 
-        $table->bracketTable = serialize($request->GTable);
-        $table->save();
+        $table = GroupBracket::where('tournament_id', $request->id)->first();
+        if($table->bracketTable == null){
+            $table->bracketTable = serialize($request->GTable);
+            $table->save();
+        }
+
         return 1;
     }
 
@@ -490,7 +508,20 @@ class OrganizeController extends Controller
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
         $bracketDetail = Tournament::where('id', $id)->first()->groupBracket;
-        $teams = Tournament::where('id', $id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$id)->first()->teams;
+
+        }
         $teamName = (unserialize($bracketDetail->bracketTable));
 
 //        dd(unserialize($bracketDetail->GroupBracketTableEdit));
@@ -520,18 +551,31 @@ class OrganizeController extends Controller
         return 1;
     }
 
-    public function makeElBracket($id, $url)
+    public function makeElBracket(Request $request,$id, $url)
     {
 
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
-        $teams = Tournament::where('id', $id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$request->id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$request->id)->first()->teams;
+
+        }
 //        $bracketDetail =  Tournament::where('id',$id)->first()->groupBracket;
 //        $teams = Tournament::where('id',$id)->first()->teams;
 //        $teamName = (unserialize($bracketDetail->bracketTable));
 
-        return view('organize.GroupElimination.mosabegheBrackets2HEdit', compact('name', 'tournament', 'route','teams'));
+        return view('organize.GroupElimination.mosabegheBrackets2HEdit', compact('request','name', 'tournament', 'route','teams'));
     }
 
 
@@ -548,13 +592,26 @@ class OrganizeController extends Controller
     }
 
 
-    public function makeElBracket2($id, $url)
+    public function makeElBracket2(Request $request,$id, $url)
     {
 
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
-        $teams = Tournament::where('id', $id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$request->id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$request->id)->first()->teams;
+
+        }
 //        $bracketDetail =  Tournament::where('id',$id)->first()->groupBracket;
 //        $teams = Tournament::where('id',$id)->first()->teams;
 //        $teamName = (unserialize($bracketDetail->bracketTable));
@@ -562,7 +619,7 @@ class OrganizeController extends Controller
 
 
 
-        return view('organize.Elimination.mosabegheBracketsH1Edit', compact('name', 'tournament', 'route','teams'));
+        return view('organize.Elimination.mosabegheBracketsH1Edit', compact('name', 'tournament', 'route','teams','request'));
     }
 
 
@@ -600,6 +657,8 @@ class OrganizeController extends Controller
             $bracket->save();
 
         }
+
+
 
         return 1;
 
@@ -736,7 +795,24 @@ class OrganizeController extends Controller
         $bracketDetail = LeagueBracket::where('tournament_id',$request->id)->first();
         $teamArr=[];
 //        session(['bracketDetail'=> Tournament::where('id',$id)->first()->leagueBracket]);
-        $teams = Tournament::where('id',$id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$id)->first()->teams;
+
+        }
+
+//        dd($teams);
+//        $teams = Match::where('tournament_id',$request->id)->get();
+
 //        dd((unserialize($bracketDetail->LTable)));
 
         if(unserialize($bracketDetail->LTable)[0][1] == null){
@@ -749,17 +825,17 @@ class OrganizeController extends Controller
             $s=0;
 //            foreach ($brackets as $bracket) {
 
-                for ($p = 0; $p < floor(count($teams) / 2); $p++) {
+            for ($p = 0; $p < floor(count($teams) / 2); $p++) {
 
 
-                    if (unserialize($brackets[0]->LTable)[0][1][$p][0] != null && unserialize($brackets[0]->LTable)[0][1][$p][4] != null) {
+                if (unserialize($brackets[0]->LTable)[0][1][$p][0] != null && unserialize($brackets[0]->LTable)[0][1][$p][4] != null) {
 
-                        $teamArr[$s] = unserialize($brackets[0]->LTable)[0][1][$p][0] ;
-                          $teamArr[$s+1] =  unserialize($brackets[0]->LTable)[0][1][$p][4];
+                    $teamArr[$s] = unserialize($brackets[0]->LTable)[0][1][$p][0] ;
+                    $teamArr[$s+1] =  unserialize($brackets[0]->LTable)[0][1][$p][4];
 
-                        $s+=2;
-                    }
+                    $s+=2;
                 }
+            }
 
 //            }
 
@@ -788,7 +864,20 @@ class OrganizeController extends Controller
         $route = 'bracket';
 
 //        session(['bracketDetail'=> Tournament::where('id',$id)->first()->leagueBracket]);
-        $teams = Tournament::where('id',$request->id)->first()->teams;
+        if($tournament->matchType == 'انفرادی'){
+
+            $matches = Tournament::where('id',$request->id)->first()->matches;
+
+            for ($i=0 ; $i<count($matches) ; $i++){
+
+                $teams[$i] = $matches[$i]->user;
+            }
+
+        }else{
+
+            $teams = Tournament::where('id',$request->id)->first()->teams;
+
+        }
 //        dd((unserialize($bracketDetail->LTable)));
         if($brackets != null) {
 
@@ -891,41 +980,41 @@ class OrganizeController extends Controller
 
 
 //            dd($request->arr);
-            foreach ($brackets as $bracket) {
+        foreach ($brackets as $bracket) {
 
-                if(null == unserialize($bracket->LTable) ){
+            if(null == unserialize($bracket->LTable) ){
 
-                    $bracket->update(['LTable' => serialize([$request->ltable])]);
+                $bracket->update(['LTable' => serialize([$request->ltable])]);
 
-                    return 1;
-                }
-
-                if ($request->ltable[2] == unserialize($bracket->LTable)[0][2]) {
-
-                    $bracket->update(['LTable' => serialize([$request->ltable])]);
-
-
-                    for($g=0;$g<count($brackets);$g++){
-
-                        $table = unserialize($brackets[$g]->LTable);
-
-
-                        array_shift($table[0]);
-                        array_unshift($table[0],$request->ltable[0]);
-
-                        $brackets[$g]->update(['LTable'=> serialize($table)]);
-                    }
-
-
-
-                    return '1';
-                }
-
-
-
-
-
+                return 1;
             }
+
+            if ($request->ltable[2] == unserialize($bracket->LTable)[0][2]) {
+
+                $bracket->update(['LTable' => serialize([$request->ltable])]);
+
+
+                for($g=0;$g<count($brackets);$g++){
+
+                    $table = unserialize($brackets[$g]->LTable);
+
+
+                    array_shift($table[0]);
+                    array_unshift($table[0],$request->ltable[0]);
+
+                    $brackets[$g]->update(['LTable'=> serialize($table)]);
+                }
+
+
+
+                return '1';
+            }
+
+
+
+
+
+        }
 
 
         $bracket = LeagueBracket::where('tournament_id',$request->id)->first();
@@ -1049,30 +1138,30 @@ class OrganizeController extends Controller
                 $users = Match::where('tournament_id', $request->id)->get();
 
 
-                    foreach ($users as $user) {
+                foreach ($users as $user) {
 //
 
 
-//
-                        $msg = new Message();
-
-//                $msg->team_id = $team->id;
-                        $msg->message = $request->message;
-                        $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
-                        $msg->tournament_id = $request->id;
-                        $msg->user_id = $user->user_id;
-                        $msg->save();
-
-                        $userInfo = User::where('id', $user->user_id)->first();
-
-                        $userInfo->update(['unread' => $user->unread + 1]);
-//
-                    }
-//
-                }
-                else{
 //
                     $msg = new Message();
+
+//                $msg->team_id = $team->id;
+                    $msg->message = $request->message;
+                    $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
+                    $msg->tournament_id = $request->id;
+                    $msg->user_id = $user->user_id;
+                    $msg->save();
+
+                    $userInfo = User::where('id', $user->user_id)->first();
+
+                    $userInfo->update(['unread' => $user->unread + 1]);
+//
+                }
+//
+            }
+            else{
+//
+                $msg = new Message();
                 $msg->user_id = User::where('username', $request->user)->first()->id;
                 $msg->message = $request->message;
                 $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
@@ -1191,129 +1280,129 @@ class OrganizeController extends Controller
     }
 
 
-public function cancel(Request $request){
+    public function cancel(Request $request){
 
-    $tournament = Tournament::where('id',$request->id)->first();
+        $tournament = Tournament::where('id',$request->id)->first();
 
-    if($tournament->canceled == 0) {
+        if($tournament->canceled == 0) {
 
 
 //    dd($tournament->canceled);
-        $tournament->update(['canceled' => 1]);
+            $tournament->update(['canceled' => 1]);
 
-        $participants = $tournament->matches;
+            $participants = $tournament->matches;
 
-        $data = ['name' => $tournament->matchName, 'organize' => Auth::user()->organize, 'participants' => $participants];
+            $data = ['name' => $tournament->matchName, 'organize' => Auth::user()->organize, 'participants' => $participants];
 
-        foreach ($participants as $participant) {
+            foreach ($participants as $participant) {
 
 
-            $msg = new Message();
-            $msg->user_id = $participant->user_id;
-            $msg->message = "متاسفانه مسابقه لغو  شده و مبلغ پرداخت شده در کمتر از ۲۴ ساعت بازگردانده می شود ";
-            $msg->organize_id = Auth::user()->organize->id;
-            $msg->tournament_id = $request->id;
-            $msg->save();
+                $msg = new Message();
+                $msg->user_id = $participant->user_id;
+                $msg->message = "متاسفانه مسابقه لغو  شده و مبلغ پرداخت شده در کمتر از ۲۴ ساعت بازگردانده می شود ";
+                $msg->organize_id = Auth::user()->organize->id;
+                $msg->tournament_id = $request->id;
+                $msg->save();
 
-            $user = User::where('id', $participant->user_id)->first();
+                $user = User::where('id', $participant->user_id)->first();
 
-            $user->update(['unread' => $user->unread + 1]);
+                $user->update(['unread' => $user->unread + 1]);
 
-            Mail::send('email.cancelEmail', $data, function ($message) use ($data,$participant) {
+                Mail::send('email.cancelEmail', $data, function ($message) use ($data,$participant) {
 
-                $message->to(User::where('id', $participant->user_id)->first()->email);
+                    $message->to(User::where('id', $participant->user_id)->first()->email);
+                    $message->from(Auth::user()->organize->email);
+                    $message->subject('لغو مسابقه');
+
+
+                });
+
+            }
+
+            Mail::send('email.cancelEmail', $data, function ($message) use ($data) {
+
+                $message->to('s23.moghadam@gmail.com');
                 $message->from(Auth::user()->organize->email);
                 $message->subject('لغو مسابقه');
 
 
             });
 
+
+            return 'مسابقه لغو شد';
+
+        }else{
+
+            return 'پیش از این، مسابقه لغو شده است';
         }
 
-        Mail::send('email.cancelEmail', $data, function ($message) use ($data) {
-
-            $message->to('s23.moghadam@gmail.com');
-            $message->from(Auth::user()->organize->email);
-            $message->subject('لغو مسابقه');
-
-
-        });
-
-
-        return 'مسابقه لغو شد';
-
-    }else{
-
-        return 'پیش از این، مسابقه لغو شده است';
     }
 
-}
+    public function edit(){
 
-public function edit(){
+        $name = Auth::user();
+        $org = Auth::user()->organize;
 
-    $name = Auth::user();
-    $org = Auth::user()->organize;
-
-    return view('organize.orgEdit',compact('name','org'));
-
-}
-
-public function post_edit(Request $request){
-
-    $time = time();
-    $org = Organize::where('id',$request->id)->first();
-    if( null != $request->file('logo_path')){
-
-        $this->validate($request,['logo_path'=>'image']);
-
-
-        unlink(public_path('storage/images/'.$org->logo_path));
-        $org->update(['logo_path'=> $time.$request->file('logo_path')->getClientOriginalName()]);
-        $request->file('logo_path')->move('storage/images/', $time . $request->file('logo_path')->getClientOriginalName());
+        return view('organize.orgEdit',compact('name','org'));
 
     }
 
-    if($request->comment){
+    public function post_edit(Request $request){
 
-        $org->update(['comment'=>$request->comment]);
+        $time = time();
+        $org = Organize::where('id',$request->id)->first();
+        if( null != $request->file('logo_path')){
+
+            $this->validate($request,['logo_path'=>'image']);
+
+
+            unlink(public_path('storage/images/'.$org->logo_path));
+            $org->update(['logo_path'=> $time.$request->file('logo_path')->getClientOriginalName()]);
+            $request->file('logo_path')->move('storage/images/', $time . $request->file('logo_path')->getClientOriginalName());
+
+        }
+
+        if($request->comment){
+
+            $org->update(['comment'=>$request->comment]);
+
+        }
+
+        if( null != $request->file('background_path')){
+
+            $this->validate($request,['background_path'=>'image']);
+
+            unlink(public_path('storage/images/'.$org->background_path));
+            $org->update(['background_path'=> $time.$request->file('background_path')->getClientOriginalName()]);
+            $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
+
+        }
+
+        if($request->email){
+
+            $this->validate($request,['background_path'=>'email']);
+
+
+            $org->update(['email'=>$request->email]);
+
+        }
+
+        if($request->telegram){
+
+            $org->update(['telegram'=>$request->telegram]);
+
+        }
+
+        if($request->address){
+
+            $org->update(['telegram'=>$request->address]);
+
+        }
+
+
+        return redirect()->back()->with(['message'=>'تغییرات اعمال شد']);
 
     }
-
-    if( null != $request->file('background_path')){
-
-        $this->validate($request,['background_path'=>'image']);
-
-        unlink(public_path('storage/images/'.$org->background_path));
-        $org->update(['background_path'=> $time.$request->file('background_path')->getClientOriginalName()]);
-        $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
-
-    }
-
-    if($request->email){
-
-        $this->validate($request,['background_path'=>'email']);
-
-
-        $org->update(['email'=>$request->email]);
-
-    }
-
-    if($request->telegram){
-
-        $org->update(['telegram'=>$request->telegram]);
-
-    }
-
-    if($request->address){
-
-        $org->update(['telegram'=>$request->address]);
-
-    }
-
-
-    return redirect()->back()->with(['message'=>'تغییرات اعمال شد']);
-
-}
 
 
 

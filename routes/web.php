@@ -54,8 +54,8 @@ Route::group(['prefix'=>'errors'],function (){
 // ------------- auth ----------------
 Route::group(['prefix'=>'app'],function (){
 
-    Route::post('login', 'AuthController@AppLogin')->middleware('throttle:10,10');
-    Route::post('register', 'AuthController@AppRegister')->middleware('throttle:10,10');
+    Route::post('login', 'AuthController@ApiLogin')->middleware('throttle:10,10');
+    Route::post('register', 'AuthController@ApiRegister')->middleware('throttle:10,10');
 
 
 });
@@ -133,6 +133,7 @@ Route::group(['prefix'=>'challenge'],function () {
     Route::get('announcements-{id}-{uri}',['as'=>'matchAnnounce','uses'=>'MatchController@MatchAnnounce']);
 
     Route::get('ticket-{id}-{url}',['as'=>'generatePdf','uses'=>'UserController@generatePdf']);
+    Route::get('ticket2-{id}-{url}',['as'=>'generatePdf2','uses'=>'UserController@generatePdf2']);
 
     Route::get('ticket-team-{id}-{url}',['as'=>'getTeamPdf','uses'=>'UserController@getTeamPdf']);
 // ------------- Brackets----------------

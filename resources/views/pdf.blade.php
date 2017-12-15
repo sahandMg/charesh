@@ -15,11 +15,7 @@
     {{--<script type="text/javascript" src="../js/bundle.js"></script>--}}
 
     <title>بلیط مسابقه</title>
-    <style>
-        body{
-            font-family: 'koodak';
-        }
-    </style>
+
 </head>
 <body>
 
@@ -27,21 +23,23 @@
 
 <div class="container" id="app">
 
-<h2  style="text-align: center;direction: rtl">  بلیط مسابقه<span> {{$name}}</span></h2>
-<h4  style="text-align: center">نام خریدار</h4>
-<h6  style="text-align: center">{{$owner}}</h6>
-<h4  style="text-align: center">نام مسابقه</h4>
-<h6  style="text-align: center">{{$name}}</h6>
-<h4  style="text-align: center">زمان برگزاری</h4>
-<h6 style="text-align: center">{{$time}}</h6>
-<h4  style="text-align: center">هزینه بلیط برای هر نفر</h4>
-<h6  style="text-align: center; direction: rtl">{{$cost}}تومان </h6>
+{{--<h2  style="text-align: center;direction: rtl">  بلیط مسابقه<span> {{$name}}</span></h2>--}}
+{{--<h4  style="text-align: center">نام خریدار</h4>--}}
+{{--<h6  style="text-align: center">{{$owner}}</h6>--}}
+{{--<h4  style="text-align: center">نام مسابقه</h4>--}}
+{{--<h6  style="text-align: center">{{$name}}</h6>--}}
+{{--<h4  style="text-align: center">زمان برگزاری</h4>--}}
+{{--<h6 style="text-align: center">{{$time}}</h6>--}}
+{{--<h4  style="text-align: center">هزینه بلیط برای هر نفر</h4>--}}
+{{--<h6  style="text-align: center; direction: rtl">{{$cost}}تومان </h6>--}}
 
 
 
-    <h4 style="text-align: center;">شرکت کنندگان</h4>
+    {{--<h4 style="text-align: center;">شرکت کنندگان</h4>--}}
 
-        <h6 style="text-align: center;list-style: none">{!!  implode($names)!!}</h6>
+        {{--<h6 style="text-align: center;list-style: none">{!!  implode($names)!!}</h6>--}}
+
+    <h1>Hello</h1>
 
 </div>
 
