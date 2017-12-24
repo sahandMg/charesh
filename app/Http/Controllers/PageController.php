@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Requests\ContactUsRequest;
 use App\Match;
 use App\Organize;
@@ -162,8 +163,9 @@ class PageController extends Controller
 
         Mail::send('email.contactMail',$data,function ($message) use($data){
 
-            $message->to('s23.moghadam@gmail.com');
+            $message->to('sahand.mg.ne@gmail.com');
             $message->from($data['email']);
+            $message->subject('تماس کاربر');
 
         });
 
@@ -174,6 +176,9 @@ class PageController extends Controller
 
 
     public function about(){
+
+  //      $png = QrCode::format('png')->size(100)->generate(request()->url($_SERVER['REQUEST_URI']));
+//        $png = base64_encode($png);
 
         if(Auth::check()){
             $name = Auth::user();
@@ -197,3 +202,4 @@ class PageController extends Controller
 
 
 }
+

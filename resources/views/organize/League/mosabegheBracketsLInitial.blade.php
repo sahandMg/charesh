@@ -4,10 +4,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
             </ul>
         </div>
         <!— content —>
@@ -23,7 +23,7 @@
             <br>
 
 
-            <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('leagueBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}">
+            <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('leagueBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <h4>تیم ها هرکدام باهم یک بازی برگزار می کنند یا دوبازی(رفت و برگشت) ؟ </h4>
                 <div class="switch">

@@ -12,8 +12,8 @@
 
 
         <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-            <a class="nav-item nav-link active" href="{{route('MatchGElBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}">حذفی</a>
-            <a class="nav-item nav-link " href="{{route('matchGroupBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}">گروهی</a>
+            <a class="nav-item nav-link active" href="{{route('MatchGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">حذفی</a>
+            <a class="nav-item nav-link " href="{{route('matchGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">گروهی</a>
 
         </nav>
         <br>
@@ -93,7 +93,7 @@
             created:function () {
 
                 vm = this
-                axios.get('{!!route('getGElBracket',['id'=>$tournament->id,'url'=>$tournament->code])!!}').then(function (response) {
+                axios.get('{!!route('getGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])!!}').then(function (response) {
 
                     vm.detail = response.data;
 

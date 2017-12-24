@@ -54,7 +54,7 @@
                         @if($match->canceled == 1)
                             <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
                         @else
-                            <a href="{{route('matchRegistered',['id'=>$match->id,$match->code])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                            <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
 
                         @endif
 
@@ -72,14 +72,14 @@
                             </div>
                             @if($match->endTime == 0 && $match->canceled == 0)
 
-                                <a href="{{route('matchRegistered',['id'=>$match->id ,'url'=>$match->code])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>
 
                             @elseif($match->tickets == $match->sold && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id , 'url'=>$match->code])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
 
 
                             @elseif($match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id , 'url'=>$match->code ])}}" class="btn btn-success">ثبت نام</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName  ])}}" class="btn btn-success">ثبت نام</a>
 
                             @else
                             @endif

@@ -40,5 +40,5 @@
         <a href="https://www.instagram.com/gameinja/" style="padding: 10px;"><i class="fa fa-instagram fa-lg"></i></a>
         <a href="https://t.me/GameInja" style="padding: 10px;"><i class="fa fa-telegram fa-lg"></i></a>
     </div>
-    <p style="font-size: 20px;color: white;">تمام حقوق مادی و معنوی این سایت متعلق به سایت    <span style="color:#61892F; ">Chaleshjo.com</span> می باشد.</p>
+    <p style="font-size: 20px;color: white;">تمام حقوق مادی و معنوی این سایت متعلق به سایت    <span style="color:#61892F; "></span> می باشد.</p>
 </div>

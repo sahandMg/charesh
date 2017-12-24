@@ -12,8 +12,8 @@
 
 
   <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-      <a class="nav-item nav-link" href="{{route('MatchGElBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}">حذفی</a>
-      <a class="nav-item nav-link active" href="{{route('matchGroupBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}">گروهی</a>
+      <a class="nav-item nav-link" href="{{route('MatchGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">حذفی</a>
+      <a class="nav-item nav-link active" href="{{route('matchGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">گروهی</a>
 
   </nav>
 
@@ -72,37 +72,46 @@
 
                    @for($t=1 ;$t<= $bracketDetail->groupTeam; $t++)
 
-                       <tr >
-                           <th scope="row">{{$t}}</th>
-                           @if(unserialize($bracketDetail->GroupBracketTableEdit) != null)
+                           <tr >
+                               <th scope="row">{{$t}}</th>
+                               @if(unserialize($bracketDetail->GroupBracketTableEdit) != null)
 
-                               @if($tournament->matchType == 'انفرادی')
-                                   <td>   <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
-                               @else
-                                   <td> <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
-                               @endif
-                               {{--<td><img class="round" height="30" src="../../public/storage/images/{{\App\Match::where('team_id',App\Team::where('teamName',$teamName[$i-1][$t-1])->first()->id)->first()->image}}" alt=""> {{$teamName[$i-1][$t-1]}}</td>--}}
-                               <td  data-editable class="editable">{{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][1]}}</td>
-                           @endif
+                                   @if($tournament->matchType == 'انفرادی')
+                                       <td>   <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0]}}</td>
+                                   @else
+                                       <td> <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0]}}</td>
+                                   @endif
+                                   {{--<td><img class="round" height="30" src="../../public/storage/images/{{\App\Match::where('team_id',App\Team::where('teamName',$teamName[$i-1][$t-1])->first()->id)->first()->image}}" alt=""> {{$teamName[$i-1][$t-1]}}</td>--}}
+                                   <td  data-editable class="editable">{{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][1]}}</td>
 
-
-                           @if(unserialize($bracketDetail->GroupBracketTableEdit) == null)
-
-                               @if($tournament->matchType == 'انفرادی')
-                                   <td>   <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
-                               @else
-                                   <td> <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->bracketTable)[$i-1][$t-1])->first()->path)}}" alt=""> {{unserialize($bracketDetail->bracketTable)[$i-1][$t-1]}}</td>
+                                       @if($s>0)
+                                           @for($f=1 ; $f<=$s ; $f++)
+                                               <td>{{$tableData[$i-1][$t-1][$f+1]}}</td>
+                                           @endfor
+                                       @endif
                                @endif
 
-                               <td  data-editable class="editable">0</td>
-                           @endif
-                           {{--@if($s>0)--}}
-                               {{--@for($f=0 ; $f<$s ; $f++)--}}
-                                   {{--<td>{{$tableData[$i-1][$t-1][1]}}</td>--}}
-                               {{--@endfor--}}
-                           {{--@endif--}}
 
-                       </tr>
+                               @if(unserialize($bracketDetail->GroupBracketTableEdit) == null&& unserialize($bracketDetail->bracketTable) != null)
+
+                                   @if($tournament->matchType == 'انفرادی')
+                                       <td>   <img class="round" height="30" src="{{URL::asset('storage/images/'.App\User::where('username',unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0]}}</td>
+                                   @else
+                                       <td> <img class="round" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->GroupBracketTableEdit)[$i-1][$t-1][0]}}</td>
+                                   @endif
+
+                                   <td  data-editable class="editable">0</td>
+
+                                       @if($s>0)
+                                           @for($f=1 ; $f<=$s ; $f++)
+                                               <td>0</td>
+                                           @endfor
+                                       @endif
+
+                               @endif
+
+
+                           </tr>
 
                    @endfor
 

@@ -3,10 +3,10 @@
   <div class="row" style=" direction: rtl;">
    <div class="Vnav">
     <ul>
-      <li><a class="active" href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+      <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
       <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-      <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-      <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+      <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
+      <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
     </ul>
    </div>
    <div class="container">
@@ -62,7 +62,7 @@
                          </div>
 
 
-                             <a href="{{route('challengePanel',['id'=>$match->id,'url'=>$match->code])}}" class="btn btn-info">ورود به پنل مسابقه</a>
+                             <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->matchName])}}" class="btn btn-info">ورود به پنل مسابقه</a>
 
 
 

@@ -14,33 +14,17 @@ class Browsershot
 {
     protected $nodeBinary = null;
     protected $npmBinary = null;
+    protected $nodeModulePath = null;
     protected $includePath = '$PATH:/usr/local/bin';
-    protected $networkIdleTimeout = 0;
-    protected $clip = null;
-    protected $deviceScaleFactor = 1;
-    protected $format = null;
-    protected $fullPage = false;
     protected $html = '';
-    protected $ignoreHttpsErrors = false;
-    protected $landscape = false;
-    protected $margins = null;
     protected $noSandbox = false;
-    protected $pages = '';
-    protected $paperHeight = 0;
-    protected $paperWidth = 0;
     protected $proxyServer = '';
     protected $showBackground = false;
     protected $showScreenshotBackground = true;
-    protected $showBrowserHeaderAndFooter = false;
     protected $temporaryHtmlDirectory;
     protected $timeout = 60;
     protected $url = '';
-    protected $userAgent = '';
-    protected $windowHeight = 600;
-    protected $windowWidth = 800;
-    protected $mobile = false;
-    protected $touch = false;
-    protected $dismissDialogs = false;
+    protected $additionalOptions = [];
 
     /** @var \Spatie\Image\Manipulations */
     protected $imageManipulations;
@@ -70,6 +54,8 @@ class Browsershot
         $this->url = $url;
 
         $this->imageManipulations = new Manipulations();
+
+        $this->windowSize(800, 600);
     }
 
     public function setNodeBinary(string $nodeBinary)
@@ -93,12 +79,26 @@ class Browsershot
         return $this;
     }
 
+    public function setNodeModulePath(string $nodeModulePath)
+    {
+        $this->nodeModulePath = $nodeModulePath;
+
+        return $this;
+    }
+
+    public function setChromePath(string $executablePath)
+    {
+        $this->setOption('executablePath', $executablePath);
+
+        return $this;
+    }
+
     /**
      * @deprecated This option is no longer supported by modern versions of Puppeteer.
      */
     public function setNetworkIdleTimeout(int $networkIdleTimeout)
     {
-        $this->networkIdleTimeout = $networkIdleTimeout;
+        $this->setOption('networkIdleTimeout');
 
         return $this;
     }
@@ -130,38 +130,28 @@ class Browsershot
 
     public function clip(int $x, int $y, int $width, int $height)
     {
-        $this->clip = compact('x', 'y', 'width', 'height');
-
-        return $this;
+        return $this->setOption('clip', compact('x', 'y', 'width', 'height'));
     }
 
     public function showBrowserHeaderAndFooter()
     {
-        $this->showBrowserHeaderAndFooter = true;
-
-        return $this;
+        return $this->setOption('displayHeaderFooter', true);
     }
 
     public function hideBrowserHeaderAndFooter()
     {
-        $this->showBrowserHeaderAndFooter = false;
-
-        return $this;
+        return $this->setOption('displayHeaderFooter', false);
     }
 
     public function deviceScaleFactor(int $deviceScaleFactor)
     {
         // Google Chrome currently supports values of 1, 2, and 3.
-        $this->deviceScaleFactor = max(1, min(3, $deviceScaleFactor));
-
-        return $this;
+        return $this->setOption('viewport.deviceScaleFactor', max(1, min(3, $deviceScaleFactor)));
     }
 
     public function fullPage()
     {
-        $this->fullPage = true;
-
-        return $this;
+        return $this->setOption('fullPage', true);
     }
 
     public function showBackground()
@@ -182,37 +172,32 @@ class Browsershot
 
     public function ignoreHttpsErrors()
     {
-        $this->ignoreHttpsErrors = true;
-
-        return $this;
+        return $this->setOption('ignoreHttpsErrors', true);
     }
 
     public function mobile(bool $mobile = true)
     {
-        $this->mobile = $mobile;
-
-        return $this;
+        return $this->setOption('viewport.isMobile', true);
     }
 
     public function touch(bool $touch = true)
     {
-        $this->touch = $touch;
-
-        return $this;
+        return $this->setOption('viewport.hasTouch', true);
     }
 
     public function landscape(bool $landscape = true)
     {
-        $this->landscape = $landscape;
-
-        return $this;
+        return $this->setOption('landscape', $landscape);
     }
 
     public function margins(int $top, int $right, int $bottom, int $left)
     {
-        $this->margins = compact('top', 'right', 'bottom', 'left');
-
-        return $this;
+        return $this->setOption('margin', [
+            'top' => $top.'mm',
+            'right' => $right.'mm',
+            'bottom' => $bottom.'mm',
+            'left' =>  $left.'mm',
+        ]);
     }
 
     public function noSandbox()
@@ -224,32 +209,25 @@ class Browsershot
 
     public function dismissDialogs()
     {
-        $this->dismissDialogs = true;
-
-        return $this;
+        return $this->setOption('dismissDialogs', true);
     }
 
     public function pages(string $pages)
     {
-        $this->pages = $pages;
-
-        return $this;
+        return $this->setOption('pageRanges', $pages);
     }
 
     public function paperSize(float $width, float $height)
     {
-        $this->paperWidth = $width;
-        $this->paperHeight = $height;
-
-        return $this;
+        return $this
+            ->setOption('width', $width.'mm')
+            ->setOption('height', $height.'mm');
     }
 
     // paper format
     public function format(string $format)
     {
-        $this->format = $format;
-
-        return $this;
+        return $this->setOption('format', $format);
     }
 
     public function timeout(int $timeout)
@@ -261,15 +239,33 @@ class Browsershot
 
     public function userAgent(string $userAgent)
     {
-        $this->userAgent = $userAgent;
+        $this->setOption('userAgent', $userAgent);
+
+        return $this;
+    }
+
+    public function emulateMedia(string $media)
+    {
+        $this->setOption('emulateMedia', $media);
 
         return $this;
     }
 
     public function windowSize(int $width, int $height)
     {
-        $this->windowWidth = $width;
-        $this->windowHeight = $height;
+        return $this
+            ->setOption('viewport.width', $width)
+            ->setOption('viewport.height', $height);
+    }
+
+    public function setDelay(int $delayInMilliseconds)
+    {
+        return $this->setOption('delay', $delayInMilliseconds);
+    }
+
+    public function setOption($key, $value)
+    {
+        $this->arraySet($this->additionalOptions, $key, $value);
 
         return $this;
     }
@@ -283,7 +279,13 @@ class Browsershot
 
     public function save(string $targetPath)
     {
-        if (strtolower(pathinfo($targetPath, PATHINFO_EXTENSION)) === 'pdf') {
+        $extension = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
+
+        if ($extension === '') {
+            throw CouldNotTakeBrowsershot::outputFileDidNotHaveAnExtension($targetPath);
+        }
+
+        if ($extension === 'pdf') {
             return $this->savePdf($targetPath);
         }
 
@@ -307,6 +309,24 @@ class Browsershot
         $command = $this->createBodyHtmlCommand();
 
         return $this->callBrowser($command);
+    }
+
+    public function screenshot(): string
+    {
+        $command = $this->createScreenshotCommand();
+
+        $encoded_image = $this->callBrowser($command);
+
+        return base64_decode($encoded_image);
+    }
+
+    public function pdf(): string
+    {
+        $command = $this->createPdfCommand();
+
+        $encoded_pdf = $this->callBrowser($command);
+
+        return base64_decode($encoded_pdf);
     }
 
     public function savePdf(string $targetPath)
@@ -336,69 +356,37 @@ class Browsershot
         return $this->createCommand($url, 'content');
     }
 
-    public function createScreenshotCommand(string $targetPath): array
+    public function createScreenshotCommand($targetPath = null): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = $this->createCommand($url, 'screenshot', ['path' => $targetPath]);
-
-        if ($this->fullPage) {
-            $command['options']['fullPage'] = true;
+        $options = [];
+        if ($targetPath) {
+            $options['path'] = $targetPath;
         }
 
-        if ($this->clip) {
-            $command['options']['clip'] = $this->clip;
-        }
+        $command = $this->createCommand($url, 'screenshot', $options);
 
         if (! $this->showScreenshotBackground) {
             $command['options']['omitBackground'] = true;
         }
 
-        if ($this->dismissDialogs) {
-            $command['options']['dismissDialogs'] = true;
-        }
-
         return $command;
     }
 
-    public function createPdfCommand($targetPath): array
+    public function createPdfCommand($targetPath = null): array
     {
         $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
 
-        $command = $this->createCommand($url, 'pdf', ['path' => $targetPath]);
-
-        if ($this->showBrowserHeaderAndFooter) {
-            $command['options']['displayHeaderFooter'] = true;
+        $options = [];
+        if ($targetPath) {
+            $options['path'] = $targetPath;
         }
+
+        $command = $this->createCommand($url, 'pdf', $options);
 
         if ($this->showBackground) {
             $command['options']['printBackground'] = true;
-        }
-
-        if ($this->landscape) {
-            $command['options']['landscape'] = true;
-        }
-
-        if ($this->margins) {
-            $command['options']['margin'] = [
-                'top' => $this->margins['top'].'mm',
-                'right' => $this->margins['right'].'mm',
-                'bottom' => $this->margins['bottom'].'mm',
-                'left' => $this->margins['left'].'mm',
-            ];
-        }
-
-        if ($this->pages) {
-            $command['options']['pageRanges'] = $this->pages;
-        }
-
-        if ($this->paperWidth > 0 && $this->paperHeight > 0) {
-            $command['options']['width'] = $this->paperWidth.'mm';
-            $command['options']['height'] = $this->paperHeight.'mm';
-        }
-
-        if ($this->format) {
-            $command['options']['format'] = $this->format;
         }
 
         return $command;
@@ -423,36 +411,11 @@ class Browsershot
     {
         $command = compact('url', 'action', 'options');
 
-        $command['options']['viewport'] = [
-            'width' => $this->windowWidth,
-            'height' => $this->windowHeight,
-        ];
-
-        if ($this->userAgent) {
-            $command['options']['userAgent'] = $this->userAgent;
-        }
-
-        if ($this->deviceScaleFactor > 1) {
-            $command['options']['viewport']['deviceScaleFactor'] = $this->deviceScaleFactor;
-        }
-
-        if ($this->touch) {
-            $command['options']['viewport']['hasTouch'] = true;
-        }
-
-        if ($this->mobile) {
-            $command['options']['viewport']['isMobile'] = true;
-        }
-
-        if ($this->networkIdleTimeout > 0) {
-            $command['options']['networkIdleTimeout'] = $this->networkIdleTimeout;
-        }
-
-        if ($this->ignoreHttpsErrors) {
-            $command['options']['ignoreHttpsErrors'] = $this->ignoreHttpsErrors;
-        }
-
         $command['options']['args'] = $this->getOptionArgs();
+
+        if (! empty($this->additionalOptions)) {
+            $command['options'] = array_merge_recursive($command['options'], $this->additionalOptions);
+        }
 
         return $command;
     }
@@ -503,10 +466,39 @@ class Browsershot
 
     protected function getNodePathCommand(string $nodeBinary): string
     {
+        if ($this->nodeModulePath) {
+            return "NODE_PATH='{$this->nodeModulePath}'";
+        }
         if ($this->npmBinary) {
             return "NODE_PATH=`{$nodeBinary} {$this->npmBinary} root -g`";
         }
 
         return 'NODE_PATH=`npm root -g`';
+    }
+
+    protected function arraySet(array &$array, string $key, $value): array
+    {
+        if (is_null($key)) {
+            return $array = $value;
+        }
+
+        $keys = explode('.', $key);
+
+        while (count($keys) > 1) {
+            $key = array_shift($keys);
+
+            // If the key doesn't exist at this depth, we will just create an empty array
+            // to hold the next value, allowing us to create the arrays to hold final
+            // values at the correct depth. Then we'll keep digging into the array.
+            if (! isset($array[$key]) || ! is_array($array[$key])) {
+                $array[$key] = [];
+            }
+
+            $array = &$array[$key];
+        }
+
+        $array[array_shift($keys)] = $value;
+
+        return $array;
     }
 }

@@ -5,10 +5,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ﻭیرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}"> حساب من</a></li>
             </ul>
         </div>
         <!— content —>
@@ -21,7 +21,7 @@
     <br>
     <!-- Tiket Counter -->
 
-       <form style="padding: 20px;" method="POST" action="{{route('challengePanel',['id'=>$tournament->id,'url'=>$tournament->code])}}" enctype="multipart/form-data">
+       <form style="padding: 20px;" method="POST" action="{{route('challengePanel',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" enctype="multipart/form-data">
            <input type="hidden" name="_token" value="{{csrf_token()}}">
            @if(session('bracketError'))
 

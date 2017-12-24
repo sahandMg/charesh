@@ -151,7 +151,7 @@ class OrganizeController extends Controller
         $org->telegram = $request->telegram;
         $org->save();
 
-        return redirect()->route('orgMatches');
+        return redirect()->route('orgMatches',['orgName'=>$org->name]);
 
 //
 
@@ -187,9 +187,10 @@ class OrganizeController extends Controller
 
     }
 
-    public function challengePanel($id, $url)
+    public function challengePanel(Request $request)
     {
-        $name = Auth::user();
+        $id = $request->id;
+	$name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'info';
         return view('organize.matchPanel', compact('name', 'tournament', 'route'));
@@ -289,11 +290,11 @@ class OrganizeController extends Controller
 //        return view('organize.matchPanel', compact('name', 'tournament', 'route'));
 //    }
 
-    public function bracketDelete($id, $url)
+    public function bracketDelete(Request $request)
     {
 
-
-
+	$id = $request->id;
+	$tournament = Tournament::where('id',$id)->first();
         $bracket = BracketController::where('tournament_id',$id)->first();
 
         if($bracket != null) {
@@ -327,16 +328,18 @@ class OrganizeController extends Controller
         }
 
 
-        return redirect()->route('challengeBracket', ['id' => $id, 'url' => $url]);
+        return redirect()->route('challengeBracket', ['id' => $id, 'matchName' => $request->matchName]);
 
     }
 
-    public function challengeBracket($id, $url)
+    public function challengeBracket(Request $request)
     {
+
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
-
+	$matchName = $tournament->matchname;
 
 
         $bracket = BracketController::where('tournament_id',$id)->first();
@@ -347,35 +350,35 @@ class OrganizeController extends Controller
 
                 if(GroupBracket::where('tournament_id',$id)->first()->bracketTable != null){
 
-                    return redirect()->route('makeGroupBracket3',['id'=>$id,'url'=>$url]);
+                    return redirect()->route('makeGroupBracket3',['id'=>$id,'matchName'=>$request->matchName]);
                 }else{
 
-                    return redirect()->route('makeGroupBracket',['id'=>$id,'url'=>$url]);
+                    return redirect()->route('makeGroupBracket',['id'=>$id,'matchName'=>$request->matchName]);
                 }
 
 
 
             } elseif ($bracket->elimination == 1) {
 
-                return redirect()->route('ElBracket2',['id'=>$id,'url'=>$url]);
+                return redirect()->route('ElBracket2',['id'=>$id,'matchName'=>$request->matchName]);
 
             } else {
 
-                return redirect()->route('leagueBracket2',['id'=>$id,'url'=>$url]);
+                return redirect()->route('leagueBracket2',['id'=>$id,'matchName'=>$request->matchName]);
 
             }
         }else {
 
-            return view('organize.bracketSelect', compact('name', 'tournament', 'route'));
+            return view('organize.bracketSelect', compact('matchName','name', 'tournament', 'route'));
 
         }
     }
 
 //mosabegheBracketsGHInitial1
-    public function groupBracket($id, $url)
+    public function groupBracket(Request $request)
     {
-
-        $name = Auth::user();
+	$id = $request->id;
+        $name = Auth::user();	
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
 //        $bracket = GroupBracket::where([['organize_id', Auth::user()->organize->id],['tournament_id',$id]])->first();
@@ -453,14 +456,14 @@ class OrganizeController extends Controller
         }
 
 
-        return redirect()->route('makeGroupBracket', ['id' => $request->id, 'url' => $request->url]);
+        return redirect()->route('makeGroupBracket', ['id' => $request->id, 'matchName' => $request->matchName]);
 
     }
 
 //mosabegheBracketsGHInitial2
-    public function makeGroupBracket2($id, $url)
+    public function makeGroupBracket2(Request $request)
     {
-
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
@@ -501,9 +504,9 @@ class OrganizeController extends Controller
         return 1;
     }
 
-    public function makeGroupBracket3($id, $url)
+    public function makeGroupBracket3(Request $request)
     {
-
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
@@ -551,9 +554,9 @@ class OrganizeController extends Controller
         return 1;
     }
 
-    public function makeElBracket(Request $request,$id, $url)
+    public function makeElBracket(Request $request)
     {
-
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
@@ -592,9 +595,9 @@ class OrganizeController extends Controller
     }
 
 
-    public function makeElBracket2(Request $request,$id, $url)
+    public function makeElBracket2(Request $request)
     {
-
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
@@ -664,9 +667,9 @@ class OrganizeController extends Controller
 
     }
 
-    public function leagueBracket($id,$url){
+    public function leagueBracket(Request $request){
 
-
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
@@ -780,15 +783,15 @@ class OrganizeController extends Controller
 
 
 
-        return redirect()->route('leagueBracket2', ['id' => $request->id, 'url' => $request->url]);
+        return redirect()->route('leagueBracket2', ['id' => $request->id, 'matchName' => $request->matchName]);
 
 
 
     }
 
 
-    public function leagueBracket2(Request $request,$id , $url){
-
+    public function leagueBracket2(Request $request){
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
@@ -1039,8 +1042,9 @@ class OrganizeController extends Controller
 
     }
 
-    public function challengeTimeline($id, $url)
-    {
+    public function challengeTimeline(Request $request)
+    {	
+	$id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'timeline';
@@ -1059,10 +1063,10 @@ class OrganizeController extends Controller
 
     }
 
-    public function challengeMessage($id, $url)
+    public function challengeMessage(Request $request)
     {
         $name = Auth::user();
-
+	$id = $request->id;
         $tournament = Tournament::where('id', $id)->first();
         $route = 'message';
         $username = [];
@@ -1175,11 +1179,11 @@ class OrganizeController extends Controller
 
     }
 
-    public function participants($id, $url)
+    public function participants(Request $request)
     {
 
         $name = Auth::user();
-
+	$id = $request->id;
 
         $tournament = Tournament::where('id', $id)->first();
         $teams=[];
@@ -1222,8 +1226,8 @@ class OrganizeController extends Controller
         $this->validate($request, ['owner' => 'required', 'accountNumber' => 'required|min:16', 'bank' => 'required']);
 
 //        send email to admin
-
         $org = Organize::where('id',$request->id)->first();
+
         if($org->credit >= 50000 ) {
 
 
@@ -1235,8 +1239,9 @@ class OrganizeController extends Controller
 
             Mail::send('email.paymentReq', $data, function ($message) use ($data) {
 
-                $message->from('s23.moghadam@gmail.com');
-                $message->to($data['email']);
+                $message->to('sahand.mg.ne@gmail.com');
+                $message->from($data['email']);
+                $message->subject('درخواست واریز');
 
 
             });
@@ -1321,7 +1326,7 @@ class OrganizeController extends Controller
 
             Mail::send('email.cancelEmail', $data, function ($message) use ($data) {
 
-                $message->to('s23.moghadam@gmail.com');
+                $message->to('sahand.mg.ne@gmail.com');
                 $message->from(Auth::user()->organize->email);
                 $message->subject('لغو مسابقه');
 

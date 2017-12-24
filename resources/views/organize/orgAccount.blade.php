@@ -3,17 +3,18 @@
   <div class="row" style=" direction: rtl;">
       <div class="Vnav">
           <ul>
-              <li><a  href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
               <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-              <li><a class="active" href="{{route('organizeAccount')}}">حساب من</a></li>
+              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ﻭیرایش اطلاعات من</a></li>
+              <li><a class="active" href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}"> حساب من</a></li>
+
           </ul>
       </div>
    <div class="container">
     <!-- Tiket Counter -->
     <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
 
-        <form style="padding: 20px;" method="POST" action="{{route('organizeAccount',['id'=>$org->id])}}">
+        <form style="padding: 20px;" method="POST" action="{{route('organizeAccount',['id'=>$org->id,'orgName'=>$name->organize->name])}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
        <h2>موجودی حساب شما : {{$org->credit}} تومان </h2>
        <br>

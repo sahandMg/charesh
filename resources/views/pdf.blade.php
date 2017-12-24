@@ -21,29 +21,45 @@
 
 <h1 style="text-align: center;direction: rtl">Challeng Bazaar ticket</h1>
 
+<div>
+    <img height="50" class="img-rounded img-responsive" src="{{URL::asset('images/Logo.png')}}" alt="">
+</div>
+
 <div class="container" id="app">
 
-{{--<h2  style="text-align: center;direction: rtl">  بلیط مسابقه<span> {{$name}}</span></h2>--}}
-{{--<h4  style="text-align: center">نام خریدار</h4>--}}
-{{--<h6  style="text-align: center">{{$owner}}</h6>--}}
-{{--<h4  style="text-align: center">نام مسابقه</h4>--}}
-{{--<h6  style="text-align: center">{{$name}}</h6>--}}
-{{--<h4  style="text-align: center">زمان برگزاری</h4>--}}
-{{--<h6 style="text-align: center">{{$time}}</h6>--}}
-{{--<h4  style="text-align: center">هزینه بلیط برای هر نفر</h4>--}}
-{{--<h6  style="text-align: center; direction: rtl">{{$cost}}تومان </h6>--}}
-
-
-
-    {{--<h4 style="text-align: center;">شرکت کنندگان</h4>--}}
-
-        {{--<h6 style="text-align: center;list-style: none">{!!  implode($names)!!}</h6>--}}
-
-    <h1>Hello</h1>
 
 </div>
 
+<h2  style="text-align: center;direction: rtl">  بلیط مسابقه<span> {{$name}}</span></h2>
+<h4  style="text-align: center">نام خریدار</h4>
+<h6  style="text-align: center">{{$owner}}</h6>
+<h4  style="text-align: center">نام مسابقه</h4>
+<h6  style="text-align: center">{{$name}}</h6>
+<h4  style="text-align: center">زمان برگزاری</h4>
+<h6 style="text-align: center">{{$time}}</h6>
+<h4  style="text-align: center">هزینه بلیط برای هر نفر</h4>
+<h6  style="text-align: center; direction: rtl">{{$cost}} تومان </h6>
 
+
+
+    <h4 style="text-align: center;">شرکت کنندگان</h4>
+
+<ul>
+@foreach($names as $part)
+        <li style="text-align: center;list-style: none">{{$part}}</li>
+
+@endforeach
+</ul>
+
+
+    <div>
+   @php
+       echo "<img src='data:image/png;base64," . $png . "'>";
+
+   @endphp
+
+
+    </div>
 
 
 </body>

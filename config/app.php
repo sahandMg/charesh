@@ -167,8 +167,7 @@ return [
         Kim\Activity\ActivityServiceProvider::class,
 //        Elibyy\TCPDF\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-
-
+	 SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -244,7 +243,7 @@ return [
         'Activity' => Kim\Activity\ActivityFacade::class,
 //        'PDF' => Elibyy\TCPDF\Facades\TCPDF::class
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
-
+	 'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
 
 
 

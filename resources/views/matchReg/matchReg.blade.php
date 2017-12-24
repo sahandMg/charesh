@@ -23,7 +23,7 @@
 
         <div class="alert alert-danger" role="alert">
 
-            {{session('message')}}  <a href="{{route('credit')}}"> افزایش اعتبار</a>
+            {{session('message')}}  <a href="{{route('credit',['username'=>$name])}}"> افزایش اعتبار</a>
 
             </div>
         @endif
@@ -92,6 +92,10 @@
             <br>
              <p style="padding-right: 10px;">{!!$tournament->prize!!}</p>
 
+               <div>
+                   <button  @click="copy" type="button" :class="LinkClass">@{{ message }}</button>
+                   <input  id="myInput" style="width: 200px;direction: ltr" readonly type="search" v-model="copyLink" value="http://localhost/chaleshjoo/public/{{$tournament->url}}">
+               </div>
            </div>
            <div class="col-2">
              <h5>قوانین</h5>
@@ -108,12 +112,15 @@
 
 
        </div>
+
+
+
             {{-- Check if user has NOT registered --}}
            @if(count($users)== 0 && $auth == 1 && $tournament->endTime > 0 && $tournament->sold != $tournament->tickets)
                {{-- Check single or team --}}
            @if($tournament->matchType == "تیمی")
 
-    <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('matchRegister')}}" enctype="multipart/form-data">
+    <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('matchRegister',['username'=>$name])}}" enctype="multipart/form-data">
       <input type="hidden" name="_token" value="{{csrf_token()}}">
 
         <H1>  مشخصات تیم</H1>
@@ -201,7 +208,7 @@
 
                @if($tournament->endTime > 0)
 
-               <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('matchRegister')}}" enctype="multipart/form-data">
+               <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('matchRegister',['username'=>$name])}}" enctype="multipart/form-data">
                    <input type="hidden" name="_token" value="{{csrf_token()}}">
 
 
@@ -227,7 +234,7 @@
                    <input type="hidden" name="single" value="single">
                    <input type="hidden" name="name" value="{{$tournament->matchName}}">
                    <input type="hidden" name="id" value="{{$tournament->id}}">
-                   <p style="color:red;direction: rtl">لطفا پیش از ثبت نام،<a href="{{URL::asset('storage/pdfs/',$tournament->rules)}}"> قوانین مسابقه </a>را به طور کامل مطالعه نمایید </p>
+                   <p style="color:red;direction: rtl">لطفا پیش از ثبت نام،<a href="{{URL::asset('storage/pdfs/'.$tournament->rules)}}"> قوانین مسابقه </a>را به طور کامل مطالعه نمایید </p>
                    {{--<p style="color: red;">لطفا قبل از ثبت نام قوانین مسابقه رو بطور کامل مطالعه کنید .</p>--}}
                    <button type="submit" class="btn btn-success" id="btnReg">ثبت نام</button>
 
@@ -238,7 +245,7 @@
 
                @elseif(count($users) > 0)
 
-               <a href="{{route('generatePdf',['id'=>$tournament->id ,'url'=>$tournament->code])}}">دریافت نسخه pdf بلیط مسابقه </a>
+               <a href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->matchName,'name'=>Auth::user()->username])}}">دریافت نسخه pdf بلیط مسابقه </a>
 
 
            @elseif($auth == 0)
@@ -272,6 +279,9 @@
             link:'',
             count:4,
             username:'',
+            copyLink:'',
+            LinkClass:'btn btn-success',
+            message:'کپی لینک دعوت'
         },
 
         created:function () {
@@ -337,15 +347,17 @@
         methods:{
 
 
+            copy:function () {
 
-//            createLink:function (id,matchName,tag) {
-//
-//
-//
-//                this.link = 'match'+'-'+tag+'-'+id+'-'+matchName
-//
-//            },
-//
+
+                copyText = document.getElementById("myInput");
+                copyText.select();
+                document.execCommand("Copy");
+                this.LinkClass = 'btn btn-danger';
+                this.message = 'لینک دعوت کپی شد'
+
+
+            },
 //
             checkTime:function() {
 

@@ -115,7 +115,7 @@
 
     <div class="row">
         <div class="col-md-4 col-sm-6">
-            <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/logo.png')}}" alt="">
+        <!--    <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/logo.png')}}" alt=""> -->
         </div>
         <div class="col-md-8 col-sm-6" style="margin: 0px;height: 20px;">
             <h3 class="pull-right" style="margin:50px;padding: 0px;">راهی <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات</h3>
@@ -127,7 +127,7 @@
     </div>
     <nav id="navbar" class="topNav">
         <ul>
-            <li><a class="setColor" href="{{route('credit')}}">اعتبار {{$name->credit}} تومان</a></li>
+            <li><a class="setColor" href="{{route('credit',['username'=>Auth::user()->username])}}">اعتبار {{$name->credit}} تومان</a></li>
             <li>
                 <div class="dropdown">
                     <a onclick="myFunction()" href="" class="setColor">
@@ -136,16 +136,21 @@
 
                     </a>
                     <div class="dropdown-content">
-                        <a href="{{route('userChallenge')}}">چالش های من</a>
-                        <a href="{{route('orgMatches')}}">مسابقات من</a>
-                        @if($name->unread>0)
-                        <a style="color:red;" href="{{route('notification')}}">اطلاعیه های من</a>
+                        <a href="{{route('userChallenge',['username'=>Auth::user()->username])}}">چالش های من</a>
+                        @if(isset(Auth::user()->organize->name))
+                            <a href="{{route('orgMatches',['orgName'=>Auth::user()->organize->name])}}">مسابقات من</a>
                         @else
-                            <a style="color:black;" href="{{route('notification')}}">اطلاعیه های من</a>
+                            <a href="{{route('orgMatches',['username'=>Auth::user()->name])}}">مسابقات من</a>
+                        @endif
+
+                        @if($name->unread>0)
+                        <a style="color:red;" href="{{route('notification',['username'=>Auth::user()->username])}}">اطلاعیه های من</a>
+                        @else
+                            <a style="color:black;" href="{{route('notification',['username'=>Auth::user()->username])}}">اطلاعیه های من</a>
                             @endif
 
-                        <a href="{{route('setting')}}"> ویرایش اطلاعات</a>
-                        <a href="{{route('logout')}}">خروج</a>
+                        <a href="{{route('setting',['username'=>Auth::user()->username])}}"> ویرایش اطلاعات</a>
+                        <a href="{{route('logout',['username'=>Auth::user()->username])}}">خروج</a>
                     </div>
                 </div>
             </li>

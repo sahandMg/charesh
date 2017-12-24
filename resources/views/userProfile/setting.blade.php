@@ -18,7 +18,7 @@
 
              </div>
          @endif
-     <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('setting')}}" enctype="multipart/form-data">
+     <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('setting',['username'=>Auth::user()->username])}}" enctype="multipart/form-data">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
 
 

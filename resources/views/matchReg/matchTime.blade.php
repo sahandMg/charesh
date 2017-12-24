@@ -14,7 +14,7 @@
        <br>
        <div class="row">
          <div class="col-6">
-           <img class="rounded" src="../../public/images/calendar.jpg" height="300">
+           <img class="rounded" src="{{URL::asset('images/calendar.jpg')}}" height="300">
          </div>
          <div class="col-6">
             <p> {!! $tournament->plan !!} </p>

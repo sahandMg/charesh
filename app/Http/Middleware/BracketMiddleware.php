@@ -25,7 +25,7 @@ class BracketMiddleware
 
        }else{
 
-           return redirect()->route('challengePanel',['id'=>$request->id,'url'=>$request->url])->with(['bracketError'=>' ساخت براکت تنها بعد از اتمام زمان ثبت نام ممکن است   ']);
+           return redirect()->route('challengePanel',['id'=>$request->id,'matchName'=>$request->matchName])->with(['bracketError'=>' ساخت براکت تنها بعد از اتمام زمان ثبت نام ممکن است   ']);
        }
 
 

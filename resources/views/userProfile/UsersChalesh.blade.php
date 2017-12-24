@@ -47,7 +47,7 @@
                          </div>
                      </div>
                      @if($match->canceled == 0)
-                     <a href="{{route('matchRegistered',['id'=>$match->id , 'url'=>$match->code])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                     <a href="{{route('matchRegistered',['id'=>$match->id ,'matchName'=>$match->matchName ])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
                      @else
 
                          <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
@@ -68,7 +68,7 @@
                          </div>
 
                             @if($match->canceled == 0)
-                         <a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$match->id , 'url'=>$match->code])}}" class="btn">جزییات مسابقه</a>
+                         <a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$match->id , 'matchName'=>$match->matchName])}}" class="btn">جزییات مسابقه</a>
                         @endif
                          {{--@if($match->endTime == 0)--}}
 

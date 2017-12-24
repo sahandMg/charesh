@@ -32,13 +32,13 @@
      </div>
     </div>
 
-    <div class="form-group row">
-      <label for="Name-input" class="col-2 col-form-label">آدرس (url) :  </label>
-      <div class="col-5">
-       <input name="url" @input="check"   :style="style2" v-model="url" class="form-control" type="text" value="{{Request::old('url')}}" id="example-text-input">
-     </div>
-        <label for="Name-input"  class="col-3 col-form-label" style="font-size: 25px;">/www.x.com  </label>
-    </div>
+    {{--<div class="form-group row">--}}
+      {{--<label for="Name-input" class="col-2 col-form-label">آدرس (url) :  </label>--}}
+      {{--<div class="col-5">--}}
+       {{--<input name="url" @input="check"   :style="style2" v-model="url" class="form-control" type="text" value="{{Request::old('url')}}" id="example-text-input">--}}
+     {{--</div>--}}
+        {{--<label for="Name-input"  class="col-3 col-form-label" style="font-size: 25px;">/www.x.com  </label>--}}
+    {{--</div>--}}
 
     <div class="form-group row" >
       <label for="Name-input" class="col-2 col-form-label">زمان پایان ثبت نام : </label>
@@ -67,7 +67,7 @@
      <input type="file" class="form-control-file" name="path" style="font-size:15px" id="exampleInputFile" aria-describedby="fileHelp">
     </div>
    </div>
-       <a href="{{route('orgMatches')}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
+       <a href="{{route('orgMatches',['orgName'=>$name->organize->name])}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
 
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
 
@@ -104,7 +104,7 @@
 //     document.getElementsByClassName('nicEdit-main')[0].addEventListener('input',this.check)
 //     this.comment = document.getElementsByClassName('nicEdit-main')[0].innerHTML
 // console.log(this.comment)
- if(this.endTime.length > 0 && this.startTime.length > 0 && this.url.length > 0 && this.matchName.length > 0){
+ if(this.endTime.length > 0 && this.startTime.length > 0  && this.matchName.length > 0){
 
  this.next = false
  }else{
@@ -126,5 +126,5 @@
 
 </div>
 
- <script type="text/javascript" src="js/bootstrap.js"></script>
+ <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
 @endsection

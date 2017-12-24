@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Transaction;
 use App\Group;
 use App\Match;
 use App\Message;
 use App\Team;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Facades\App;
@@ -15,9 +17,9 @@ use Spatie\Browsershot\Browsershot;
 use App\Tournament;
 use App\Organize;
 use Carbon\Carbon;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Defuse\Crypto\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,7 +28,8 @@ class UserController extends Controller
     public function userChallenge()
     {
 
-        $name = Auth::user();
+	  $name = Auth::user();
+
         $matchesId = Auth::user()->matches;
         $i = 0;
         $matches = [];
@@ -91,7 +94,9 @@ class UserController extends Controller
 //
             $request->file('imageFile')->move('storage/images', $time . $request->file('imageFile')->getClientOriginalName());
 
-//                dd('weq');
+           exec("convert /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.png  /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
+            exec("mogrify  -resize '800x400!' /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
+
 
         }
 
@@ -182,36 +187,40 @@ class UserController extends Controller
         }
 
 
-        return redirect()->back();
+        return redirect()->route('notification',['username'=>Auth::user()->username]);
 
     }
 
 
-    public function generatePdf2($id, $url)
+    public function generatePdf2(Request $request)
     {
+	$url = $request->name;
+	$id = $request->id;
+	$user = User::where('username',$url)->first();
+        $teamId = Match::where([['user_id',$user->id],['tournament_id',$id]])->first()->team_id;
 
+        $teammates =  Group::where([['tournament_id',$id],['team_id',$teamId]])->pluck('name');
 
-//        $teamId = Match::where([['user_id',Auth::id()],['tournament_id',$id]])->first()->team_id;
-//        $teammates =  Group::where([['tournament_id',$id],['team_id',$teamId]])->pluck('name');
+        if(count($teammates) == 0){
+            $names= [$user->username];
+
+        }else {
+
+            for ($i = 0; $i < count($teammates); $i++) {
+
+                $names[$i] =$teammates[$i];
+
+            }
+        }
 //
-//        if(count($teammates) == 0){
-//            $names= [Auth::user()->username];
-//
-//        }else {
-//
-//            for ($i = 0; $i < count($teammates); $i++) {
-//
-//                $names[$i] = '<li>' . $teammates[$i] . '</li><br>';
-//
-//            }
-//        }
-//
-//        $tournament = Tournament::where('id', $id)->first();
-//        $name = $tournament->matchName;
-//        $time = $tournament->startTime;
-//        $cost = $tournament->cost;
-//        $credit = Auth::user()->credit;
-//        $owner = Auth::user()->username;
+        $tournament = Tournament::where('id', $id)->first();
+        $name = $tournament->matchName;
+        $time = $tournament->startTime;
+        $cost = $tournament->cost;
+        $credit = $user->credit;
+        $owner = $user->username;
+	 $png = QrCode::size(100)->color(20,20,200)->backgroundColor(255,255,255)->generate(request()->url($_SERVER['REQUEST_URI']));
+        $png = base64_encode($png);
 //        $data=['name'=>$name,'time'=>$time,'cost'=>$cost,'credit'=>$credit,'names'=>$names,'owner'=>$owner,'tournament'=>$tournament];
 ////        dd($names);
 //        $pdf = PDF::loadView('pdf', $data);
@@ -220,21 +229,24 @@ class UserController extends Controller
 //
 
 
-        return view('pdf');
+        return view('pdf',compact('tournament','name','time','cost','credit','owner','names','png'));
     }
-
-    public function generatePdf($id,$url){
-
+//
+    public function generatePdf(Request $request){
+		
+	$id = $request->id;
+	$url = $request->name;
         require 'pdfcrowd.php';
+
 
 //        dd(request());
         try
         {
             // create an API client instance
-            $client = new Pdfcrowd("sahand", "fd0975eddb7511bdb1ed7eeb3617f9f3");
+            $client = new Pdfcrowd("sahand_MG", "26d9b83a0b3872dcd154cf8c2979a48a");
 
             // convert a web page and store the generated PDF into a $pdf variable
-            $pdf = $client->convertURI("http://165.227.170.114/challenge/ticket2-$id-$url");
+            $pdf = $client->convertURI("http://165.227.170.114/challenge/$request->matchName/$request->name/ticket2?id=$id");
 
             // set HTTP response headers
             header("Content-Type: application/pdf");
@@ -285,31 +297,35 @@ class UserController extends Controller
 
         $name = Auth::user();
 
-        if(pathinfo($_SERVER['HTTP_REFERER']) != route('credit')) {
+        if(pathinfo($_SERVER['HTTP_REFERER']) != route('credit',['username'=>Auth::user()->username])) {
 
             session(['lastPage' => $_SERVER['HTTP_REFERER']]);
 
         }
         $lastPage = session('lastPage');
-        return view('userProfile.credit', compact('name','lastPage'));
+	 $transactions = Transaction::where('user_id',Auth::id())->orderBy('created_at','dcs')->get();
+        return view('userProfile.credit', compact('name','lastPage','transactions'));
 
 
     }
 
     public function postCredit(Request $request)
     {
-
+  	$transaction = new Transaction();
+        $transaction->user_id = Auth::id();
+        $transaction->money = $request->credit;
+        $transaction->type = "افزایش اعتبار";
+        $transaction->save();
 
         $credit = Auth::user()->credit;
         Auth::user()->credit = $request->credit + $credit;
         Auth::user()->save();
         $lastPage = session('lastPage');
-        return redirect()->route('credit')->with(['message'=>'اعتبار شما با موفقیت افزایش یافت. ']);
+        return redirect()->route('credit',['username'=>Auth::user()->username])->with(['message'=>'اعتبار شما با موفقیت افزایش یافت. ']);
 
     }
 
 
 
 }
-
 

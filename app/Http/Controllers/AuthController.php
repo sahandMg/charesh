@@ -48,8 +48,9 @@ class AuthController extends Controller
 
         Mail::send('email.registerMail',$data,function ($message) use($data){
 
-            $message->from('s23.moghadam@gmail.com');
+            $message->from('sahand.mg.ne@gmail.com');
             $message->to($data['email']);
+		$message->subject('تایید حساب کاربری');
         });
         return redirect()->route('verify');
 //->with(['message' => 'حساب کاربری شما ساخته شد. برای تایید حساب کاربری به ایمیل خود مراجعه فرمایید.'])
@@ -77,9 +78,12 @@ class AuthController extends Controller
                 'id' => $user->id];
             Mail::send('email.registerMail', $data, function ($message) use ($data) {
 
-                $message->from('s23.moghadam@gmail.com');
+                $message->from('sahand.mg.ne@gmail.com');
                 $message->to($data['email']);
+
+		$message->subject('تایید حساب کاربری');
             });
+
 
             return redirect()->back()->with(['message' => 'ایمیل تایید ارسال شد']);
 
@@ -139,8 +143,10 @@ class AuthController extends Controller
 
             Mail::send('email.registerMail',$data,function ($message) use($data){
 
-                $message->from('s23.moghadam@gmail.com');
+                $message->from('');
                 $message->to($data['email']);
+
+		$message->subject('تایید حساب کاربری');
             });
             return ['token' => $token];
 
@@ -182,8 +188,8 @@ class AuthController extends Controller
 
 // --------------------END--------------------------
 
-    public function confirm($id){
-
+    public function confirm(Request $request){
+	$id = $request->id;
         $user = User::find($id);
 
         $user->confirm = 1;

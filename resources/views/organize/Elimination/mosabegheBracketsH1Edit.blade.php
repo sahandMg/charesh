@@ -6,10 +6,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
             </ul>
         </div>
         <!— content —>
@@ -18,7 +18,7 @@
             @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
 
             <br>
-            <a href="{{route('bracketDelete',['id'=>$tournament->id,'url'=>$tournament->code])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
+            <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
             <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
 
             <br>
@@ -111,7 +111,7 @@
 
 
 
-    <script type="text/javascript" src="{{URL::asset('main.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
     {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
     <script type="text/javascript" src="{{URL::asset('js/jquery.bracket.min.js')}}"></script>
 
@@ -181,7 +181,7 @@
             created:function () {
 
                 vm = this
-                axios.get('{!!route('getElBracket',['id'=>$tournament->id,'url'=>$tournament->code])!!}').then(function (response) {
+                axios.get('{!!route('getElBracket',['id'=>$tournament->id])!!}').then(function (response) {
 
                     vm.detail = response.data;
 
@@ -287,7 +287,7 @@
 
 
                 console.log(param)
-                axios.post('{{route('ElBracket2',['id'=>$tournament->id,'url'=>$tournament->matchName])}}',{'data':param}).then(function (response) {
+                axios.post('{{route('ElBracket2',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}',{'data':param}).then(function (response) {
 
 
                     if(response.data == 1){

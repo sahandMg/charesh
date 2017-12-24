@@ -6,7 +6,7 @@
 
         @if(count($userMessages) != 0)
 
-             <form style="padding: 20px;" method="POST" action="{{route('deleteNotification')}}">
+             <form style="padding: 20px;" method="POST" action="{{route('deleteNotification',['username'=>Auth::user()->username])}}">
                       <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                     <button type="submit" class="btn btn-danger"> حذف همه پیام ها </button>

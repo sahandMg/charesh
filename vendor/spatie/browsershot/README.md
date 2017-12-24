@@ -90,6 +90,24 @@ Browsershot::html('Foo')
 
 Setting the include path can be useful in cases where `node` and `npm` can not be found automatically.
 
+### Custom node module path
+
+If you want to use an alternative `node_modules` source you can set it using the `setNodeModulePath` method.
+
+```php
+Browsershot::html('Foo')
+  ->setNodeModulePath("/path/to/my/project/node_modules/")
+```
+
+### Custom chrome/chromium executable path
+
+If you want to use an alternative chrome or chromium executable from what is installed by puppeteer you can set it using the `setChromePath` method.
+
+```php
+Browsershot::html('Foo')
+  ->setChromePath("/path/to/my/chrome")
+```
+
 ## Installation
 
 This package can be installed through Composer.
@@ -205,6 +223,23 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Delayed screenshots
+You can delay the taking of screenshot by  `setDelay()`. This is useful if you need to wait for completion of javascript or if you are attempting to capture lazy-loaded resources.
+
+```php
+Browsershot::url('https://example.com')
+    ->setDelay($delayInMilliseconds)
+    ->save($pathToImage);
+```
+
+#### Output directly to the browser
+You can output the image directly to the browser using the `screenshot()` method.
+
+```php
+$image = Browsershot::url('https://example.com')
+    ->screenshot()
+```
+
 ### PDFs
 
 Browsershot will save a pdf if the path passed to the `save` method has a `pdf` extension.
@@ -286,6 +321,14 @@ Browsershot::html($someHtml)
    ->save('example.pdf');
 ```
 
+#### Output directly to the browser
+You can output the PDF directly to the browser using the `pdf()` method.
+
+```php
+$pdf = Browsershot::url('https://example.com')
+    ->pdf()
+```
+
 ### HTML
 
 Browsershot also can get the body of an html page after JavaScript has been executed:
@@ -296,6 +339,20 @@ Browsershot::url('https://example.com')->bodyHtml(); // returns the html of the 
 
 ### Misc
 
+#### Setting an arbitrary option
+
+You can set any arbitrary options by calling `setOption`:
+
+```php
+Browsershot::url('https://example.com')
+   ->setOption('landscape', true)
+   ->save($pathToImage);
+```
+
+
+#### Setting the user agent
+
+
 If, for some reason, you want to set the user agent Google Chrome should use when taking the screenshot you can do so:
 
 ```php
@@ -304,23 +361,24 @@ Browsershot::url('https://example.com')
     ->save($pathToImage);
 ```
 
+#### Setting the CSS media type of the page
+
+
+You can also emulate the media type, especially usefull when you're generating pdf shots, because it will try to emulate the print version of the page by default.
+
+```php
+Browsershot::url('https://example.com')
+    ->emulateMedia('screen') // "screen", "print" (default) or null (passing null disables the emulation).
+    ->savePdf($pathToPdf);
+```
+
+
 The default timeout of Browsershot is set to 60 seconds. Of course, you can modify this timeout:
 
 ```php
 Browsershot::url('https://example.com')
     ->timeout(120)
     ->save($pathToImage);
-```
-
-#### Set a network idle timeout
-
-You can tell Browsershot to wait a bit before saving the HTML page.
-This can be useful when you're using asynchronous fonts or images, and they require a bit more time to load.
-
-```php
-Browsershot::url('https://example.com')
-    ->setNetworkIdleTimeout(1000) // wait time in milliseconds;
-    ...
 ```
 
 #### Disable sandboxing

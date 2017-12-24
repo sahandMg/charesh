@@ -18,7 +18,6 @@
     </div>          
   </div>
 
-
     <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
 @endsection

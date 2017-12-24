@@ -5,10 +5,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
             </ul>
         </div>
         <!— content —>
@@ -17,7 +17,7 @@
             @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
 
            <div>
-            <a href="{{route('bracketDelete',['id'=>$tournament->id,'url'=>$tournament->code])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
+            <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
             <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
            </div>
 
@@ -26,8 +26,8 @@
             <br>
             <br>
             <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-                <a class="nav-item nav-link " href="{{route('challengeBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}" >گروهی</a>
-                <a class="nav-item nav-link active" href="{{route('ElBracket',['id'=>$tournament->id,'url'=>$tournament->code])}} " >حذفی</a>
+                <a class="nav-item nav-link " href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" >گروهی</a>
+                <a class="nav-item nav-link active" href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}} " >حذفی</a>
             </nav>
             <!-- Brackets -->
             <!--   <div class="row" style="padding: 30px;direction: ltr;">

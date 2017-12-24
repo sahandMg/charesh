@@ -2,6 +2,28 @@
 
 All notable changes to `Browsershot` will be documented in this file
 
+### 3.14.0 - 2017-12-10
+
+- add `setChromePath`
+
+### 3.13.0 - 2017-12-07
+
+- add ability to set node module path
+- add ability to output directory to the browser
+
+### 3.12.0 - 2017-11-20
+
+- add `setDelay`
+
+### 3.11.1 - 2017-11-18
+
+- improve error handling for when no extension is provided
+
+### 3.11.0 - 2017-11-16
+
+- add `setOption`
+- refactor internals
+
 ### 3.10.0 - 2017-11-13
 
 - add `setProxyServer`
