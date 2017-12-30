@@ -40,7 +40,7 @@
         <input name="repeat" type="password" class="form-control" id="exampleInputPassword1" placeholder="تکرار رمز">
       </div>
 	<br>
-{{--<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>--}}
+<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
 <br>
        <button type="submit" class="btn btn-primary">ثبت نام </button>
        <a href="{{route('login')}}" class="btn btn-link">قبلا ثبت نام کرده ام</a>

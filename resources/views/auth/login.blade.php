@@ -52,7 +52,9 @@
         <label for="exampleInputPassword1">رمز</label>
         <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="رمز">
       </div>
-
+         <br>
+         <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+         <br>
        <button type="submit" class="btn btn-primary">ورود </button>
        <a style="cursor:pointer" id="forget" class="btn btn-link">رمز خود را فراموش کرده اید ؟</a>
       </form>

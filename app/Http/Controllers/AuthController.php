@@ -30,23 +30,23 @@ class AuthController extends Controller
 
     public function postRegister(RegisterRequest $request){
 
-//$url = 'https://www.google.com/recaptcha/api/siteverify';
-//$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//        $options = array(
-//        'http' => array(
-//        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//        'method'  => 'POST',
-//        'content' => http_build_query($data),
-//          ),
-//        );
-//        $context  = stream_context_create($options);
-//        $result = file_get_contents($url, false, $context);
-//        if(json_decode($result)->success === false){
-//
-//        return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ]);
-//
-//        }
+$url = 'https://www.google.com/recaptcha/api/siteverify';
+$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+// use key 'http' even if you send the request to https://...
+        $options = array(
+        'http' => array(
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data),
+          ),
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if(json_decode($result)->success === false){
+
+        return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ]);
+
+        }
 
         $user = new User();
         $user->username = $request->username;
@@ -231,26 +231,26 @@ class AuthController extends Controller
 //
         if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])){
 
-//
-//$url = 'https://www.google.com/recaptcha/api/siteverify';
-//$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//	$options = array(
-//  	'http' => array(
-//    	'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//    	'method'  => 'POST',
-//    	'content' => http_build_query($data),
-//	  ),
-//	);
-//	$context  = stream_context_create($options);
-//	$result = file_get_contents($url, false, $context);
-//	if(json_decode($result)->success === false){
-//
-//	Auth::logout();
-//
-//	return redirect()->route('login')->with(['LoginError'=>'reCAPTCHA  را تایید کنید' ]);
-//
-//	}
+
+$url = 'https://www.google.com/recaptcha/api/siteverify';
+$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+// use key 'http' even if you send the request to https://...
+	$options = array(
+  	'http' => array(
+    	'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+    	'method'  => 'POST',
+    	'content' => http_build_query($data),
+	  ),
+	);
+	$context  = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+	if(json_decode($result)->success === false){
+
+	Auth::logout();
+
+	return redirect()->route('login')->with(['LoginError'=>'reCAPTCHA  را تایید کنید' ]);
+
+	}
 //dd(json_decode($result)->success);
             if(session('lastPage')) {
                 $url = session('lastPage');
