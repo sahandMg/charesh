@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
-
+<script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -127,30 +127,30 @@
     </div>
     <nav id="navbar" class="topNav">
         <ul>
-            <li><a class="setColor" href="{{route('credit',['username'=>Auth::user()->username])}}">اعتبار {{$name->credit}} تومان</a></li>
+            <li><a class="setColor" href="{{route('credit',['username'=>Auth::user()->slug])}}">اعتبار {{$name->credit}} تومان</a></li>
             <li>
                 <div class="dropdown">
                     <a onclick="myFunction()" href="" class="setColor">
 
-                        <span style="color:orangered;">{{ $name->unread}} <span style="color: white">|</span> </span> {{$name->username}}  <img src="{{URL::asset('storage/images/'.$name->path)}}" class="rounded" height="40" width="40" style="margin-bottom: 3px;">
+                        <span style="color:orangered;" > {{ $name->unread }} <span style="color: white">|</span> </span> {{$name->username}}  <img src="{{URL::asset('storage/images/'.$name->path)}}" class="rounded" height="40" width="40" style="margin-bottom: 3px;">
 
                     </a>
                     <div class="dropdown-content">
-                        <a href="{{route('userChallenge',['username'=>Auth::user()->username])}}">چالش های من</a>
-                        @if(isset(Auth::user()->organize->name))
-                            <a href="{{route('orgMatches',['orgName'=>Auth::user()->organize->name])}}">مسابقات من</a>
+                        <a href="{{route('userChallenge',['username'=>Auth::user()->slug])}}">چالش های من</a>
+                        @if(isset(Auth::user()->organize->slug))
+                            <a href="{{route('orgMatches',['orgName'=>Auth::user()->organize->slug])}}">مسابقات من</a>
                         @else
-                            <a href="{{route('orgMatches',['username'=>Auth::user()->name])}}">مسابقات من</a>
+                            <a href="{{route('orgMatches',['orgName'=>Auth::user()->slug])}}">مسابقات من</a>
                         @endif
 
                         @if($name->unread>0)
-                        <a style="color:red;" href="{{route('notification',['username'=>Auth::user()->username])}}">اطلاعیه های من</a>
+                        <a style="color:red;" href="{{route('notification',['username'=>Auth::user()->slug])}}">اطلاعیه های من</a>
                         @else
-                            <a style="color:black;" href="{{route('notification',['username'=>Auth::user()->username])}}">اطلاعیه های من</a>
+                            <a style="color:black;" href="{{route('notification',['username'=>Auth::user()->slug])}}">اطلاعیه های من</a>
                             @endif
 
-                        <a href="{{route('setting',['username'=>Auth::user()->username])}}"> ویرایش اطلاعات</a>
-                        <a href="{{route('logout',['username'=>Auth::user()->username])}}">خروج</a>
+                        <a href="{{route('setting',['username'=>Auth::user()->slug])}}"> ویرایش اطلاعات</a>
+                        <a href="{{route('logout',['username'=>Auth::user()->slug])}}">خروج</a>
                     </div>
                 </div>
             </li>

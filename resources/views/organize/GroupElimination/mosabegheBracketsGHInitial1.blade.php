@@ -4,10 +4,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
             </ul>
         </div>
         <!— content —>
@@ -15,11 +15,11 @@
        <br>
        @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
        <br>
-       <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
+       <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
        <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
        <br>
        <h2>{{$message}}</h2>
- <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('groupBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}">
+ <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('groupBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">
      <input type="hidden" name="_token" value="{{csrf_token()}}">
    <div class="form-group row">
       <label for="Name-input" class="col-5 col-form-label">تعدا گروه ها: </label>

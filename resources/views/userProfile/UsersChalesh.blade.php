@@ -26,7 +26,7 @@
 
                      <div>
                          <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                         <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}">   <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+                         <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}">   <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
 
                          <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
                              <div class="back-stars">
@@ -47,7 +47,7 @@
                          </div>
                      </div>
                      @if($match->canceled == 0)
-                     <a href="{{route('matchRegistered',['id'=>$match->id ,'matchName'=>$match->matchName ])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                     <a href="{{route('matchRegistered',['id'=>$match->id ,'matchName'=>$match->slug ])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
                      @else
 
                          <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
@@ -68,7 +68,7 @@
                          </div>
 
                             @if($match->canceled == 0)
-                         <a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$match->id , 'matchName'=>$match->matchName])}}" class="btn">جزییات مسابقه</a>
+                         <a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$match->id , 'matchName'=>$match->slug])}}" class="btn">جزییات مسابقه</a>
                         @endif
                          {{--@if($match->endTime == 0)--}}
 

@@ -55,6 +55,25 @@ class UserController extends Controller
 
     public function postSetting(Request $request)
     {
+	
+	$url = 'https://www.google.com/recaptcha/api/siteverify';
+	$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+// use key 'http' even if you send the request to https://...
+        $options = array(
+        'http' => array(
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data),
+          ),
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if(json_decode($result)->success === false){
+
+        return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+
+        }
+
 
         $user = Auth::user();
 
@@ -93,14 +112,22 @@ class UserController extends Controller
             $user->update(['path' => $time . $request->file('imageFile')->getClientOriginalName()]);
 //
             $request->file('imageFile')->move('storage/images', $time . $request->file('imageFile')->getClientOriginalName());
+	$imgName = Auth::user()->path;
+	$imgEx = $request->file('imageFile')->getClientOriginalExtension();
+	$imgNameNoEx = basename($time . $request->file('imageFile')->getClientOriginalName(),'.'.$request->file('imageFile')->getClientOriginalExtension());
+        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+	Auth::user()->update(['path'=>$imgNameNoEx.'.jpg']);
 
-           exec("convert /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.png  /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
-            exec("mogrify  -resize '800x400!' /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
+	if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
 
+	        unlink(public_path('storage/images/' . $imgName));
 
+	}
+
+            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
         }
 
-        return redirect()->back()->with(['message' => 'مشخصات شما ویرایش شد']);
+        return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['message' => 'مشخصات شما ویرایش شد']);
 
     }
 
@@ -187,16 +214,16 @@ class UserController extends Controller
         }
 
 
-        return redirect()->route('notification',['username'=>Auth::user()->username]);
+        return redirect()->route('notification',['username'=>Auth::user()->slug]);
 
     }
 
 
-    public function generatePdf2(Request $request)
+    public function generatePdf(Request $request)
     {
 	$url = $request->name;
 	$id = $request->id;
-	$user = User::where('username',$url)->first();
+	$user = User::where('slug',$url)->first();
         $teamId = Match::where([['user_id',$user->id],['tournament_id',$id]])->first()->team_id;
 
         $teammates =  Group::where([['tournament_id',$id],['team_id',$teamId]])->pluck('name');
@@ -219,48 +246,47 @@ class UserController extends Controller
         $cost = $tournament->cost;
         $credit = $user->credit;
         $owner = $user->username;
-	 $png = QrCode::size(100)->color(20,20,200)->backgroundColor(255,255,255)->generate(request()->url($_SERVER['REQUEST_URI']));
-        $png = base64_encode($png);
-//        $data=['name'=>$name,'time'=>$time,'cost'=>$cost,'credit'=>$credit,'names'=>$names,'owner'=>$owner,'tournament'=>$tournament];
-////        dd($names);
-//        $pdf = PDF::loadView('pdf', $data);
-//
-//        return $pdf->stream("بلیط مسابقه $name.pdf");
-//
+	 $png = QrCode::size(400)->color(20,20,200)->backgroundColor(255,255,255)->generate("$tournament->code");
+//	 $png = QrCode::size(100)->color(20,20,200)->backgroundColor(255,255,255)->generate(request()->url($_SERVER['REQUEST_URI']));
 
+	$png = base64_encode($png);
 
-        return view('pdf',compact('tournament','name','time','cost','credit','owner','names','png'));
+        return view('ticket',compact('tournament','name','time','cost','credit','owner','names','png'));
     }
 //
-    public function generatePdf(Request $request){
-		
+    public function generatePdf2(Request $request){
+	$time = time();		
 	$id = $request->id;
 	$url = $request->name;
         require 'pdfcrowd.php';
 
 
 //        dd(request());
-        try
-        {
+        //try
+        //{
             // create an API client instance
-            $client = new Pdfcrowd("sahand_MG", "26d9b83a0b3872dcd154cf8c2979a48a");
+           // $client = new Pdfcrowd("sahand_MG", "26d9b83a0b3872dcd154cf8c2979a48a");
 
             // convert a web page and store the generated PDF into a $pdf variable
-            $pdf = $client->convertURI("http://165.227.170.114/challenge/$request->matchName/$request->name/ticket2?id=$id");
-
+      //      $pdf = $client->convertURI("http://165.227.170.114/challenge/$request->matchName/$request->name/ticket2?id=$id");
+//		 exec("xvfb-run wkhtmltopdf  http://google.com  /var/www/html/ticket2.pdf");
+		 exec("xvfb-run wkhtmltopdf http://gameinja.com/challenge/$request->matchName/$request->name/ticket2?id=$id  /var/www/html/$time.ticket.pdf");
             // set HTTP response headers
             header("Content-Type: application/pdf");
             header("Cache-Control: max-age=0");
             header("Accept-Ranges: none");
-            header("Content-Disposition: attachment; filename=\"google_com.pdf\"");
-
+            header("Content-Disposition: attachment; filename=\"Ticket.pdf\"");
+		readfile("/var/www/html/$time.ticket.pdf");
+	//	var_dump($o);
             // send the generated PDF
-            echo $pdf;
-        }
-        catch(PdfcrowdException $why)
-        {
-            echo "Pdfcrowd Error: " . $why;
-        }
+//            echo $pdf;
+        //}
+       // catch(PdfcrowdException $why)
+       // {
+         //   echo "Pdfcrowd Error: " . $why;
+       // }
+
+	 unlink("/var/www/html/$time.ticket.pdf");
     }
 
 
@@ -321,7 +347,7 @@ class UserController extends Controller
         Auth::user()->credit = $request->credit + $credit;
         Auth::user()->save();
         $lastPage = session('lastPage');
-        return redirect()->route('credit',['username'=>Auth::user()->username])->with(['message'=>'اعتبار شما با موفقیت افزایش یافت. ']);
+        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['message'=>'اعتبار شما با موفقیت افزایش یافت. ']);
 
     }
 

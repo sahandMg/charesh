@@ -1,7 +1,7 @@
 @extends('masterUserHeader.body')
 @section('content')
  <div class="container" style="direction: rtl;">
-
+<br>
      @if(count(session('message')))
          <div class="alert alert-success ">
              {{session('message')}}
@@ -18,7 +18,14 @@
 
              </div>
          @endif
-     <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('setting',['username'=>Auth::user()->username])}}" enctype="multipart/form-data">
+
+@if(count(session('settingError')))
+         <div class="alert alert-danger ">
+             {{session('settingError')}}
+         </div>
+     @endif
+
+     <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('setting',['username'=>Auth::user()->slug])}}" enctype="multipart/form-data">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
 
 
@@ -49,7 +56,9 @@
         <input class="form-control" name="repeat" type="password" id="Telegram-input">
       </div>
     </div>
-      
+<br>
+<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+<br>      
    <button type="submit" class="btn btn-primary">ذخیره</button>
 
   </form>

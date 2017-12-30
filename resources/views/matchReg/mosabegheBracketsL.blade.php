@@ -180,7 +180,7 @@
  
 
  <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
- <script src="{{URL::asset('jquery-1.11.3.js')}}"></script>
+ {{--<script src="{{URL::asset('jquery-1.11.3.js')}}"></script>--}}
 <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
  <script src="{{URL::asset('js/brackets.min.js')}}"></script>
 
@@ -219,7 +219,7 @@
                     vm = this
                     vm.roundNum = document.getElementById('selectkind').value;
 //                  console.log(vm.roundNum)
-                    axios.get({!! json_encode(route('round',['id'=>$tournament->id]))!!}+vm.roundNum ).then(function (response) {
+                axios.get({!! json_encode(route('checkRound',['id'=>$tournament->id]))!!}+'/'+vm.roundNum ).then(function (response) {
 
 //                    console.log(response.data);
                         if(response.data != 0) {

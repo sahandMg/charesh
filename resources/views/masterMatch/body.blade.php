@@ -6,7 +6,7 @@
 
 
 
-            <a  href="{{route('matchRegistered',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" :class="RegClass">ثبت نام</a>
+            <a  href="{{route('matchRegistered',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="RegClass">ثبت نام</a>
 
 
     </li>
@@ -14,13 +14,13 @@
         {{--<a  @click="activeRule"  :class="RuleClass" href="challenge-rules-{{$tournament->matchName}}-{{$tournament->id}}">قوانین</a>--}}
     {{--</li>--}}
     <li class="nav-item">
-        <a   href="{{route('matchBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" :class="BracketClass" >براکت مسابقه</a>
+        <a   href="{{route('matchBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="BracketClass" >براکت مسابقه</a>
     </li>
     <li class="nav-item">
-        <a  href="{{route('matchTimeline',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" :class="TimelineClass" >زمان بندی</a>
+        <a  href="{{route('matchTimeline',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="TimelineClass" >زمان بندی</a>
     </li>
     <li class="nav-item">
-        <a   href="{{route('matchAttenders',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" :class="attendersClass"> شرکت کنندگان </a>
+        <a   href="{{route('matchAttenders',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="attendersClass"> شرکت کنندگان </a>
     </li>
 
 </ul>

@@ -16,6 +16,7 @@ class CreateOrganizesTable extends Migration
         Schema::create('organizes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique()->nullable();
+            $table->text('slug')->nullable();
             $table->integer('credit')->default(0);
             $table->integer('totalTickets')->default(0);
             $table->string('logo_path')->nullable();

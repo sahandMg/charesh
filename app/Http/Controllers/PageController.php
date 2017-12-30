@@ -29,8 +29,9 @@ class PageController extends Controller
 
     public function home($num=null){
 
-        $matches = Tournament::paginate(18);
-//
+//        $matches = Tournament::paginate(18);
+        $matches = Tournament::orderBy('endRemain','decs')->get();
+
         $matchDays = Tournament::paginate(18)->pluck('endRemain');
 
         $i = 0;
@@ -192,13 +193,6 @@ class PageController extends Controller
 
 
     }
-
-
-
-
-
-
-
 
 
 }

@@ -25,24 +25,39 @@ Route::get('chlbz/home/token',function (){
     echo csrf_token();
 });
 //
-Route::get('aparat',function(){
 
-return view('aparat');
+Route::get('payment',function(){
 
-});
+    $MerchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'; //Required
+    $Amount = 1000; //Amount will be based on Toman - Required
+    $Description = 'توضیحات تراکنش تستی'; // Required
+    $Email = 'UserEmail@Mail.Com'; // Optional
+    $Mobile = '09123456789'; // Optional
+    $CallbackURL = 'http://www.gameinja.com/credit'; // Required
 
-Route::get('convert',function(){
 
-exec("convert /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.png  /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
-return 'converted';
-});
+    $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
 
-Route::get('change',function(){
+    $result = $client->PaymentRequest(
+        [
+            'MerchantID' => $MerchantID,
+            'Amount' => $Amount,
+            'Description' => $Description,
+            'Email' => $Email,
+            'Mobile' => $Mobile,
+            'CallbackURL' => $CallbackURL,
+        ]
+    );
 
-//exec("mogrify  -resize '100' /var/www/html/public/storage/images/1512151992Logo.png");
-exec("mogrify  -resize '800x400!' /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
+//Redirect to URL You can do it also by creating a form
+    if ($result->Status == 100) {
+//        Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority);
+//برای استفاده از زرین گیت باید ادرس به صورت زیر تغییر کند:
+Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
+    } else {
+        echo'ERR: '.$result->Status;
+    }
 
-return 'resized';
 
 });
 
@@ -271,24 +286,24 @@ Route::group(['prefix'=>'organization'],function (){
     Route::post('{matchName}/message',['as' => 'challengeInfo','uses'=>'OrganizeController@post_challengeMessage'])->middleware('throttle:5,1');
 
 
-    Route::get('delete-bracket',['middleware'=> ['guest','organize'],'as'=>'bracketDelete','uses'=>'OrganizeController@bracketDelete']);
+    Route::get('{matchName}/delete-bracket',['middleware'=> ['guest','organize'],'as'=>'bracketDelete','uses'=>'OrganizeController@bracketDelete']);
     Route::get('{matchName}/bracket-select',['middleware'=> ['guest','organize','bracket'],'as' => 'challengeBracket','uses'=>'OrganizeController@challengeBracket']);
 
 
 
 
-    Route::get('edit-group-bracket',['middleware'=> ['guest','organize','bracket'],'as' => 'groupBracket','uses'=>'OrganizeController@groupBracket']);
-    Route::post('edit-group-bracket',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'groupBracket','uses'=>'OrganizeController@post_groupBracket']);
+    Route::get('{matchName}/edit-group-bracket',['middleware'=> ['guest','organize','bracket'],'as' => 'groupBracket','uses'=>'OrganizeController@groupBracket']);
+    Route::post('{matchName}/edit-group-bracket',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'groupBracket','uses'=>'OrganizeController@post_groupBracket']);
 
-    Route::get('edit-group-bracket2',['middleware'=> ['guest','organize','bracket'],'as' => 'makeGroupBracket','uses'=>'OrganizeController@makeGroupBracket2']);
-    Route::post('edit-group-bracket2',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'makeGroupBracket','uses'=>'OrganizeController@post_makeGroupBracket2']);
+    Route::get('{matchName}/edit-group-bracket2',['middleware'=> ['guest','organize','bracket'],'as' => 'makeGroupBracket','uses'=>'OrganizeController@makeGroupBracket2']);
+    Route::post('{matchName}/edit-group-bracket2',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'makeGroupBracket','uses'=>'OrganizeController@post_makeGroupBracket2']);
 
-    Route::get('edit-group-bracket3',['middleware'=> ['guest','organize','bracket'],'as' => 'makeGroupBracket3','uses'=>'OrganizeController@makeGroupBracket3']);
-    Route::post('edit-group-bracket3',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'makeGroupBracket3','uses'=>'OrganizeController@post_makeGroupBracket3']);
+    Route::get('{matchName}/edit-group-bracket3',['middleware'=> ['guest','organize','bracket'],'as' => 'makeGroupBracket3','uses'=>'OrganizeController@makeGroupBracket3']);
+    Route::post('{matchName}/edit-group-bracket3',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'makeGroupBracket3','uses'=>'OrganizeController@post_makeGroupBracket3']);
 
 // Group elimination
-    Route::get('edit-elimination-bracket',['middleware'=> ['guest','organize','bracket'],'as' => 'ElBracket','uses'=>'OrganizeController@makeElBracket']);
-    Route::post('edit-elimination-bracket',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'ElBracket','uses'=>'OrganizeController@post_makeElBracket']);
+    Route::get('{matchName}/edit-elimination-bracket',['middleware'=> ['guest','organize','bracket'],'as' => 'ElBracket','uses'=>'OrganizeController@makeElBracket']);
+    Route::post('{matchName}/edit-elimination-bracket',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'ElBracket','uses'=>'OrganizeController@post_makeElBracket']);
 
 
  // League elimination
@@ -371,7 +386,7 @@ Route::post('league-table-{id}',['as'=>'LeagueTable','uses'=>'OrganizeController
 Route::get('all','API\UserController@all')->name('allUsers');
 Route::get('online','API\UserController@online')->name('online');
 Route::get('guests','API\UserController@guests')->name('guests');
-Route::get('check-round-{id}-{round?}',['as'=>'checkRound','uses'=>'OrganizeController@checkRound']);
+Route::get('check-round/{id}/{round?}',['as'=>'checkRound','uses'=>'OrganizeController@checkRound']);
 
 Route::get('/get-matches','MatchController@getMatches');
 Route::get('/get-time','MatchController@time');

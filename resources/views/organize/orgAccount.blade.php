@@ -3,10 +3,10 @@
   <div class="row" style=" direction: rtl;">
       <div class="Vnav">
           <ul>
-              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
               <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ﻭیرایش اطلاعات من</a></li>
-              <li><a class="active" href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}"> حساب من</a></li>
+              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
+              <li><a class="active" href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
 
           </ul>
       </div>
@@ -14,7 +14,7 @@
     <!-- Tiket Counter -->
     <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
 
-        <form style="padding: 20px;" method="POST" action="{{route('organizeAccount',['id'=>$org->id,'orgName'=>$name->organize->name])}}">
+        <form style="padding: 20px;" method="POST" action="{{route('organizeAccount',['id'=>$org->id,'orgName'=>$name->organize->slug])}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
        <h2>موجودی حساب شما : {{$org->credit}} تومان </h2>
        <br>

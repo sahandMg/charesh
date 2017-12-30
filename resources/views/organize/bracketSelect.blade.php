@@ -5,10 +5,10 @@
     <!-- right menu -->
       <div class="Vnav">
           <ul>
-              <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+              <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
               <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ﻭیرایش اطلاعات من</a></li>
-              <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}"> حساب من</a></li>
+              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
+              <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
 	</ul>
       </div>
   <!-- content -->
@@ -26,15 +26,15 @@
 
 
     <div class="sub-main">
-        <a href="{{route('groupBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button   class="button-one">  گروهی - حذفی</button></a>
+        <a href="{{route('groupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button   class="button-one">  گروهی - حذفی</button></a>
     </div>
 
     <div class="sub-main">
-        <a href="{{route('ElBracket2',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button   class="button-two">  حذفی</button></a>
+        <a href="{{route('ElBracket2',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button   class="button-two">  حذفی</button></a>
     </div>
 
     <div class="sub-main">
-        <a href="{{route('leagueBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button class="button-three">لیگ</button></a>
+        <a href="{{route('leagueBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button class="button-three">لیگ</button></a>
    </div>
 
   </center>

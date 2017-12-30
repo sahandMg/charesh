@@ -6,24 +6,24 @@
 
 <ul class="nav nav-tabs" id="app">
     <li class="nav-item">
-        <a  href="{{route('challengePanel',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" :class="RegClass">ویرایش اطلاعات مسابقه</a>
+        <a  href="{{route('challengePanel',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="RegClass">ویرایش اطلاعات مسابقه</a>
     </li>
     {{--<li class="nav-item">--}}
     {{--<a  @click="activeRule"  :class="RuleClass" href="challenge-rules-{{$tournament->matchName}}-{{$tournament->id}}">قوانین</a>--}}
     {{--</li>--}}
     <li class="nav-item">
-       <a  href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" :class="BracketClass" >براکت مسابقه</a>
+       <a  href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="BracketClass" >براکت مسابقه</a>
     </li>
     <li class="nav-item">
-        <a  href="{{route('challengeTime',['id'=>$tournament->id ,'matchName'=>$tournament->matchName])}}" :class="TimelineClass" >تعیین زمان بندی </a>
-    </li>
-
-    <li class="nav-item">
-        <a   href="{{route('challengeMessage',['id'=>$tournament->id , 'matchName'=>$tournament->matchName])}}" :class="attendersClass" >اطلاعیه دادن </a>
+        <a  href="{{route('challengeTime',['id'=>$tournament->id ,'matchName'=>$tournament->slug])}}" :class="TimelineClass" >تعیین زمان بندی </a>
     </li>
 
     <li class="nav-item">
-        <a  href="{{route('participants',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"  :class="participantsClass">شرکت کنندگان</a>
+        <a   href="{{route('challengeMessage',['id'=>$tournament->id , 'matchName'=>$tournament->slug])}}" :class="attendersClass" >اطلاعیه دادن </a>
+    </li>
+
+    <li class="nav-item">
+        <a  href="{{route('participants',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"  :class="participantsClass">شرکت کنندگان</a>
     </li>
 
 </ul>

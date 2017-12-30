@@ -6,7 +6,7 @@
 
         @if(count($userMessages) != 0)
 
-             <form style="padding: 20px;" method="POST" action="{{route('deleteNotification',['username'=>Auth::user()->username])}}">
+             <form style="padding: 20px;" method="POST" action="{{route('deleteNotification',['username'=>Auth::user()->slug])}}">
                       <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                     <button type="submit" class="btn btn-danger"> حذف همه پیام ها </button>
@@ -20,7 +20,7 @@
                     <div class="card">
                         <div class="card-header" role="tab" id="heading{{$i}}">
                             <h5 class="mb-0">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="false" aria-controls="collapse{{$i}}">
+                                <a  data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="false" aria-controls="collapse{{$i}}">
                                     <span style="color: blue;"> {{$userMessages[$i]->organize->name}} </span>
                                     : <span style="color: blue"> {{$userMessages[$i]->tournament->matchName}} </span>
 

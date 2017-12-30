@@ -30,7 +30,7 @@
                     <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
                         <div>
                             <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                            <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+                            <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
                             <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
                                 <div class="back-stars">
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -54,7 +54,7 @@
                         @if($match->canceled == 1)
                             <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
                         @else
-                            <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                            <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
 
                         @endif
 
@@ -72,14 +72,14 @@
                             </div>
                             @if($match->endTime == 0 && $match->canceled == 0)
 
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>
 
                             @elseif($match->tickets == $match->sold && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
 
 
                             @elseif($match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName  ])}}" class="btn btn-success">ثبت نام</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug  ])}}" class="btn btn-success">ثبت نام</a>
 
                             @else
                             @endif
@@ -90,63 +90,7 @@
 
             @endforeach
 
-            <div>{{$matches->links()}}</div>
-
-            {{--<div v-if="show" class="col-md-6 col-lg-4" style="padding-top: 10px;" v-for="match in matches">--}}
-                {{--<div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">--}}
-                    {{--<div>--}}
-                        {{--<h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه @{{match.matchName}}</h4>--}}
-                        {{--<a> <img src="../../public/storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>--}}
-                        {{--<div class="star-rating" title="70%" style="padding-top: 13px;float: left;">--}}
-                            {{--<div class="back-stars">--}}
-                                {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-
-                                {{--<div class="front-stars" style="width: 60%">--}}
-                                    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-
-                    {{--<a href="challenge/register-@{{match.id}}-@{{ match.matchName }}"><img class="card-img-top rounded mx-auto" src="../../public/storage/images/@{{match.path}}" alt="Responsive image" style="width: 100%;"></a>--}}
-                    {{--<div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">--}}
-                        {{--<p style="padding: 0px;margin: 0px;">@{{match.endTimeDays}} روز مانده </p>--}}
-                    {{--</div>--}}
-                    {{--<div class="card-block">--}}
-                        {{--<div class="row" >--}}
-                            {{--<span class="badge badge-default">@{{match.cost}} تومان</span>--}}
-                            {{--<span class="badge badge-default">@{{match.mode}}</span>--}}
-                            {{--<span class="badge badge-default">@{{match.matchType}}</span>--}}
-                            {{--<span class="badge badge-default">@{{match.attendType}}</span>--}}
-                            {{--<span class="badge badge-default"> تعداد بلیط های باقی مانده {{$match->tickets - $match->sold}}</span>--}}
-
-                        {{--</div>--}}
-
-
-                            {{--<a v-if="match.endTime == 0" href="challenge/register-@{{match.id}}-@{{ match.matchName }}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>--}}
-
-                            {{--<a  v-else-if ="match.tickets == match.sold" href="challenge/register-@{{match.id}}-@{{ match.matchName }}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>--}}
-
-                            {{--<a  v-else href="challenge/register-@{{match.id}}-@{{ match.matchName }}" class="btn btn-success">ثبت نام</a>--}}
-
-
-
-
-
-
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
-
+            {{--<div>{{$matches->links()}}</div>--}}
 
 
 
@@ -157,7 +101,7 @@
 
         <br>
         <br>
-        <button @click = "view"  class="btn btn-primary">مشاهده موارد بیشتر</button>
+        {{--<button @click = "view"  class="btn btn-primary">مشاهده موارد بیشتر</button>--}}
     </div>
 
 

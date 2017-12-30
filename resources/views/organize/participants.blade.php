@@ -5,10 +5,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li class="active"><a href="{{route('orgMatches')}}">پنل مدیریت</a></li>
+ <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit')}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount')}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
             </ul>
         </div>
         <!— content —>

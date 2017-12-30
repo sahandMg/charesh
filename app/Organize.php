@@ -1,12 +1,12 @@
 <?php
 
 namespace App;
-
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class Organize extends Model
 {
-
+    use Sluggable;
     protected $fillable=[
 
         'totalTickets','credit','address','email','telegram','comment','logo_path','background_path'
@@ -35,4 +35,17 @@ class Organize extends Model
         return $this->hasMany('App\Message');
 
     }
+
+    public function sluggable(): array
+    {
+
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+
+    }
+
+
 }

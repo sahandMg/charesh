@@ -32,7 +32,7 @@
      <div>
           <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$tournament->matchName}}</h4>
          <h4 class="card-title" style="padding-top: 10px;padding-right: 300px;padding-left: 10px;float:right;">تاریخ برگزاری {{$tournament->startTime}}</h4>
-         <a href="{{route('organizeProfile',['id'=>$org->name])}}"> <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+         <a href="{{route('organizeProfile',['id'=>$org->slug])}}"> <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
           {{--<img src="storage/images/{{$img}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" >--}}
          {{--@if($tournament->endTime == 0)--}}
              {{--<div v-if="showFinishImage">--}}
@@ -94,7 +94,7 @@
 
                <div>
                    <button  @click="copy" type="button" :class="LinkClass">@{{ message }}</button>
-                   <input  id="myInput" style="width: 200px;direction: ltr" readonly type="search" v-model="copyLink" value="http://localhost/chaleshjoo/public/{{$tournament->url}}">
+                   <input  id="myInput" style="width: 200px;direction: ltr" readonly type="search" v-model="copyLink" value="http://gameinja.com/{{$tournament->url}}">
                </div>
            </div>
            <div class="col-2">
@@ -245,7 +245,7 @@
 
                @elseif(count($users) > 0)
 
-               <a href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->matchName,'name'=>Auth::user()->username])}}">دریافت نسخه pdf بلیط مسابقه </a>
+               <a href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}">دریافت نسخه pdf بلیط مسابقه </a>
 
 
            @elseif($auth == 0)

@@ -34,7 +34,7 @@ class OrganizeController extends Controller
     {
 
 
-        $org = Organize::where('name', $name)->first();
+        $org = Organize::where('slug', $name)->first();
         $matches = Tournament::all();
         if (Auth::check()) {
             $name = Auth::user();
@@ -64,7 +64,7 @@ class OrganizeController extends Controller
     public function postMakeOrganize(Request $request)
     {
 
-        $this->validate($request,['comment'=>'required']);
+        $this->validate($request,['OrgName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required']);
 
 
         if (Auth::user()->organize) {
@@ -75,8 +75,8 @@ class OrganizeController extends Controller
 
         $time = time();
         $org = new Organize();
-        $org->name = $request->name;
-        session(['organizeName' => $request->name]);
+        $org->name = $request->OrgName;
+        session(['organizeName' => $request->OrgName]);
         $org->comment = $request->comment;
         if ($request->file('logo_path')) {
 
@@ -107,13 +107,20 @@ class OrganizeController extends Controller
 //
             $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
 ////
-//            $imageTmp=imagecreatefromjpeg('storage/images/'.$time.$request->file('background_path')->getClientOriginalName());
-//            $output = $time.$request->file('background_path')->getClientOriginalName();
-//            imagejpeg($imageTmp,$output,100);
-////
-//            Image::make('storage/images/'.$output)->resize(1150,380)->save();
-//
-//            dd($output);
+	  $imgName = $time.$request->file('background_path')->getClientOriginalName();
+        $imgEx = $request->file('background_path')->getClientOriginalExtension();
+        $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
+        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        $org->update(['background_path'=> $imgNameNoEx.'.jpg']);
+
+        if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
+
+                unlink(public_path('storage/images/' . $imgName));
+
+        }
+
+            exec("mogrify  -resize '1150x380!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+	
 
         }
 
@@ -121,7 +128,23 @@ class OrganizeController extends Controller
 
             $request->file('logo_path')->move('storage/images', $time . $request->file('logo_path')->getClientOriginalName());
 //
-//            Image::make('storage/images/'.$time.'logo.jpg')->resize(100,100)->save();
+
+	$imgName = $time.$request->file('logo_path')->getClientOriginalName();
+        $imgEx = $request->file('logo_path')->getClientOriginalExtension();
+        $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
+        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
+
+        if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
+
+                unlink(public_path('storage/images/' . $imgName));
+
+        }
+
+            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+
+
+
 
         }
 
@@ -149,9 +172,14 @@ class OrganizeController extends Controller
 
         $org->email = $request->email;
         $org->telegram = $request->telegram;
+        if($request->input('address')){
+
+            $org->address = $request->address;
+        }
+
         $org->save();
 
-        return redirect()->route('orgMatches',['orgName'=>$org->name]);
+        return redirect()->route('orgMatches',['orgName'=>$org->slug]);
 
 //
 
@@ -1223,7 +1251,7 @@ class OrganizeController extends Controller
     public function post_orgAccount(Request $request)
     {
 
-        $this->validate($request, ['owner' => 'required', 'accountNumber' => 'required|min:16', 'bank' => 'required']);
+        $this->validate($request, ['owner' => 'required|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/', 'accountNumber' => 'required|min:16', 'bank' => 'required|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/']);
 
 //        send email to admin
         $org = Organize::where('id',$request->id)->first();
@@ -1354,6 +1382,25 @@ class OrganizeController extends Controller
 
     public function post_edit(Request $request){
 
+	 $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+// use key 'http' even if you send the request to https://...
+        $options = array(
+        'http' => array(
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data),
+          ),
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if(json_decode($result)->success === false){
+
+        return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+
+        }
+
+
         $time = time();
         $org = Organize::where('id',$request->id)->first();
         if( null != $request->file('logo_path')){
@@ -1364,6 +1411,22 @@ class OrganizeController extends Controller
             unlink(public_path('storage/images/'.$org->logo_path));
             $org->update(['logo_path'=> $time.$request->file('logo_path')->getClientOriginalName()]);
             $request->file('logo_path')->move('storage/images/', $time . $request->file('logo_path')->getClientOriginalName());
+		
+		 $imgName = $time.$request->file('logo_path')->getClientOriginalName();
+        $imgEx = $request->file('logo_path')->getClientOriginalExtension();
+        $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
+        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
+
+        if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
+
+                unlink(public_path('storage/images/' . $imgName));
+
+        }
+
+            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+		
+		
 
         }
 
@@ -1380,6 +1443,20 @@ class OrganizeController extends Controller
             unlink(public_path('storage/images/'.$org->background_path));
             $org->update(['background_path'=> $time.$request->file('background_path')->getClientOriginalName()]);
             $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
+
+		  $imgName = $time.$request->file('background_path')->getClientOriginalName();
+        $imgEx = $request->file('background_path')->getClientOriginalExtension();
+        $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
+        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        $org->update(['background_path'=> $imgNameNoEx.'.jpg']);
+
+        if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
+
+                unlink(public_path('storage/images/' . $imgName));
+
+        }
+
+            exec("mogrify  -resize '1150x380!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
 
         }
 

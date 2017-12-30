@@ -5,10 +5,10 @@
         <div>
             <div class="Vnav">
                 <ul>
-                    <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+                    <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
                     <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                    <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
-                    <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
+                    <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
+                    <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
                 </ul>
             </div>
 
@@ -28,8 +28,8 @@
             <br>
 
             <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-                <a class="nav-item nav-link active" href="{{route('makeGroupBracket',['id'=>$tournament->id,'url'=>$tournament->code])}}" >گروهی</a>
-                <a class="nav-item nav-link" href="{{route('ElBracket',['id'=>$tournament->id,'url'=>$tournament->code])}} " >حذفی</a>
+                <a class="nav-item nav-link active" href="{{route('makeGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" >گروهی</a>
+                <a class="nav-item nav-link" href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}} " >حذفی</a>
             </nav>
             <br>
             <h4 style="direction: rtl;">با استفاده از drag & drop ، تیم ها را گروه بندی کنید. </h4>
@@ -173,7 +173,7 @@
             </div>
             <div v-if="success">
                 <h4 >تغییرات اعمال شد</h4>
-                <a href="{{route('makeGroupBracket3',['id'=>$tournament->id,'url'=>$tournament->code])}}"><button  type="button" class="btn btn-success">ادامه </button></a>
+                <a href="{{route('makeGroupBracket3',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button  type="button" class="btn btn-success">ادامه </button></a>
             </div>
 
             <center><button @click="save" type="submit" class="btn btn-primary">ذخیره</button> </center>
@@ -216,7 +216,7 @@
 
                         vm = this
 //                    console.log(GTable);
-                    axios.post({!! json_encode(route('makeGroupBracket',['id'=>$tournament->id,'url'=>$tournament->code]))!!},{'GTable':GTable }).then(function (response) {
+                    axios.post({!! json_encode(route('makeGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName]))!!},{'GTable':GTable }).then(function (response) {
 
 
                        if(response.data == 1){

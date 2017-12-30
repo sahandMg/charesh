@@ -3,10 +3,10 @@
   <div class="row" style=" direction: rtl;">
    <div class="Vnav">
     <ul>
-      <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+      <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
       <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-      <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
-      <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
+      <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
+      <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
     </ul>
    </div>
    <div class="container">
@@ -27,7 +27,7 @@
                  <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
                      <div>
                          <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                         <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+                         <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
                          {{--<img src="storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" >--}}
                          <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
                              <div class="back-stars">
@@ -62,7 +62,7 @@
                          </div>
 
 
-                             <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->matchName])}}" class="btn btn-info">ورود به پنل مسابقه</a>
+                             <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->slug])}}" class="btn btn-info">ورود به پنل مسابقه</a>
 
 
 

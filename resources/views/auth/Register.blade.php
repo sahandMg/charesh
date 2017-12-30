@@ -14,7 +14,12 @@
           @endforeach
       </div>
          @endif
+	@if(count(session('message'))>0)
 
+	 <div class="alert alert-danger" role="alert">
+	{{session('message')}}
+	</div>
+	@endif
       <div class="form-group">
         <label for="name">نام کاربری</label>
         <input name="username" type="name" value="{{Request::old('username')}}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="نام کاربری خود را وارد کنید">
@@ -34,7 +39,9 @@
         <label for="exampleInputPassword1">تکرار رمز</label>
         <input name="repeat" type="password" class="form-control" id="exampleInputPassword1" placeholder="تکرار رمز">
       </div>
-
+	<br>
+{{--<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>--}}
+<br>
        <button type="submit" class="btn btn-primary">ثبت نام </button>
        <a href="{{route('login')}}" class="btn btn-link">قبلا ثبت نام کرده ام</a>
       </form>

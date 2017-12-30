@@ -27,7 +27,7 @@
          <div class="form-group row">
              <label for="Name-input" class="col-2 col-form-label">نام سازمان : </label>
              <div class="col-5">
-                 <input  class="form-control" @input="check" name="name" v-model="name" type="text" value="" id="example-text-input">
+                 <input  class="form-control" @input="check" name="OrgName" v-model="name" type="text" value="" id="example-text-input">
              </div>
          </div>
 

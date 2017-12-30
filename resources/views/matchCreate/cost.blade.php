@@ -21,11 +21,10 @@
       {{--</div>--}}
 
     <div class="form-group row">
-        <label for="Name-input" class="col-2 col-form-label">هزینه ثبت نام : </label>
+        <label for="Name-input" class="col-2 col-form-label">هزینه ثبت نام(تومان) : </label>
         <div class="col-5">
-         <input name="cost" v-model="cost"  @input="check"  class="form-control" type="number" min="5000" step="1000" :value="cost" placeholder="به تومان" id="example-text-input">
+         <input name="cost" v-model="cost"  @input="check"  class="form-control" type="number" min="1000" step="1000" :value="cost" placeholder="به تومان" id="example-text-input">
        </div>
-      </div>
 
    <h3>اختیاری </h3>
 
@@ -49,7 +48,7 @@
 
          el:'#app',
          data:{
-             cost:5000,
+             cost:1000,
              btn:true,
              number: 1000,
              animatedNumber: 1000,
@@ -81,7 +80,7 @@
              check:function () {
 
 
-                 if(this.cost>= 5000){
+                 if(this.cost>= 1000){
 
                      this.btn = false
 

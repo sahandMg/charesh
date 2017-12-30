@@ -57,7 +57,7 @@ class MatchController extends Controller
     {
 
 
-        $this->validate($request,['comment'=>'required']);
+        $this->validate($request,['matchName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required']);
 //        dd($request->comment);
 //        if( count(Tournament::where('organize_id',Auth::id())->orderBy('created_at','decs')->get())>0){
 //
@@ -102,10 +102,20 @@ class MatchController extends Controller
             $tournament->path = $time.$request->file('path')->getClientOriginalName();
 //            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
             $request->file('path')->move('storage/images',$time.$request->file('path')->getClientOriginalName());
-            Image::make('storage/images/'.$time.$request->file('path')->getClientOriginalName())->resize(1290,600)->save();
-//            exec("convert URL::asset('storage/images/'.$time.$request->file('path')->getClientOriginalName())  /var/www/html/chaleshjoo/public/storage/images/1512151992Logo.jpg");
-//            exec("mogrify  -resize '1290x600!' URL::asset('storage/images/'.$time.$request->file('path')->getClientOriginalName()");
 
+	$imgName = $time.$request->file('path')->getClientOriginalName();
+        $imgEx = $request->file('path')->getClientOriginalExtension();
+        $imgNameNoEx = basename($time . $request->file('path')->getClientOriginalName(),'.'.$request->file('path')->getClientOriginalExtension());
+        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        $tournament->path = $imgNameNoEx.'.jpg';
+
+        if(public_path('storage/images/' . $imgName) != null &&  $imgEx != 'jpg'){
+
+                unlink(public_path('storage/images/' . $imgName));
+
+        }
+
+            exec("mogrify  -resize '1290x600!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
 
         }else{
 
@@ -346,7 +356,7 @@ class MatchController extends Controller
 //        Junk::truncate();
 
         Junk::where('organize_id',Auth::id())->orderBy('created_at','decs')->delete();
-        return redirect()->route('orgMatches',['orgName'=>Auth::user()->organize->name]);
+        return redirect()->route('orgMatches',['orgName'=>Auth::user()->organize->slug]);
 
     }
 
@@ -814,7 +824,7 @@ class MatchController extends Controller
 
 
 
-                return redirect()->route('userChallenge');
+                return redirect()->route('userChallenge',['username'=>Auth::user()->slug]);
             } else {
 
                 return redirect()->back()->with(['message' => 'متاسفانه اعتبار شما برای خرید بلیط کافی نیست. ']);
@@ -843,7 +853,7 @@ class MatchController extends Controller
 
             }
 
-            $this->validate($request,['teamName'=>'required|unique:teams','TeamLogo'=>'image']);
+            $this->validate($request,['teamName'=>'required|unique:teams|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','TeamLogo'=>'image']);
 
             if($sub == 4 && null == $request->input('additionalData')){
 
@@ -975,7 +985,7 @@ class MatchController extends Controller
             });
         }
 
-        return redirect()->route('userChallenge');
+        return redirect()->route('userChallenge',['username'=>Auth::user()->slug]);
     }
 
 

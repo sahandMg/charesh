@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|unique:users',
+            'username' => 'required|unique:users|min:3|max:20|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'repeat' => 'required|same:password'
@@ -32,3 +32,4 @@ class RegisterRequest extends FormRequest
         ];
     }
 }
+//

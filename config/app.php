@@ -168,6 +168,8 @@ return [
 //        Elibyy\TCPDF\ServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 	 SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Morilog\Jalali\JalaliServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -244,7 +246,7 @@ return [
 //        'PDF' => Elibyy\TCPDF\Facades\TCPDF::class
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,
 	 'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-
+        'jDate' => Morilog\Jalali\Facades\jDate::class
 
 
 

@@ -42,7 +42,7 @@
     <div class="form-group row">
       <label for="Telegram-input" class="col-2 col-form-label">آدرس : </label>
       <div class="col-5">
-        <input class="form-control" type="name" placeholder="خیابان" id="Telegram-input">
+        <input class="form-control" name="address" type="name" placeholder="خیابان" id="Telegram-input">
       </div>
     </div>
 

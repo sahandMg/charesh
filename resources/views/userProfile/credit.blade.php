@@ -5,7 +5,7 @@
     <div class="card">
      <h3 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">افزایش اعتبار</h3>
 
-     <form style="padding: 20px;" method="post" action="{{route('credit',['username'=>Auth::user()->username])}}">
+     <form style="padding: 20px;" method="post" action="{{route('credit',['username'=>Auth::user()->slug])}}">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
 
          @if(count(session('message'))>0)
@@ -45,7 +45,7 @@
                   <tr>
                       <td  class="text-center">{{$transaction->type}}</td>
                       <td  class="text-center">{{$transaction->money}}</td>
-                      <td  class="text-center">{{$transaction->created_at}}</td>
+                      <td  class="text-center">{{ jDate::forge($transaction->created_at)->format('%d %B، %Y')}}</td>
                   </tr>
 
               @endforeach

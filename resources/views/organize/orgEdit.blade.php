@@ -4,10 +4,10 @@
   <div class="row" style=" direction: rtl;">
       <div class="Vnav">
           <ul>
-              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
               <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a class="active" href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ﻭیرایش اطلاعات من</a></li>
-              <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}"> حساب من</a></li>
+              <li><a class="active" href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
+              <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
 
           </ul>
       </div>
@@ -15,7 +15,7 @@
     <!-- Tiket Counter -->
     <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
 
-        <form style="padding: 20px;" method="POST" action="{{route('orgEdit',['id'=>$org->id,'orgName'=>$name->organize->name])}} " enctype="multipart/form-data">
+        <form style="padding: 20px;" method="POST" action="{{route('orgEdit',['id'=>$org->id,'orgName'=>$name->organize->slug])}} " enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
        <!-- ٍٍError message -->
             @if(count(session('message')) )
@@ -34,6 +34,13 @@
 
                 </div>
             @endif
+	
+		@if(count(session('settingError')) )
+                <div class="alert alert-danger ">
+                    {{session('settingError')}}
+                </div>
+            @endif
+
 
        <div class="form-group row">
         <label for="InputFile" class="col-2 col-form-label">لوگو (100px * 100px) : </label>
@@ -62,6 +69,7 @@
             <input class="form-control" type="email" name="email" placeholder="bootstrap@example.com" id="example-email-input">
           </div>
         </div>
+	<br>
         <h3>اختیاری</h3>
         <br>
         <div class="form-group row">
@@ -88,8 +96,9 @@
         <div class="form-group row">
          <div id="map" style="width:80%;height: 250px; background:whitesmoke;"></div>
         </div>
-
-
+	<br>
+	<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+	<br>
        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
 
     </form>

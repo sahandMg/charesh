@@ -89,7 +89,7 @@
                                 @if($org->tournaments[$i]->canceled == 1)
                                     <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}" alt="Responsive image" style="width: 100%;">
                                     @else
-                                    <a href="{{route('matchRegistered',['id'=>$org->tournaments[$i]->id,'matchName'=>$org->tournaments[$i]->matchName])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                                    <a href="{{route('matchRegistered',['id'=>$org->tournaments[$i]->id,'matchName'=>$org->tournaments[$i]->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>
                                     @endif
 
 

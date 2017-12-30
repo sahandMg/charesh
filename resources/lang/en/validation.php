@@ -65,7 +65,7 @@ return [
     'not_in'               => 'The selected :attribute is invalid.',
     'numeric'              => 'The :attribute must be a number.',
     'present'              => 'The :attribute field must be present.',
-    'regex'                => 'The :attribute format is invalid.',
+    'regex'                => 'برای :attribute تنها مجاز به استفاده از کارکتر های مجاز هستید',
     'required'             => ' بخش :attribute را کامل کنید',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
@@ -84,7 +84,7 @@ return [
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
     'unique'               => ':attribute قبلا ثبت شده است',
-    'uploaded'             => 'The :attribute failed to upload.',
+    'uploaded'             => ' :attribute آپلود نشد',
     'url'                  => 'The :attribute format is invalid.',
 
     /*
@@ -153,7 +153,8 @@ return [
         'additionalData'=> 'اطلاعات درخواست شده',
         'teamName'=> 'نام تیم',
         'teammate'=> 'اعضای تیم',
-        'teamLogo' => 'لوگو'
+        'teamLogo' => 'لوگو',
+        'OrgName'=> 'نام سازمان'
         //        'mode' => 'حضور در مسابقه',
 //        'matchType' => 'نوع مسابقه',
 //        'maxAttenders' => 'حداکثر تعداد شرکت کنندگان'

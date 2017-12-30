@@ -33,7 +33,7 @@
     <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
       <div>
           <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$matches[$i]->matchName}}</h4>
-          <a href="{{route('organizeProfile',['id'=>$matches[$i]->organize->name])}}"> <img src="{{URL::asset('storage/images/'.$matches[$i]->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
+          <a href="{{route('organizeProfile',['id'=>$matches[$i]->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$matches[$i]->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
           <div class="star-rating" title="{{$matches[$i]->organize->rating*10}}%" style="padding-top: 13px;float: left;">
               <div class="back-stars">
                   <i class="fa fa-star" aria-hidden="true"></i>
@@ -56,7 +56,7 @@
         @if($matches[$i]->canceled == 1)
             <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;">
         @else
-            <a href="{{route('matchRegistered',['id'=>$matches[$i]->id,'matchName'=>$matches[$i]->matchName])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>
+            <a href="{{route('matchRegistered',['id'=>$matches[$i]->id,'matchName'=>$matches[$i]->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>
         @endif
 
 
@@ -78,7 +78,7 @@
 
               @if($registered->id == $matches[$i]->id && $matches[$i]->canceled == 0)
                 <p hidden>{{$t++}}</p>
-                  <a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="btn">جزییات مسابقه</a>
+                  <a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug])}}" class="btn">جزییات مسابقه</a>
 
               @endif
 
@@ -89,14 +89,14 @@
 
               @if($matches[$i]->endTime == 0 && $matches[$i]->canceled == 0 )
 
-                  <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید </a>
+                  <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید </a>
 
                   @elseif($matches[$i]->tickets == $matches[$i]->sold && $matches[$i]->canceled == 0)
-                      <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
+                      <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
 
 
                   @elseif($matches[$i]->canceled == 0)
-                  <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="btn btn-success">ثبت نام</a>
+                  <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="btn btn-success">ثبت نام</a>
                 @else
 
 
@@ -112,7 +112,7 @@
 
 
 
-         <div class="text-center"> {!! $matches->links() !!} </div>
+         {{--<div class="text-center"> {!! $matches->links() !!} </div>--}}
 
 
 

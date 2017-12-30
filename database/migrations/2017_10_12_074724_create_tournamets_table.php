@@ -16,6 +16,7 @@ class CreateTournametsTable extends Migration
         Schema::create('tournaments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('matchName');
+            $table->text('slug')->nullable();
             $table->string('url')->unique();
             $table->string('code');
             $table->string('startTime');

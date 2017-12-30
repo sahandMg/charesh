@@ -33,7 +33,7 @@
             @endforeach
     </ul>
         @endif
-    <a href="{{route('generatePdf',['id'=>$match->id,'url'=>$match->code])}}"><h4>لینک دانلود بلیط</h4></a>
+    <a href="{{route('generatePdf',['id'=>$match->id,'matchName'=>$match->matchName])}}"><h4>لینک دانلود بلیط</h4></a>
 
 </center>
 </body>

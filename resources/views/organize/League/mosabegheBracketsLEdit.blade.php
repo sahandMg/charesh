@@ -4,10 +4,10 @@
         <!— right menu —>
         <div class="col-2">
             <ul class="Vnav">
-                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->name])}}">پنل مدیریت</a></li>
+                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
                 <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->name])}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->name])}}">حساب من</a></li>
+                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
+                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
             </ul>
         </div>
         <!— content —>
@@ -21,7 +21,7 @@
        <br>
        <!-- League Table -->
 
-         <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
+         <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
          <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
 
          <div class="row" id="Groups" style="direction: ltr;padding: 20px;">
@@ -301,7 +301,7 @@
                     vm = this
                  vm.roundNum = document.getElementById('selectkind').value;
 //                  console.log(vm.roundNum)
-                  axios.get({!! json_encode(route('checkRound',['id'=>$tournament->id]))!!}+vm.roundNum ).then(function (response) {
+                  axios.get({!! json_encode(route('checkRound',['id'=>$tournament->id]))!!}+'/'+vm.roundNum ).then(function (response) {
 
 //                    console.log(response.data);
                         if(response.data != 0) {
@@ -584,7 +584,7 @@
                                 <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{unserialize($bracketDetail->LTable)[0][1][$i][4]}}">
 
                                     @if($tournament->matchType == 'انفرادی')
-                                        <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\User::where('userName',unserialize($bracketDetail->LTable)[0][1][$i][0])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}
+                                        <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\User::where('userName',unserialize($bracketDetail->LTable)[0][1][$i][4])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}
                                     @else
                                         <img class="rounded" height="30" src="{{URL::asset('storage/images/'.App\Team::where('teamName',unserialize($bracketDetail->LTable)[0][1][$i][4])->first()->path)}}" alt=""> {{unserialize($bracketDetail->LTable)[0][1][$i][4]}}
                                     @endif

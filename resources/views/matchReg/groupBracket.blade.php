@@ -12,8 +12,8 @@
 
 
   <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-      <a class="nav-item nav-link" href="{{route('MatchGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">حذفی</a>
-      <a class="nav-item nav-link active" href="{{route('matchGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}">گروهی</a>
+      <a class="nav-item nav-link" href="{{route('MatchGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">حذفی</a>
+      <a class="nav-item nav-link active" href="{{route('matchGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">گروهی</a>
 
   </nav>
 
