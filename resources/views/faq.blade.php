@@ -4,32 +4,35 @@
 
 @section('content')
     <div class="container">
-        <h1 class="heading-primary">CSS Responsive Animated Accordion</h1>
-        <div class="accordion">
+        <h1 class="heading-primary">سوالات متداول</h1>
+        <div class="accordion" style="direction: rtl;">
             <dl>
                 <dt>
-                    <a href="#accordion1" aria-expanded="false" aria-controls="accordion1" class="accordion-title accordionTitle js-accordionTrigger">First Accordion heading</a>
+                    <a href="#accordion1" aria-expanded="false" aria-controls="accordion1" class="accordion-title accordionTitle js-accordionTrigger">چه نوع مسابقاتی برگزار می شود ؟</a>
                 </dt>
                 <dd class="accordion-content accordionItem is-collapsed" id="accordion1" aria-hidden="true">
-                    <p>Lorem ipsum dolor sit amet, consectetur <a href="https://www.google.com">Test</a>adipiscing elit. Morbi eu interdum diam. Donec interdum porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus, rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis eget mauris. </p>
-                    <p>Aliquam dapibus, ante quis fringilla feugiat, mauris risus condimentum massa, at elementum libero quam ac ligula. Pellentesque at rhoncus dolor. Duis porttitor nibh ut lobortis aliquam. Nullam eu dolor venenatis mauris placerat tristique eget id dolor. Quisque blandit adipiscing erat vitae dapibus. Nulla aliquam magna nec elementum tincidunt.</p>
+                    <p>هدف چارش، فراهم کردن پلتفرمی برای مدیریت برگزاری مسابقات در تمامی زمینه های علمی، ورزشی، بازی های رایانه ای و آنلاین و ... می باشد </p>
                 </dd>
                 <dt>
                     <a href="#accordion2" aria-expanded="false" aria-controls="accordion2" class="accordion-title accordionTitle js-accordionTrigger">
-                        Second Accordion heading</a>
+                        تعرفه ؟</a>
                 </dt>
                 <dd class="accordion-content accordionItem is-collapsed" id="accordion2" aria-hidden="true">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus, rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis eget mauris. </p>
-                    <p>Aliquam dapibus, ante quis fringilla feugiat, mauris risus condimentum massa, at elementum libero quam ac ligula. Pellentesque at rhoncus dolor. Duis porttitor nibh ut lobortis aliquam. Nullam eu dolor venenatis mauris placerat tristique eget id dolor. Quisque blandit adipiscing erat vitae dapibus. Nulla aliquam magna nec elementum tincidunt.</p>
+                    <p>تیم چارش 2% از مبلغ فروش بلیت ها را به عنوان حق کمیسیون بر می دارد. </p>
                 </dd>
                 <dt>
                     <a href="#accordion3" aria-expanded="false" aria-controls="accordion3" class="accordion-title accordionTitle js-accordionTrigger">
-                        Third Accordion heading
-                    </a>
+                        چه زمانی هزینه ثبت نام به برگزار کننده پرداخت می شود ؟ </a>
                 </dt>
                 <dd class="accordion-content accordionItem is-collapsed" id="accordion3" aria-hidden="true">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus, rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis eget mauris. </p>
-                    <p>Aliquam dapibus, ante quis fringilla feugiat, mauris risus condimentum massa, at elementum libero quam ac ligula. Pellentesque at rhoncus dolor. Duis porttitor nibh ut lobortis aliquam. Nullam eu dolor venenatis mauris placerat tristique eget id dolor. Quisque blandit adipiscing erat vitae dapibus. Nulla aliquam magna nec elementum tincidunt.</p>
+                    <p>پس از آنکه مسابقه به اتمام رسید و از پرداخت جوایز به نفرات برتر اطمینان یافتیم ، هزینه ثبت نام به حساب برگزار کننده واریز می شود. </p>
+                </dd>
+                <dt>
+                    <a href="#accordion4" aria-expanded="false" aria-controls="accordion4" class="accordion-title accordionTitle js-accordionTrigger">
+                        چطور اعتماد کنیم ؟ </a>
+                </dt>
+                <dd class="accordion-content accordionItem is-collapsed" id="accordion4" aria-hidden="true">
+                    <p>تا اتمام مسابقه هزینه ثبت نام به برگزار کننده پردخت نمی شود و اگر شکایات متعددی از برگزاری مسابقه ای شود ، پس از بررسی شکایات در صورت ثابت شدن تخلف برگزارکننده ، سایت چارش هزینه ثبت نام را به شرکت کننده ها برمی گرداند. </p>
                 </dd>
             </dl>
         </div>
