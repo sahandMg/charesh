@@ -27,18 +27,19 @@ class CreateJunksTable extends Migration
             $table->string('matchType')->nullable();
             $table->integer('maxAttenders')->nullable();
             $table->integer('maxTeam')->nullable();
-            $table->integer('minMember')->nullable();
+            $table->integer('subst')->nullable();
             $table->integer('maxMember')->nullable();
             $table->string('attendType')->nullable();
             $table->mediumText('prize',1000)->nullable();
             $table->mediumText('rules',1000)->nullable();
             $table->mediumText('plan',1000)->nullable();
             $table->integer('cost')->nullable();
+            $table->string('free')->nullable();
             $table->mediumText('moreInfo',1200)->nullable();
-            $table->string('email')->nullable();
+            $table->text('address')->nullable();
             $table->text('lat')->nullable();
             $table->text('lng')->nullable();
-            $table->string('telegram')->nullable();
+
             $table->integer('user_id')->default('0');
             $table->integer('organize_id')->default('0');
             $table->timestamps();

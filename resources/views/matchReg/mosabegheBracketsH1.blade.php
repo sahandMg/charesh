@@ -153,7 +153,8 @@ function render_fn(container, data, score, state) {
     case "entry-no-score":
     case "entry-default-win":
     case "entry-complete":
-      container.append('<img src="images/'+data.flag+'.jpg" /> ').append(data.name)
+        container.append('<img style="height:20px;width:20px" src="{{URL::asset('storage/images')}}'+'/'+data.flag+'.jpg" /> ').append(data.name)
+
       return;
   }
 }

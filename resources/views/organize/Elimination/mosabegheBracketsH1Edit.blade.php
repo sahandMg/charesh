@@ -1,53 +1,14 @@
 @extends('masterUserHeader.body')
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
-
-    <div class="row" style=" direction: rtl;">
-        <!— right menu —>
-        <div class="col-2">
-            <ul class="Vnav">
-                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
-            </ul>
-        </div>
-        <!— content —>
-        <div class="container col-8" id="app">
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+        <div class="container" id="elbracket">
             <br>
-            @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-            <br>
-            <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
-            <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
-
-            <br>
-
-            <!-- Brackets -->
-            <!--   <div class="row" style="padding: 30px;direction: ltr;">
-                  <div style="padding: 5px;">
-                    <img class="rounded" src="images/LOLBack.jpg" height="30" > Tigers
-                  </div>
-                  <div style="padding: 5px;">
-                    <img class="rounded" src="images/LOLBack.jpg" height="30" > Tigers
-                  </div>
-              </div>
-               -->
-            <!-- <hr> -->
-
-            {{--<div id="playoff"></div>--}}
-
-
-
             <h4 style="direction: rtl;padding-top: 10px;">نام تیم ها و نتایج مسابقات را داخل براکت بنویسید.</h4>
-
             <br>
-
-
-
             <div class="row" id="allTeams" style="padding: 30px;direction: ltr;border-style: solid;">
                 @foreach($teams as $team)
-                    <div style="padding: 5px;">
+                    <div class="teamiaFardi">
                         @if($tournament->matchType == 'انفرادی')
                             <img class="rounded" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->username}}
                         @else
@@ -56,56 +17,40 @@
                     </div>
                 @endforeach
             </div>
-
-
-
-
-
-        </div>
+    <div class="container">
+      <div id="customHandlers" style="direction: ltr;margin-left: 20px;z-index:0.5; "></div>
     </div>
-    <div id="customHandlers" style="direction: ltr;margin-left: 20px;z-index:0.5;"></div>
     <br>
+    <button onclick="saveFn('finish',null)" type="button" class="btn btn-primary" style="margin: auto;display: block;">ذخیره</button>
     <br>
-    <br>
-    <div >
-        <center><button onclick="saveFn('finish',null)" type="button" class="btn btn-primary">ذخیره</button></center>
+    <div style="margin: auto;display: block;text-align: center;">
+        <!-- League Table -->
+        <p style=""></p>
+        <button @click="confirm" type="button" class="btn btn-warning" style="">تغییر نوع برگزاری براکت</button>
     </div>
-
+     {{--  matn zakhire --}}
     <h4 id="saveData"></h4>
 
-
+    </div>
 
     <style>
-        .Vnav {
-            margin-top: 20px;
-            margin-right: 40px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 0.1;
-            background-color: #f1f1f1;
-            max-height: 200px;
-            list-style-type: none;
-            /*margin: 0;*/
-            padding: 0;
-            width: 200px;
-            /*background-color: #f1f1f1;*/
+        .teamiaFardi {
+            padding: 5px;
+            float: left;
         }
-
-
-        .Vnav li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
+        .teamiaFardi img {
+            height: 30px;
+            width: 30px;
         }
-
-        .Vnav li.active {
-            background-color: #008CBA;
-            color: white;
-        }
-
-        .Vnav li a:hover:not(.active) {
-            background-color: #555;
-            color: white;
+        @media screen and (max-width: 600px) {
+            .teamiaFardi {
+                padding: 3px;
+                font-size: 75%;
+            }
+            .teamiaFardi img {
+                height: 20px;
+                width: 20px;
+            }
         }
     </style>
 
@@ -128,7 +73,7 @@
 
         new Vue({
 
-            el:'#app',
+            el:'#elbracket',
             data:{
                 detail:''
 
@@ -165,6 +110,16 @@
 //                    console.log(customData);
                 },
 
+                confirm:function () {
+
+                   var ans = prompt('در صورت تغییر نوع برگزاری ، تمامی اطلاعات جدول امتیازات و براکت مسابقه پاک می شود. برای ادامه، تایید را وارد کنید');
+                    if(ans == 'تایید'){
+
+                        window.location.href = {!! json_encode(route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])) !!}
+                    }
+
+                },
+
 
                 run: function() {
 
@@ -181,7 +136,7 @@
             created:function () {
 
                 vm = this
-                axios.get('{!!route('getElBracket',['id'=>$tournament->id])!!}').then(function (response) {
+                axios.get('{!!route('getElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])!!}').then(function (response) {
 
                     vm.detail = response.data;
 
@@ -260,8 +215,8 @@
                 case "entry-default-win":
                 case "entry-complete":
 
-
-                    container.append('<img src="images/'+data.flag+'.jpg" /> ').append(data.name)
+//                    console.log(data.flag)
+                    container.append('<img style="height:20px;width:20px" src="{{URL::asset('storage/images')}}'+'/'+data.flag+'.jpg" /> ').append(data.name)
                     return;
             }
         }
@@ -285,11 +240,11 @@
 
             }else{
 
-
+                console.log('param');
                 console.log(param)
                 axios.post('{{route('ElBracket2',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}',{'data':param}).then(function (response) {
-
-
+                console.log('customData');
+                console.log(customData);
                     if(response.data == 1){
 
 //                document.getElementById('saveData').innerHTML = 'اطلاعات براکت ذخیره شد'

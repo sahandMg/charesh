@@ -19,6 +19,7 @@ class CreateGroupsTable extends Migration
             $table->integer('tournament_id')->default(0);
             $table->integer('team_id')->default(0);
             $table->integer('organize_id')->default(0);
+            $table->text('moreInfo')->nullable();
             $table->timestamps();
         });
     }

@@ -1,15 +1,14 @@
 @extends('masterUserHeader.body')
 @section('content')
- <div class="container" style="direction: rtl;">
+    <ul class="nav nav-tabs" id="app">
+        {{--<li class="disabled"><a href=""> راه های ارتباطی </a></li>--}}
+        <li class="disabled"><a href=""> اطلاعات ثبت نام </a></li>
 
-  <nav class="nav nav-pills nav-fill" style="padding-top: 50px;">
-    <a class="nav-item nav-link disabled" href="#">اطلاعات پایه</a>
-    <a class="nav-item nav-link disabled" href="#">اطلاعات مسابقه</a>
-    <a class="nav-item nav-link active" href="#">قوانین</a>
-    <a class="nav-item nav-link disabled" href="#">برنامه مسابقات</a>
-    <a class="nav-item nav-link disabled" href="#">اطلاعات ثبت نام</a>
-    <a class="nav-item nav-link disabled" href="#">راه های ارتباطی</a>
-  </nav>
+        <li class="active"><a href=""> قوانین </a></li>
+        <li class="disabled"><a href=""> اطلاعات مسابقه </a></li>
+        <li class="disabled"><a href="">اطلاعات پایه</a></li>
+    </ul>
+ <div class="container" style="direction: rtl;width: 80%;">
 
   <br>
   <br>
@@ -47,7 +46,25 @@
 
 </div>
 
-
+    <style>
+        .nav-tabs li {
+            width: 20%;
+            font-size: 100%;
+            font-weight: 400;
+        }
+        @media screen and (max-width: 800px) {
+            .nav-tabs li {
+                font-size: 80%;
+                font-weight: 400;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .nav-tabs li {
+                font-size: 50%;
+                font-weight: 400;
+            }
+        }
+    </style>
 
 
  <script type="text/javascript" src="js/bootstrap.js"></script>

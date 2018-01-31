@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Spatie\Browsershot\Browsershot;
@@ -20,59 +21,42 @@ use Spatie\Browsershot\Browsershot;
 //Route::get('/home',['as'=>'userHome','uses'=>'PageController@userHome']);
 
 
-Route::get('chlbz/home/token',function (){
+Route::get('list',function (){
 
-    echo csrf_token();
+    return view('CheckList');
 });
 //
 
-Route::get('payment',function(){
+Route::get('test',function (){
 
-    $MerchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'; //Required
-    $Amount = 1000; //Amount will be based on Toman - Required
-    $Description = 'توضیحات تراکنش تستی'; // Required
-    $Email = 'UserEmail@Mail.Com'; // Optional
-    $Mobile = '09123456789'; // Optional
-    $CallbackURL = 'http://www.gameinja.com/credit'; // Required
-
-
-    $client = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
-
-    $result = $client->PaymentRequest(
-        [
-            'MerchantID' => $MerchantID,
-            'Amount' => $Amount,
-            'Description' => $Description,
-            'Email' => $Email,
-            'Mobile' => $Mobile,
-            'CallbackURL' => $CallbackURL,
-        ]
-    );
-
-//Redirect to URL You can do it also by creating a form
-    if ($result->Status == 100) {
-//        Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority);
-//برای استفاده از زرین گیت باید ادرس به صورت زیر تغییر کند:
-Header('Location: https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'/ZarinGate');
-    } else {
-        echo'ERR: '.$result->Status;
-    }
-
+    echo csrf_token();
 
 });
+
+
 
 // ---------------- Admin panel -----------------------
 
 Route::group(['prefix'=>'admin'],function (){
 
 
-    Route::get('status','API\UserController@status')->name('barGraph');
+    Route::get('status','API\UserController@status')->name('barGraph')->middleware('admin');
 
-    Route::get('more-info',['as'=>'moreInfo','uses'=>'API\UserController@moreInfo']);
+    Route::get('more-info',['as'=>'moreInfo','uses'=>'API\UserController@moreInfo'])->middleware('admin');
 
-    Route::get('tournaments',['as'=>'tournaments','uses'=>'AdminController@tournaments']);
+    Route::get('tournament-img',['as'=>'matchImg','uses'=>'AdminController@matchImg']);
 
+    Route::get('contents',['as'=>'contents','uses'=>'AdminController@contents'])->middleware('admin');
 
+    Route::get('text-contents',['as'=>'text','uses'=>'AdminController@text'])->middleware('admin');
+
+    Route::get('org-img',['as'=>'orgImg','uses'=>'AdminController@orgImg'])->middleware('admin');
+
+    Route::get('org-text',['as'=>'orgText','uses'=>'AdminController@orgText'])->middleware('admin');
+
+    Route::get('payment',['as' => 'payment','uses'=>'AdminController@payment'])->middleware('admin');
+
+    Route::get('canceled-matches',['as' => 'canceled','uses'=>'AdminController@canceled'])->middleware('admin');
 });
 
 
@@ -111,33 +95,34 @@ Route::group(['prefix'=>'app'],function (){
 // ------------- contact ----------------
 //Route::group(['prefix'=>'chlbz'],function (){
 
-    Route::get('contact',['as'=>'contact','uses'=>'PageController@contact']);
-    Route::post('contact',['as'=>'contact','uses'=>'PageController@postContact'])->middleware('throttle:10,1');
-    Route::get('about',['as'=>'about','uses'=>'PageController@about']);
+Route::get('contact',['as'=>'contact','uses'=>'PageController@contact']);
+Route::post('contact',['as'=>'contact','uses'=>'PageController@postContact'])->middleware('throttle:10,1');
+Route::get('about',['as'=>'about','uses'=>'PageController@about']);
+Route::post('message',['as'=>'userMessage','uses'=>'MatchController@userMessage']);
+Route::get('register',['middleware'=> ['auth'],'as'=>'register','uses'=>'AuthController@getRegister']);
+Route::post('register',['as'=>'register','uses'=>'AuthController@postRegister'])->middleware('throttle:10,10');
+Route::get('FAQ',['as'=>'faq','uses'=>'PageController@faq']);
+Route::get('login',['middleware'=> ['auth'],'as'=>'login','uses'=>'AuthController@getLogin']);
+Route::post('login',['as'=>'login','uses'=>'AuthController@postLogin'])->middleware('throttle:10,10');
 
-    Route::get('register',['middleware'=> ['auth'],'as'=>'register','uses'=>'AuthController@getRegister']);
-    Route::post('register',['as'=>'register','uses'=>'AuthController@postRegister'])->middleware('throttle:10,10');
+Route::get('redirect',function (){
+    return view('auth.redirect');
+})->middleware('auth')->name('redirect');
 
-    Route::get('login',['middleware'=> ['auth'],'as'=>'login','uses'=>'AuthController@getLogin']);
-    Route::post('login',['as'=>'login','uses'=>'AuthController@postLogin'])->middleware('throttle:10,10');
+Route::get('confirm/{id}',['as'=>'confirm','uses'=>'AuthController@confirm']);
 
-    Route::get('redirect',function (){
-        return view('auth.redirect');
-    })->middleware('auth')->name('redirect');
+Route::get('email-verification',['as' => 'verify','uses'=>'AuthController@verify']);
 
-    Route::get('confirm/{id}',['as'=>'confirm','uses'=>'AuthController@confirm']);
-
-    Route::get('email-verification',['as' => 'verify','uses'=>'AuthController@verify']);
-
-    Route::post('email-verification-resend',['as' => 'resendVerify','uses'=>'AuthController@post_verifyAgain']);
+Route::post('email-verification-resend',['as' => 'resendVerify','uses'=>'AuthController@post_verifyAgain']);
 
 
-    Route::post('password-reset',['as'=>'reset','uses'=>'AuthController@postReset'])->middleware('throttle:10,1');
+Route::post('password-reset',['as'=>'reset','uses'=>'AuthController@postReset'])->middleware('throttle:10,1');
 
-    Route::get('home',['as'=>'home','uses'=>'PageController@home']);
-    Route::get('view-more-{num}',['as'=>'viewMore','uses'=>'PageController@viewMore']);
+Route::get('home',['as'=>'home','uses'=>'PageController@home']);
+Route::get('view-more-{num}',['as'=>'viewMore','uses'=>'PageController@viewMore']);
 
-//});
+
+
 
 //Route::get('/',function(){})->middleware('beforeHome');
 Route::get('/',['as'=>'home','uses'=>'PageController@home']);
@@ -151,6 +136,7 @@ Route::group(['prefix'=>'challenge/{matchName}'],function () {
 
     Route::get('register',['as'=>'matchRegistered','uses'=>'MatchController@MatchRegister']);
 
+    Route::get('register-overview',['middleware'=>['supplier','guest'],'as'=>'overView','uses'=>'MatchController@RegOverView']);
 
     Route::get('rules',['as'=>'matchRules','uses'=>'MatchController@MatchRules']);
 // Brackets
@@ -168,10 +154,12 @@ Route::group(['prefix'=>'challenge/{matchName}'],function () {
 
     Route::get('announcements',['as'=>'matchAnnounce','uses'=>'MatchController@MatchAnnounce']);
 
-    Route::get('{name}/ticket',['as'=>'generatePdf','uses'=>'UserController@generatePdf']);
+    Route::get('{name}/ticket',['as'=>'generatePdf','uses'=>'UserController@generatePdf'])->middleware('ticket');
     Route::get('{name}/ticket2',['as'=>'generatePdf2','uses'=>'UserController@generatePdf2']);
 
     Route::get('ticket-team',['as'=>'getTeamPdf','uses'=>'UserController@getTeamPdf']);
+
+
 // ------------- Brackets---------------
 
     Route::get('league-bracket',['as'=>'LeagueTable2','uses'=>'MatchController@LeagueTable']);
@@ -226,6 +214,8 @@ Route::group(['prefix'=>'organization'],function (){
     Route::get('{orgName}/account',['middleware'=>'guest','as'=>'organizeAccount','uses'=>'OrganizeController@orgAccount']);
     Route::post('{orgName}/account',['as'=>'organizeAccount','uses'=>'OrganizeController@post_orgAccount'])->middleware('throttle:10,1');
 
+    Route::get('{orgName}/messages',['middleware'=>['guest','organize'],'as'=>'OrgMsg','uses'=>'OrganizeController@messages']);
+
     Route::get('{orgName}/created-matches',['middleware'=> ['guest','organize'],'as'=>'orgMatches','uses'=>'OrganizeController@matches']);
 
     Route::post('coordinate','OrganizeController@OrgCoordinate')->name('orgLocation');
@@ -237,34 +227,34 @@ Route::group(['prefix'=>'organization'],function (){
 // --------------- organization/challenge ---------------------
 
 
-        Route::get('challenge-create', ['middleware' => ['guest', 'organize'], 'as' => 'matchCreate', 'uses' => 'MatchController@create']);
+    Route::get('challenge-create', ['middleware' => ['guest', 'organize'], 'as' => 'matchCreate', 'uses' => 'MatchController@create']);
 
-        Route::get('challenge-info', ['middleware' => 'guest', 'as' => 'matchInfo', 'uses' => 'MatchController@matchInfo']);
+    Route::get('challenge-info', ['middleware' => 'guest', 'as' => 'matchInfo', 'uses' => 'MatchController@matchInfo']);
 
-        Route::post('challenge-info', ['as' => 'matchInfo', 'uses' => 'MatchController@post_matchInfo'])->middleware('throttle:10,1');
+    Route::post('challenge-info', ['as' => 'matchInfo', 'uses' => 'MatchController@post_matchInfo'])->middleware('throttle:10,1');
 
-        Route::get('base-info', ['middleware' => 'guest', 'as' => 'baseInfo', 'uses' => 'MatchController@baseInfo']);
+    Route::get('base-info', ['middleware' => 'guest', 'as' => 'baseInfo', 'uses' => 'MatchController@baseInfo']);
 
-        Route::post('base-info', ['as' => 'baseInfo', 'uses' => 'MatchController@post_baseInfo'])->middleware('throttle:10,1');
+    Route::post('base-info', ['as' => 'baseInfo', 'uses' => 'MatchController@post_baseInfo'])->middleware('throttle:10,1');
 
 
-        Route::get('challenge-rules', ['middleware' => 'guest', 'as' => 'rules', 'uses' => 'MatchController@rules']);
+    Route::get('challenge-rules', ['middleware' => 'guest', 'as' => 'rules', 'uses' => 'MatchController@rules']);
 
-        Route::post('challenge-rules', ['as' => 'rules', 'uses' => 'MatchController@post_rules'])->middleware('throttle:10,1');
+    Route::post('challenge-rules', ['as' => 'rules', 'uses' => 'MatchController@post_rules'])->middleware('throttle:10,1');
 
-        Route::get('challenge-plan', ['middleware' => 'guest', 'as' => 'plan', 'uses' => 'MatchController@plan']);
+    Route::get('challenge-plan', ['middleware' => 'guest', 'as' => 'plan', 'uses' => 'MatchController@plan']);
 
-        Route::post('challenge-plan', ['as' => 'plan', 'uses' => 'MatchController@post_plan'])->middleware('throttle:10,1');
+    Route::post('challenge-plan', ['as' => 'plan', 'uses' => 'MatchController@post_plan'])->middleware('throttle:10,1');
 
-        Route::get('challenge-cost', ['middleware' => 'guest', 'as' => 'cost', 'uses' => 'MatchController@cost']);
+    Route::get('challenge-cost', ['middleware' => 'guest', 'as' => 'cost', 'uses' => 'MatchController@cost']);
 
-        Route::post('challenge-cost', ['as' => 'cost', 'uses' => 'MatchController@post_cost'])->middleware('throttle:10,1');
+    Route::post('challenge-cost', ['as' => 'cost', 'uses' => 'MatchController@post_cost'])->middleware('throttle:10,1');
 
-        Route::get('challenge-contact', ['middleware' => 'guest', 'as' => 'contactInfo', 'uses' => 'MatchController@contactInfo']);
+    Route::get('challenge-contact', ['middleware' => 'guest', 'as' => 'contactInfo', 'uses' => 'MatchController@contactInfo']);
 
-        Route::post('challenge-contact', ['as' => 'contactInfo', 'uses' => 'MatchController@post_contactInfo'])->middleware('throttle:10,1');
+    Route::post('challenge-contact', ['as' => 'contactInfo', 'uses' => 'MatchController@post_contactInfo'])->middleware('throttle:10,1');
 
-        Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@participants']);
+    Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@participants']);
 
 
 
@@ -273,7 +263,7 @@ Route::group(['prefix'=>'organization'],function (){
 
     Route::post('{matchName}/info-edit',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'challengePanel' ,'uses' => 'OrganizeController@post_challengePanel']);
 
-    Route::post('challenge-cancel',['middleware'=> 'throttle:10,1','as'=>'cancelChallenge','uses'=>'OrganizeController@cancel']);
+    Route::get('challenge-cancel',['middleware'=> 'throttle:10,1','as'=>'cancelChallenge','uses'=>'OrganizeController@cancel']);
 //Route::get('challenge-info-edit-{id}-{url}',['middleware'=> ['guest','organize'],'as' => 'challengeInfo','uses'=>'OrganizeController@challengeInfo']);
 
 
@@ -306,7 +296,7 @@ Route::group(['prefix'=>'organization'],function (){
     Route::post('{matchName}/edit-elimination-bracket',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'ElBracket','uses'=>'OrganizeController@post_makeElBracket']);
 
 
- // League elimination
+    // League elimination
     Route::get('{matchName}/edit-elimination-bracket2',['middleware'=> ['guest','organize','bracket'],'as' => 'ElBracket2','uses'=>'OrganizeController@makeElBracket2']);
     Route::post('{matchName}/edit-elimination-bracket2',['middleware'=> ['guest','organize','throttle:10,1'],'as' => 'ElBracket2','uses'=>'OrganizeController@post_makeElBracket2']);
 
@@ -316,8 +306,8 @@ Route::group(['prefix'=>'organization'],function (){
     Route::get('{matchName}/edit-league-bracket2',['middleware'=> ['guest','organize','bracket'],'as'=>'leagueBracket2','uses'=>'OrganizeController@leagueBracket2']);
     Route::post('{matchName}/edit-league-bracket2',['middleware'=> ['guest','organize','throttle:10,1'],'as'=>'leagueBracket2','uses'=>'OrganizeController@post_leagueBracket2']);
 
-
-
+    Route::get('{matchName}/get-checklist',['as'=>'CheckList','uses'=>'OrganizeController@checkList']);
+    Route::get('{matchName}/get-checklist-pdf',['as'=>'CheckList','uses'=>'OrganizeController@checkListPdf']);
 });
 
 
@@ -341,10 +331,10 @@ Route::group(['prefix'=>'{username}'],function(){
     Route::get('challenges',['middleware'=> 'guest','as' => 'userChallenge','uses' => 'UserController@userChallenge']);
     Route::post('match-register',['middleware'=> ['guest','throttle:10,1'] ,'as'=>'matchRegister','uses'=>'MatchController@singleRegister']);
 
-
     Route::get('credit',['middleware'=> 'guest','as' => 'credit','uses' => 'UserController@credit']);
     Route::post('credit',['as' => 'credit','uses' => 'UserController@postCredit'])->middleware('throttle:10,1');
 
+    Route::get('credit/verify',['as'=>'paymentVerify','uses'=>'UserController@verify']);
 
 
     Route::get('setting',['middleware'=>'guest','as' => 'setting','uses' => 'UserController@setting']);
@@ -354,7 +344,6 @@ Route::group(['prefix'=>'{username}'],function(){
 
     Route::post('delete-notifications',['middleware'=> ['guest'],'as'=>'deleteNotification','uses'=>'UserController@deleteNotification']);
 
-
     Route::get('logout',['as'=>'logout','uses'=>'AuthController@logout']);
 
 });
@@ -363,7 +352,7 @@ Route::group(['prefix'=>'{username}'],function(){
 
 // ---------------- Invitation Link -----------------------
 
-Route::get('/{link}',function ($link){
+Route::get('{link}',function ($link){
 
     $tournament = \App\Tournament::where('url',$link)->first();
 
@@ -378,18 +367,62 @@ Route::get('/{link}',function ($link){
 
 
 
-});
+})->name('setLink');
+
+Route::get('get/link',function (Request $request){
+
+    $tournament = \App\Tournament::where('id',$request->id)->first();
+
+
+       return $tournament;
+
+
+
+
+})->name('getLink');
+
+
+
 // ---------------- ajax requests -----------------------
 
-Route::get('round-{id}-{round?}',['as'=>'round','uses'=>'MatchController@GetRound' ]);
+Route::get('round-{id}/{round?}',['as'=>'round','uses'=>'MatchController@GetRound' ]);
 Route::post('league-table-{id}',['as'=>'LeagueTable','uses'=>'OrganizeController@LeagueTable']);
-Route::get('all','API\UserController@all')->name('allUsers');
-Route::get('online','API\UserController@online')->name('online');
-Route::get('guests','API\UserController@guests')->name('guests');
+Route::get('admin/all','API\UserController@all')->name('allUsers');
+Route::get('admin/online','API\UserController@online')->name('online');
+Route::get('admin/guests','API\UserController@guests')->name('guests');
 Route::get('check-round/{id}/{round?}',['as'=>'checkRound','uses'=>'OrganizeController@checkRound']);
+Route::get('set/date','OrganizeController@calender')->name('setDate');
+Route::get('get/calender','OrganizeController@getCalender')->name('getDate');
+Route::get('get/days','OrganizeController@getDays')->name('getDays');
+Route::get('remove/calender','OrganizeController@rmCalender')->name('rmCalender');
+Route::get('admin/get-users-img','AdminController@getUserImg');
+Route::get('admin/remove-tournament','AdminController@removeTournament')->name('removeTournament');
+Route::get('admin/get-canceled','AdminController@GetCanceled')->name('getCanceled');
+Route::get('admin/delete-users-img/{path}','AdminController@deleteUserImg');
 
+Route::get('admin/delete-tournament-img/{path}','AdminController@deleteImg');
+
+Route::get('admin/delete-tournament-prize/{id}','AdminController@deletePrize');
+
+Route::get('admin/delete-tournament-moreInfo/{id}','AdminController@deleteMoreInfo');
+
+Route::get('admin/delete-tournament-pdf/{id}','AdminController@deletePdf');
+
+Route::get('admin/get-tournaments','AdminController@matches');
+
+Route::get('admin/delete-org-backimg/{path}','AdminController@delBackImg');
+
+Route::get('admin/delete-org-logoimg/{path}','AdminController@delLogoImg');
+
+Route::get('admin/get-org-img','AdminController@orgs');
+
+Route::get('admin/delete-org-comment/{id}','AdminController@DelComment');
+
+Route::get('admin/delete-org-address/{id}','AdminController@DelAddress');
+
+Route::get('admin/pay-org/{id}','AdminController@DoPay');
 Route::get('/get-matches','MatchController@getMatches');
 Route::get('/get-time','MatchController@time');
-Route::get('/get-tournament','MatchController@getTournament');
+Route::get('get/tournament','MatchController@getTournament');
 
 Route::post('coordinate','OrganizeController@coordinate')->name('matchLocation');

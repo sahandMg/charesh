@@ -17,9 +17,19 @@
 
              @endif
 
+
+         @if(count(session('Error')) >0)
+
+             <div class="alert alert-danger" role="alert">
+                 {{session('message')}}
+             </div>
+
+         @endif
+         <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+
       <div class="form-group">
         <label for="exampleInputEmail1">افزایش اعتبار (تومان) </label>
-        <input type="number" min="2000" step="1000" value="2000" name="credit" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="به تومان">
+        <input type="number" min="2000" step="1000" max="1000000000"  value="2000" name="credit" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="به تومان">
       </div>
 
        <button type="submit" class="btn btn-primary"> افزایش </button>
@@ -45,7 +55,7 @@
                   <tr>
                       <td  class="text-center">{{$transaction->type}}</td>
                       <td  class="text-center">{{$transaction->money}}</td>
-                      <td  class="text-center">{{ jDate::forge($transaction->created_at)->format('%d %B، %Y')}}</td>
+                      <td  class="text-center">{{ jDate::forge($transaction->created_at)->format('%d %B، %Y')}}, <span> {{ jDate::forge($transaction->created_at)->format('time')}}</span> </td>
                   </tr>
 
               @endforeach

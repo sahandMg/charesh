@@ -1,158 +1,180 @@
 @extends('masterUserHeader.body')
 @section('content')
-  <div class="row" style=" direction: rtl;">
-   <div class="Vnav">
-    <ul>
-      <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-      <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-      <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
-      <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
-    </ul>
-   </div>
-   <div class="container">
-       <h3>مسابقات من</h3>
-    <!-- Tiket Counter -->
-    <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
-      <h2>کل بلیت هایی که فروخته اید :  <span id="counter">0</span></h2>  
+    <div class="wallDiv">
+        <h4> تعداد کل بلیت هایی که در تمام مسابقات فروخته اید : <b><span id="counter">0</span></b> </h4>
     </div>
-    <br>
-    <!-- Tournoments -->
-     <div class="row">
-      <!-- First -->
+    <div class="tournoments">
+        @foreach($matches as $match)
+            @if($match->canceled == 1)
+                <div class="tournomentSmall box sample">
+                    @else
+                        <div class="tournomentSmall">
+                            @endif
+                            <div class="tournomentSmallHeader">
+                                <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}">
+                                    <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <h6>مسابقه {{$match->matchName}}</h6>
+                            </div>
+                            <!--<a href="supplier/supplierName">d</a>-->
+                            <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->
+                            <div class="bannerSM">
+                                @if($match->canceled == 1)
+                                    <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
+                                @else
+                                    <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->slug])}}" ><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                                @endif
 
-         @foreach($matches as $match)
+                                <div class="top-right">{{$match->endTimeDays}} روز مانده </div>
+                                <div class="top-left"><a href="" style="color: white;"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></a></div>
+                            </div>
+                            <div style="text-align: center">
+                                <small> {{$match->cost}} تومان </small>
+                                <small><i class="fa fa-calendar"></i> {{unserialize($match->startTime)[0]}} {{unserialize($match->startTime)[1]}} {{unserialize($match->startTime)[2]}} </small>
+                                <small><i class="fa fa-address-card-o"></i> {{$match->mode}} </small>
+                            </div>
+                            @if( $match->canceled == 0)
+                                <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->slug])}}" class="btn btn-info" style="margin: auto;display: block;width:50%;margin-bottom: 1%; ">ورود به پنل مسابقه</a>
+                            @else
+                                <br>
+                            @endif
+                        </div>
+                        @endforeach
+                </div>
 
+                <style>
+                    .tournoments {
+                        clear: both;
+                        width: 100%;
+                        margin: 0;
 
-             <div class="col-md-6 col-lg-4" style="padding-top: 10px;">
-                 <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
-                     <div>
-                         <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                         <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
-                         {{--<img src="storage/images/{{$match->organize->logo_path}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" >--}}
-                         <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
-                             <div class="back-stars">
-                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                 <i class="fa fa-star" aria-hidden="true"></i>
+                        /*margin-top: 5%;*/
+                    }
 
-                                 <div class="front-stars" style="width: {{$match->organize->rating*10}}%">
-                                     <i class="fa fa-star" aria-hidden="true"></i>
-                                     <i class="fa fa-star" aria-hidden="true"></i>
-                                     <i class="fa fa-star" aria-hidden="true"></i>
-                                     <i class="fa fa-star" aria-hidden="true"></i>
-                                     <i class="fa fa-star" aria-hidden="true"></i>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                     <a href=""><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
-                     <div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">
-                         <p style="padding: 0px;margin: 0px;">{{$match->endTimeDays}} روز مانده </p>
-                     </div>
-                     <div class="card-block">
-                         <div class="row" >
-                             <span class="badge badge-default">{{$match->cost}} تومان</span>
-                             <span class="badge badge-default">{{$match->mode}}</span>
-                             <span class="badge badge-default">{{$match->matchType}}</span>
-                             <span class="badge badge-default">{{$match->attendType}}</span>
-                             {{--<span class="badge badge-default"> تعداد بلیط های باقی مانده {{$match->tickets - $match->sold}}</span>--}}
+                    .wallDiv {
+                        width: 95%;
+                        height: auto;
+                        margin: auto;
+                        display: block;
+                        margin-top: 7%;
+                        margin-bottom: 2%;
+                        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                        transition: 0.3s;
+                        border-radius: 5px; /* 5px rounded corners */
+                        background-color: white;
+                        direction: rtl;
+                        /*float: left;*/
+                        padding: 1%;
 
-                         </div>
+                    }
+                    .wallDiv {
+                        text-align: center;
+                    }
+                    div.box
+                    {
+                        display:inline-block;
+                        vertical-align:top;
+                        position:relative;
+                    }
+                    div.box.sample:after
+                    {
+                        content:"مسابقه لغو شد";
+                        position:absolute;
+                        top:105px;
+                        left:95px;
+                        z-index:0.5;
+                        font-family:Arial,sans-serif;
+                        -webkit-transform: rotate(-45deg); /* Safari */
+                        -moz-transform: rotate(-45deg); /* Firefox */
+                        -ms-transform: rotate(-45deg); /* IE */
+                        -o-transform: rotate(-45deg); /* Opera */
+                        transform: rotate(-45deg);
+                        font-size:40px;
+                        color: #f09f0a;
+                        background:transparent;
+                        border:solid 4px #c00;
+                        padding:5px;
+                        border-radius:5px;
+                        zoom:1;
+                        filter:alpha(opacity=20);
+                        opacity:1;
+                        -webkit-text-shadow: 0 0 2px #c00;
+                        text-shadow: 0 0 2px #c00;
+                        box-shadow: 0 0 2px #c00;
+                    }
+                    @media screen and (max-width: 1000px) {
+                        div.box.sample:after
+                        {
+                            top:100px;
+                            left:60px;
+                            font-size:30px;
+                        }
+                    }
+                    @media screen and (max-width: 800px) {
+                        div.box.sample:after
+                        {
+                            top:90px;
+                            left:90px;
+                            font-size:30px;
+                        }
+                    }
+                    @media screen and (max-width: 600px) {
+                        div.box.sample:after
+                        {
+                            top:80px;
+                            left:160px;
+                            font-size:30px;
+                        }
+                    }
+                    @media screen and (max-width: 400px) {
+                        div.box.sample:after
+                        {
+                            top:60px;
+                            left:100px;
+                            font-size:25px;
+                        }
+                    }
+                </style>
 
+                <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
 
-                             <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->slug])}}" class="btn btn-info">ورود به پنل مسابقه</a>
+                <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
+                </script>
+                <script>
+                    //  function myMap() {
+                    //  var mapOptions = {
+                    //      center: new google.maps.LatLng(51.5, -0.12),
+                    //      zoom: 10,
+                    //      mapTypeId: google.maps.MapTypeId.HYBRID
+                    //  }
+                    //      var marker = new google.maps.Marker({
+                    //          position: myCenter,
+                    //          animation: google.maps.Animation.BOUNCE
+                    //      });
+                    //  var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+                    //  }
 
-
-
-                     </div>
-                 </div>
-             </div>
-
-         @endforeach
-     </div>
-     <br>
-     <br>
-   </div>
-
-  
-  </div>
-
-
-
-
-  <style>
-    .Vnav {
-      margin-top: 20px;
-      margin-right: 40px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 0.5;
-      background-color: #f1f1f1;
-      max-height: 200px;
-    }
-
-    .Vnav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 200px;
-        background-color: #f1f1f1;
-        
-    }
-
-    .Vnav li a {
-        display: block;
-        color: #000;
-        padding: 8px 16px;
-        text-decoration: none;
-    }
-
-    .Vnav li a.active {
-        background-color: #008CBA;
-        color: white;
-    }
-
-    .Vnav li a:hover:not(.active) {
-        background-color: #555;
-        color: white;
-    }
-  </style>
-
- <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
-
- <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
- </script>
- <script>
-//  function myMap() {
-//  var mapOptions = {
-//      center: new google.maps.LatLng(51.5, -0.12),
-//      zoom: 10,
-//      mapTypeId: google.maps.MapTypeId.HYBRID
-//  }
-//      var marker = new google.maps.Marker({
-//          position: myCenter,
-//          animation: google.maps.Animation.BOUNCE
-//      });
-//  var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-//  }
-
-    var temp = {!! json_encode($totalTickets) !!} ;
-    if(temp != 0) {
-        temp = 1000 ;
-    }
-  $({countNum: $('#counter').text()}).animate({countNum: {!! json_encode($totalTickets) !!}}, {
-    duration: temp,
-    easing:'linear',
-    step: function() {
-      $('#counter').text(Math.floor(this.countNum));
-    },
-    complete: function() {
-      $('#counter').text({!! json_encode($totalTickets) !!});
-    }
-  });
-  </script>
+                    var temp = {!! json_encode($totalTickets) !!} ;
+                    if(temp != 0) {
+                        temp = 1000 ;
+                    }
+                    $({countNum: $('#counter').text()}).animate({countNum: {!! json_encode($totalTickets) !!}}, {
+                        duration: temp,
+                        easing:'linear',
+                        step: function() {
+                            $('#counter').text(Math.floor(this.countNum));
+                        },
+                        complete: function() {
+                            $('#counter').text({!! json_encode($totalTickets) !!});
+                        }
+                    });
+                </script>
 
 
 @endsection

@@ -1,6 +1,6 @@
 @extends('masterUserHeader.body')
 @section('content')
- <div class="container" style="direction: rtl;">
+ <div class="container" style="direction: rtl;" id="Edit">
 <br>
      @if(count(session('message')))
          <div class="alert alert-success ">
@@ -29,37 +29,62 @@
          <input type="hidden" name="_token" value="{{csrf_token()}}">
 
 
-   <div class="form-group row">
-    <label for="InputFile" class="col-2 col-form-label">عکس : </label>
-    <div class="col-5">
-     <input type="file" name="imageFile" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-    </div>
+   <div class="form-group">
+    <label for="InputFile">عکس  </label>
+    <input type="file" name="imageFile" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
    </div>
  
-   <div class="form-group row">
-      <label for="email-input" class="col-2 col-form-label">ایمیل : </label>
-      <div class="col-5">
-        <input class="form-control" name="email" type="email" placeholder="me@example.com" id="example-email-input">
-      </div>
+   <div class="form-group">
+      <label for="email-input">ایمیل  </label>
+      <input class="form-control" name="email" type="email" placeholder="me@example.com" id="example-email-input">
+   </div>
+   <div class="form-group">
+      <label for="oldpass">رمز قبلی  </label>
+      <input class="form-control" name="oldPass" type="password" id="Telegram-input">
+   </div>
+   <div class="form-group">
+      <label for="password">رمز جدید  </label>
+      <input class="form-control" name="password" type="password" id="Telegram-input">
+   </div>
+
+    <div class="form-group">
+      <label for="Telegram-input">تکرار رمز جدید  </label>
+      <input class="form-control" name="repeat" type="password" id="Telegram-input">
     </div>
 
-    <div class="form-group row">
-      <label for="Telegram-input" class="col-2 col-form-label">رمز جدید : </label>
-      <div class="col-5">
-        <input class="form-control" name="password" type="password" id="Telegram-input">
-      </div>
-    </div>
+       @if(Auth::user()->role == 'supplier')
+             <div class="form-group" style="font-weight: 400;font-size: 125%;">
+                 <label class="container" style="color:darkgreen"> برگزار کننده مسابقه
+                     <input type="radio" checked="checked" name="radio" value="supplier">
+                     <span class="checkmark"></span>
+                 </label>
+                 <label class="container">  شرکت کننده در مسابقه
+                     <input type="radio" name="radio" value="customer">
+                     <span class="checkmark"></span>
+                 </label>
+             </div>
 
-    <div class="form-group row">
-      <label for="Telegram-input" class="col-2 col-form-label">تکرار رمز جدید : </label>
-      <div class="col-5">
-        <input class="form-control" name="repeat" type="password" id="Telegram-input">
-      </div>
-    </div>
+         @else
+
+             <div class="form-group" style="font-weight: 400;font-size: 125%;">
+                 <label class="container" > برگزار کننده مسابقه
+                     <input type="radio"  name="radio" value="supplier">
+                     <span class="checkmark"></span>
+                 </label>
+                 <label class="container" style="color:darkgreen">  شرکت کننده در مسابقه
+                     <input type="radio" name="radio" checked="checked" value="customer">
+                     <span class="checkmark"></span>
+                 </label>
+             </div>
+
+         @endif
+
 <br>
 <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
 <br>      
-   <button type="submit" class="btn btn-primary">ذخیره</button>
+
+         <button  @click="hidden" type="submit" v-show="!hide" class="btn btn-primary">ذخیره تغییرات</button>
+         <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ذخیره </button>
 
   </form>
 </div>
@@ -72,8 +97,24 @@
 
 
    <script>
-    /* When the user clicks on the button, 
-    toggle between hiding and showing the dropdown content */
+
+       new Vue({
+
+           el:'#Edit',
+           data:{
+               hide:false
+           },
+           methods:{
+
+               hidden:function () {
+                   this.hide = true
+               }
+           }
+
+       })
+
+       /* When the user clicks on the button,
+       toggle between hiding and showing the dropdown content */
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
     }

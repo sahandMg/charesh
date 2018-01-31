@@ -6,9 +6,9 @@
     <a class="nav-item nav-link disabled" href="#">اطلاعات پایه</a>
     <a class="nav-item nav-link disabled" href="#">اطلاعات مسابقه</a>
     <a class="nav-item nav-link disabled" href="#">قوانین</a>
-    <a class="nav-item nav-link disabled" href="#">برنامه مسابقات</a>
+
     <a class="nav-item nav-link disabled" href="#">اطلاعات ثبت نام</a>
-    <a class="nav-item nav-link active" href="#">راه های ارتباطی</a>
+    {{--<a class="nav-item nav-link active" href="#">راه های ارتباطی</a>--}}
   </nav>
 
    <form style="padding-top: 20px;" method="post" action="{{route('contactInfo')}}">

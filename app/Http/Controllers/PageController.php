@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Url;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Requests\ContactUsRequest;
 use App\Match;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\User;
 use Illuminate\Support\Facades\Storage;
+use SoapClient;
 
 class PageController extends Controller
 {
@@ -26,10 +28,28 @@ class PageController extends Controller
 
 
 
+    public function faq(){
+
+        if(Auth::check()){
+            $name = Auth::user();
+            $auth = 1;
+            return view('faq',compact('name','auth'));
+
+        }else{
+            $auth = 0;
+            return view('faq',compact('auth'));
+        }
+    }
+
 
     public function home($num=null){
 
 //        $matches = Tournament::paginate(18);
+        if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
+            $page = Url::where('ip',request()->ip())->first()->pageUrl;
+            Url::where('ip',request()->ip())->first()->delete();
+
+        }
         $matches = Tournament::orderBy('endRemain','decs')->get();
 
         $matchDays = Tournament::paginate(18)->pluck('endRemain');
@@ -165,7 +185,7 @@ class PageController extends Controller
         Mail::send('email.contactMail',$data,function ($message) use($data){
 
             $message->to('sahand.mg.ne@gmail.com');
-            $message->from($data['email']);
+            $message->from('sahand.mg.ne@gmail.com');
             $message->subject('تماس کاربر');
 
         });
@@ -193,6 +213,7 @@ class PageController extends Controller
 
 
     }
+
 
 
 }

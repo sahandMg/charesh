@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\BracketController;
+use App\Calender;
 use App\EliminationBracket;
 use App\Group;
 use App\GroupBracket;
 use App\LeagueBracket;
 use App\Match;
 use App\Message;
+use App\Player;
 use App\Team;
 use App\Tournament;
 use App\User;
@@ -21,6 +23,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
+use Morilog\Jalali\Facades\jDate;
+use phpDocumentor\Reflection\Types\Null_;
 
 class OrganizeController extends Controller
 {
@@ -64,7 +68,7 @@ class OrganizeController extends Controller
     public function postMakeOrganize(Request $request)
     {
 
-        $this->validate($request,['OrgName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required']);
+        $this->validate($request,['OrgName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required|between:10,1500']);
 
 
         if (Auth::user()->organize) {
@@ -79,7 +83,7 @@ class OrganizeController extends Controller
         session(['organizeName' => $request->OrgName]);
         $org->comment = $request->comment;
         if ($request->file('logo_path')) {
-
+            $this->validate($request,['logo_path'=>'image|max:1000']);
             $org->logo_path = $time . $request->file('logo_path')->getClientOriginalName();
 
         } else {
@@ -88,7 +92,7 @@ class OrganizeController extends Controller
 
         if ($request->file('background_path')) {
 
-
+            $this->validate($request,['background_path'=>'image|max:1000']);
             $org->background_path = $time . $request->file('background_path')->getClientOriginalName();
 
         } else {
@@ -107,7 +111,7 @@ class OrganizeController extends Controller
 //
             $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
 ////
-	  $imgName = $time.$request->file('background_path')->getClientOriginalName();
+	    $imgName = $time.$request->file('background_path')->getClientOriginalName();
         $imgEx = $request->file('background_path')->getClientOriginalExtension();
         $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
@@ -120,7 +124,7 @@ class OrganizeController extends Controller
         }
 
             exec("mogrify  -resize '1150x380!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
-	
+
 
         }
 
@@ -129,7 +133,7 @@ class OrganizeController extends Controller
             $request->file('logo_path')->move('storage/images', $time . $request->file('logo_path')->getClientOriginalName());
 //
 
-	$imgName = $time.$request->file('logo_path')->getClientOriginalName();
+	    $imgName = $time.$request->file('logo_path')->getClientOriginalName();
         $imgEx = $request->file('logo_path')->getClientOriginalExtension();
         $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
@@ -149,39 +153,57 @@ class OrganizeController extends Controller
         }
 
 
-        return redirect()->route('OrganizeContact');
-
-
-    }
-
-    public function OrganizeContact()
-    {
-
-        $name = Auth::user();
-        $org = Organize::where('user_id',Auth::id())->first();
-        return view('organize.contactOrganize', compact('name','org'));
-
-
-    }
-
-
-    public function postOrganizeContact(Request $request)
-    {
-
-        $org = Organize::where([['user_id', Auth::id()], ['name', session('organizeName')]])->first();
-
-        $org->email = $request->email;
-        $org->telegram = $request->telegram;
-        if($request->input('address')){
-
-            $org->address = $request->address;
-        }
-
-        $org->save();
-
         return redirect()->route('orgMatches',['orgName'=>$org->slug]);
 
+
+    }
+
+//    public function OrganizeContact()
+//    {
 //
+//        $name = Auth::user();
+//        $org = Organize::where('user_id',Auth::id())->first();
+//        return view('organize.contactOrganize', compact('name','org'));
+//
+//
+//    }
+//
+//
+//    public function postOrganizeContact(Request $request)
+//    {
+//
+//        $org = Organize::where([['user_id', Auth::id()], ['name', session('organizeName')]])->first();
+//
+//        $org->email = $request->email;
+//        $org->telegram = $request->telegram;
+//        if($request->input('address')){
+//            $this->validate($request,['address'=>'between:10,1500']);
+//            $org->address = $request->address;
+//        }
+//
+//        $org->save();
+//
+//        return redirect()->route('orgMatches',['orgName'=>$org->slug]);
+//
+////
+//
+//    }
+
+    public function messages(){
+
+        $name = Auth::user();
+        $messages = Message::where([['sender','user'],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->get();
+
+        $i = 0;
+        foreach ($messages as $message) {
+
+            $today = Carbon::now();
+            $messageDay = Carbon::parse($message->created_at);
+            $remain[$i] = ($today->diffInDays(Carbon::parse($messageDay)));
+            $i++;
+        }
+        Auth::user()->organize->update(['unread'=>0]);
+        return view('organize.messages',compact('messages','name','remain'));
 
     }
 
@@ -210,7 +232,7 @@ class OrganizeController extends Controller
         $name = Auth::user();
         $matches = Auth::user()->organize->tournaments;
         $totalTickets = Auth::user()->organize->totalTickets;
-
+//        dd(unserialize($matches[7]->startTime)[0]);
         return view('organize.matchControl', compact('name', 'matches', 'totalTickets'));
 
     }
@@ -218,10 +240,14 @@ class OrganizeController extends Controller
     public function challengePanel(Request $request)
     {
         $id = $request->id;
-	$name = Auth::user();
+        if(Tournament::where('id', $id)->first() == null){
+            abort('404');
+        }
+	    $name = Auth::user();
+        $orgName = Auth::user()->organize->name;
         $tournament = Tournament::where('id', $id)->first();
         $route = 'info';
-        return view('organize.matchPanel', compact('name', 'tournament', 'route'));
+        return view('organize.matchPanel', compact('orgName','name', 'tournament', 'route'));
     }
 
     public function post_challengePanel(Request $request)
@@ -230,7 +256,7 @@ class OrganizeController extends Controller
 //        dd($request->comment);
 
         if (null != $request->file('rulesPath')) {
-            $this->validate($request, ["rulesPath" => "mimes:pdf"]);
+            $this->validate($request, ["rulesPath" => "mimes:pdf|max:1000"]);
 
             $time = time();
             $pdfPath = Tournament::where('id', $request->id)->first();
@@ -263,7 +289,7 @@ class OrganizeController extends Controller
 
         }
         if($request->input('comment')){
-
+            $this->validate($request,['comment'=>'between:10,1500']);
             $tournament = Tournament::where('id',$request->id)->first();
             $tournament->update(['comment' => $request->comment]);
 
@@ -363,11 +389,12 @@ class OrganizeController extends Controller
     public function challengeBracket(Request $request)
     {
 
-	$id = $request->id;
+	    $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
-	$matchName = $tournament->matchname;
+        $orgName = Auth::user()->organize->name;
+	    $matchName = $tournament->matchname;
 
 
         $bracket = BracketController::where('tournament_id',$id)->first();
@@ -397,7 +424,7 @@ class OrganizeController extends Controller
             }
         }else {
 
-            return view('organize.bracketSelect', compact('matchName','name', 'tournament', 'route'));
+            return view('organize.bracketSelect', compact('orgName','matchName','name', 'tournament', 'route'));
 
         }
     }
@@ -405,15 +432,16 @@ class OrganizeController extends Controller
 //mosabegheBracketsGHInitial1
     public function groupBracket(Request $request)
     {
-	$id = $request->id;
-        $name = Auth::user();	
+	    $id = $request->id;
+        $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
+        $orgName = Auth::user()->organize->name;
         $route = 'bracket';
 //        $bracket = GroupBracket::where([['organize_id', Auth::user()->organize->id],['tournament_id',$id]])->first();
         $message = '';
 //        if (!$bracket) {
 //
-        return view('organize.GroupElimination.mosabegheBracketsGHInitial1', compact('name', 'tournament', 'route', 'message'));
+        return view('organize.GroupElimination.mosabegheBracketsGHInitial1', compact('orgName','name', 'tournament', 'route', 'message'));
 //        } elseif (!$bracket->bracketTable && !$bracket->GroupBracketTableEdit) {
 //
 //            $bracket->delete();
@@ -491,11 +519,12 @@ class OrganizeController extends Controller
 //mosabegheBracketsGHInitial2
     public function makeGroupBracket2(Request $request)
     {
-	$id = $request->id;
+	    $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
         $bracketDetail = Tournament::where('id', $id)->first()->groupBracket;
+        $orgName = Auth::user()->organize->name;
 //        dd(unserialize($bracketDetail->bracketTable ));
         if($tournament->matchType == 'انفرادی'){
 
@@ -514,7 +543,7 @@ class OrganizeController extends Controller
         }
 
 //        dd(unserialize($bracketDetail->bracketTable));
-        return view('organize.GroupElimination.mosabegheBracketsGHInitial2', compact('name', 'tournament', 'route', 'teams', 'bracketDetail'));
+        return view('organize.GroupElimination.mosabegheBracketsGHInitial2', compact('orgName','name', 'tournament', 'route', 'teams', 'bracketDetail'));
 
 
     }
@@ -539,6 +568,7 @@ class OrganizeController extends Controller
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
         $bracketDetail = Tournament::where('id', $id)->first()->groupBracket;
+        $orgName = Auth::user()->organize->name;
         if($tournament->matchType == 'انفرادی'){
 
             $matches = Tournament::where('id',$id)->first()->matches;
@@ -557,7 +587,7 @@ class OrganizeController extends Controller
 
 //        dd(unserialize($bracketDetail->GroupBracketTableEdit));
 
-        return view('organize.GroupElimination.mosabegheBrackets2GEdit', compact('name', 'tournament', 'route', 'teams', 'bracketDetail', 'teamName'));
+        return view('organize.GroupElimination.mosabegheBrackets2GEdit', compact('orgName','name', 'tournament', 'route', 'teams', 'bracketDetail', 'teamName'));
 
     }
 
@@ -584,10 +614,11 @@ class OrganizeController extends Controller
 
     public function makeElBracket(Request $request)
     {
-	$id = $request->id;
+	    $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
+        $orgName = Auth::user()->organize->name;
         if($tournament->matchType == 'انفرادی'){
 
             $matches = Tournament::where('id',$request->id)->first()->matches;
@@ -606,7 +637,7 @@ class OrganizeController extends Controller
 //        $teams = Tournament::where('id',$id)->first()->teams;
 //        $teamName = (unserialize($bracketDetail->bracketTable));
 
-        return view('organize.GroupElimination.mosabegheBrackets2HEdit', compact('request','name', 'tournament', 'route','teams'));
+        return view('organize.GroupElimination.mosabegheBrackets2HEdit', compact('orgName','request','name', 'tournament', 'route','teams'));
     }
 
 
@@ -625,10 +656,11 @@ class OrganizeController extends Controller
 
     public function makeElBracket2(Request $request)
     {
-	$id = $request->id;
+	    $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
+        $orgName = Auth::user()->organize->name;
         if($tournament->matchType == 'انفرادی'){
 
             $matches = Tournament::where('id',$request->id)->first()->matches;
@@ -650,7 +682,7 @@ class OrganizeController extends Controller
 
 
 
-        return view('organize.Elimination.mosabegheBracketsH1Edit', compact('name', 'tournament', 'route','teams','request'));
+        return view('organize.Elimination.mosabegheBracketsH1Edit', compact('orgName','name', 'tournament', 'route','teams','request'));
     }
 
 
@@ -697,11 +729,12 @@ class OrganizeController extends Controller
 
     public function leagueBracket(Request $request){
 
-	$id = $request->id;
+	    $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
-        return view('organize.League.mosabegheBracketsLInitial',compact('name','tournament','route'));
+        $orgName = Auth::user()->organize->name;
+        return view('organize.League.mosabegheBracketsLInitial',compact('orgName','name','tournament','route'));
 
     }
 
@@ -819,10 +852,11 @@ class OrganizeController extends Controller
 
 
     public function leagueBracket2(Request $request){
-	$id = $request->id;
+	    $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
         $route = 'bracket';
+        $orgName = Auth::user()->organize->name;
         $bracketDetail = LeagueBracket::where('tournament_id',$request->id)->first();
         $teamArr=[];
 //        session(['bracketDetail'=> Tournament::where('id',$id)->first()->leagueBracket]);
@@ -879,7 +913,7 @@ class OrganizeController extends Controller
             $roundSign = 1;
         }
 
-        return view('organize.League.mosabegheBracketsLEdit', compact('name', 'tournament', 'route','teams','bracketDetail','roundSign','teamArr'));
+        return view('organize.League.mosabegheBracketsLEdit', compact('orgName','name', 'tournament', 'route','teams','bracketDetail','roundSign','teamArr'));
 
     }
 
@@ -892,6 +926,7 @@ class OrganizeController extends Controller
         $teamArr=[];
         $name = Auth::user();
         $tournament = Tournament::where('id', $request->id)->first();
+        $orgName = Auth::user()->organize->name;
         $route = 'bracket';
 
 //        session(['bracketDetail'=> Tournament::where('id',$id)->first()->leagueBracket]);
@@ -944,7 +979,7 @@ class OrganizeController extends Controller
 
 
                         $sign++;
-                        return View::make('organize.League.mosabegheBracketsLEdit',compact('name', 'tournament', 'route','teams','bracketDetail','roundSign','teamArr'))->renderSections()['round'];
+                        return View::make('organize.League.mosabegheBracketsLEdit',compact('orgName','name', 'tournament', 'route','teams','bracketDetail','roundSign','teamArr'))->renderSections()['round'];
                     }
 
                 }
@@ -979,7 +1014,7 @@ class OrganizeController extends Controller
             $roundSign = 0;
 
 //            return $bracket;
-            return View::make('organize.League.mosabegheBracketsLEdit',compact('name', 'tournament', 'route','teams','bracketDetail','roundSign','teamArr'))->renderSections()['round'];
+            return View::make('organize.League.mosabegheBracketsLEdit',compact('orgName','name', 'tournament', 'route','teams','bracketDetail','roundSign','teamArr'))->renderSections()['round'];
         }else{
 
 
@@ -1071,12 +1106,17 @@ class OrganizeController extends Controller
     }
 
     public function challengeTimeline(Request $request)
-    {	
-	$id = $request->id;
+    {
+
+        $id = $request->id;
         $name = Auth::user();
         $tournament = Tournament::where('id', $id)->first();
+        $orgName = Auth::user()->organize->name;
         $route = 'timeline';
-        return view('organize.matchPanelTime', compact('name', 'tournament', 'route'));
+
+//        dd(route('setDate'));
+
+        return view('organize.matchPanelTime', compact('orgName','name', 'tournament', 'route'));
     }
 
     public function post_challengeTimeline(Request $request)
@@ -1094,8 +1134,9 @@ class OrganizeController extends Controller
     public function challengeMessage(Request $request)
     {
         $name = Auth::user();
-	$id = $request->id;
+	    $id = $request->id;
         $tournament = Tournament::where('id', $id)->first();
+        $orgName = Auth::user()->organize->name;
         $route = 'message';
         $username = [];
         if ($tournament->matchType == 'انفرادی') {
@@ -1115,7 +1156,7 @@ class OrganizeController extends Controller
         }
 
 
-        return view('organize.messagePanel', compact('name', 'tournament', 'route', 'teams', 'username'));
+        return view('organize.messagePanel', compact('orgName','name', 'tournament', 'route', 'teams', 'username'));
     }
 
 
@@ -1211,8 +1252,8 @@ class OrganizeController extends Controller
     {
 
         $name = Auth::user();
-	$id = $request->id;
-
+	    $id = $request->id;
+        $orgName = Auth::user()->organize->name;
         $tournament = Tournament::where('id', $id)->first();
         $teams=[];
 
@@ -1223,14 +1264,14 @@ class OrganizeController extends Controller
             $route = 'participants';
 //        Group::where('tournament_id',$id);
 
-            return view('organize.participants', compact('route', 'name', 'tournament', 'teams'));
+            return view('organize.participants', compact('orgName','route', 'name', 'tournament', 'teams'));
         }else{
 
             $matches = Match::where('tournament_id', $id)->get();
 
 
             $route = 'participants';
-            return view('organize.participants', compact('route', 'name', 'tournament', 'matches','teams'));
+            return view('organize.participants', compact('orgName','route', 'name', 'tournament', 'matches','teams'));
 
         }
     }
@@ -1251,7 +1292,7 @@ class OrganizeController extends Controller
     public function post_orgAccount(Request $request)
     {
 
-        $this->validate($request, ['owner' => 'required|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/', 'accountNumber' => 'required|min:16', 'bank' => 'required|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/']);
+        $this->validate($request, ['accountNumber' => 'required|min:16', 'bank' => 'required|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/']);
 
 //        send email to admin
         $org = Organize::where('id',$request->id)->first();
@@ -1268,7 +1309,7 @@ class OrganizeController extends Controller
             Mail::send('email.paymentReq', $data, function ($message) use ($data) {
 
                 $message->to('sahand.mg.ne@gmail.com');
-                $message->from($data['email']);
+                $message->from('sahand.mg.ne@gmail.com');
                 $message->subject('درخواست واریز');
 
 
@@ -1316,11 +1357,13 @@ class OrganizeController extends Controller
     public function cancel(Request $request){
 
         $tournament = Tournament::where('id',$request->id)->first();
+        unlink(public_path('storage/pdfs/').$tournament->rules);
 
         if($tournament->canceled == 0) {
 
 
 //    dd($tournament->canceled);
+
             $tournament->update(['canceled' => 1]);
 
             $participants = $tournament->matches;
@@ -1344,7 +1387,7 @@ class OrganizeController extends Controller
                 Mail::send('email.cancelEmail', $data, function ($message) use ($data,$participant) {
 
                     $message->to(User::where('id', $participant->user_id)->first()->email);
-                    $message->from(Auth::user()->organize->email);
+                    $message->from('sahand.mg.ne@gmail.com');
                     $message->subject('لغو مسابقه');
 
 
@@ -1352,10 +1395,87 @@ class OrganizeController extends Controller
 
             }
 
+            $org = Auth::user()->organize;
+            if($tournament->matchType == 'انفرادی'){
+
+                $user_ids = Match::where([['tournament_id',$tournament->id],['team_id',0]])->get();
+
+                foreach ($user_ids as $user_id){
+
+                    $user_id->user->update(['credit'=>$tournament->cost+$user_id->user->credit]);
+
+                }
+
+                $org->update(['credit'=> $org->credit - ($tournament->cost)*$tournament->sold]);
+                $org->update(['totalTickets'=>$org->totalTickets - $tournament->sold]);
+                $tournament->update(['sold'=>$tournament->sold - count($user_ids)]);
+                $tournament->update(['url'=> null]);
+
+               if(Calender::where('tournament_id',$tournament->id)->first() != null){
+
+                   Calender::where('tournament_id',$tournament->id)->delete();
+               }
+
+                Match::where('tournament_id',$tournament->id)->delete();
+                if( BracketController::where('tournament_id',$tournament->id)->first() != null){
+
+                  $num =  BracketController::where('tournament_id',$tournament->id)->first();
+                    if($num->league == 1){
+
+                        LeagueBracket::where('tournament_id',$tournament->id)->delete();
+                    }elseif ($num->group == 1 ){
+                        GroupBracket::where('tournament_id',$tournament->id)->delete();
+                    }else{
+                        EliminationBracket::where('tournament_id',$tournament->id)->delete();
+                    }
+                    BracketController::where('tournament_id',$tournament->id)->delete();
+                }
+
+            }else{
+
+                $user_ids = Match::where([['tournament_id',$tournament->id],['team_id','>',0]])->get();
+
+                foreach ($user_ids as $user_id){
+
+                    $user_id->user->update(['credit'=>$tournament->cost*($tournament->maxMember + $tournament->subst)+$user_id->user->credit]);
+
+                }
+
+                $org->update(['credit'=> $org->credit - ($tournament->cost)*$tournament->sold*($tournament->maxMember+ $tournament->subst)]);
+                $org->update(['totalTickets'=>$org->totalTickets - $tournament->sold]);
+                $tournament->update(['sold'=>$tournament->sold - count($user_ids)]);
+                $tournament->update(['url'=> null]);
+
+
+                if(Calender::where('tournament_id',$tournament->id)->get() != null){
+
+                    Calender::where('tournament_id',$tournament->id)->delete();
+                }
+
+                Match::where('tournament_id',$tournament->id)->delete();
+                Group::where('tournament_id',$tournament->id)->delete();
+                Player::where('tournament_id',$tournament->id)->delete();
+                Team::where('tournament_id',$tournament->id)->delete();
+                if( BracketController::where('tournament_id',$tournament->id)->first() != null){
+
+                    $num =  BracketController::where('tournament_id',$tournament->id)->first();
+                    if($num->league == 1){
+
+                        LeagueBracket::where('tournament_id',$tournament->id)->delete();
+                    }elseif ($num->group == 1 ){
+                        GroupBracket::where('tournament_id',$tournament->id)->delete();
+                    }else{
+                        EliminationBracket::where('tournament_id',$tournament->id)->delete();
+                    }
+                    BracketController::where('tournament_id',$tournament->id)->delete();
+                }
+
+            }
+
             Mail::send('email.cancelEmail', $data, function ($message) use ($data) {
 
                 $message->to('sahand.mg.ne@gmail.com');
-                $message->from(Auth::user()->organize->email);
+                $message->from('sahand.mg.ne@gmail.com');
                 $message->subject('لغو مسابقه');
 
 
@@ -1383,39 +1503,40 @@ class OrganizeController extends Controller
     public function post_edit(Request $request){
 
 	 $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
 // use key 'http' even if you send the request to https://...
-        $options = array(
-        'http' => array(
-        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-        'method'  => 'POST',
-        'content' => http_build_query($data),
-          ),
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        if(json_decode($result)->success === false){
+       $options = array(
+       'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data),
+         ),
+       );
+       $context  = stream_context_create($options);
+       $result = file_get_contents($url, false, $context);
+       if(json_decode($result)->success === false){
 
-        return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
 
-        }
+       }
 
 
         $time = time();
         $org = Organize::where('id',$request->id)->first();
         if( null != $request->file('logo_path')){
 
-            $this->validate($request,['logo_path'=>'image']);
+            $this->validate($request,['logo_path'=>'image|max:1000']);
 
 
             unlink(public_path('storage/images/'.$org->logo_path));
             $org->update(['logo_path'=> $time.$request->file('logo_path')->getClientOriginalName()]);
             $request->file('logo_path')->move('storage/images/', $time . $request->file('logo_path')->getClientOriginalName());
-		
-		 $imgName = $time.$request->file('logo_path')->getClientOriginalName();
-        $imgEx = $request->file('logo_path')->getClientOriginalExtension();
-        $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
-        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+
+		     $imgName = $time.$request->file('logo_path')->getClientOriginalName();
+            $imgEx = $request->file('logo_path')->getClientOriginalExtension();
+            $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
+
+            exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
 
         if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
@@ -1425,28 +1546,31 @@ class OrganizeController extends Controller
         }
 
             exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
-		
-		
+
+
 
         }
+//        dd($request->radio);
+        Auth::user()->update(['role'=>$request->radio]);
 
         if($request->comment){
-
+            $this->validate($request,['comment'=>'between:10,1500']);
             $org->update(['comment'=>$request->comment]);
 
         }
 
         if( null != $request->file('background_path')){
 
-            $this->validate($request,['background_path'=>'image']);
+            $this->validate($request,['background_path'=>'image|max:1000']);
 
             unlink(public_path('storage/images/'.$org->background_path));
             $org->update(['background_path'=> $time.$request->file('background_path')->getClientOriginalName()]);
             $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
 
-		  $imgName = $time.$request->file('background_path')->getClientOriginalName();
-        $imgEx = $request->file('background_path')->getClientOriginalExtension();
-        $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
+            $imgName = $time.$request->file('background_path')->getClientOriginalName();
+            $imgEx = $request->file('background_path')->getClientOriginalExtension();
+            $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
+
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['background_path'=> $imgNameNoEx.'.jpg']);
 
@@ -1476,16 +1600,136 @@ class OrganizeController extends Controller
         }
 
         if($request->address){
-
+            $this->validate($request,['address'=>'between:10,1500']);
             $org->update(['telegram'=>$request->address]);
 
         }
 
 
-        return redirect()->back()->with(['message'=>'تغییرات اعمال شد']);
+        if(Auth::user()->role == 'customer'){
+
+            return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['message'=>'تغییرات اعمال شد']);
+        }else{
+
+            return redirect()->route('orgEdit',['orgName'=>Auth::user()->organize->slug])->with(['message'=>'تغییرات اعمال شد']);
+        }
+
 
     }
 
+    public function checkList(Request $request){
 
+
+        $time = time();
+        $id = $request->id;
+        $url = $request->name;
+
+
+
+       exec("xvfb-run wkhtmltopdf http://charesh.ir/organization/$request->matchName/get-checklist-pdf?id=$id  /var/www/html/$time.ticket.pdf");
+       // set HTTP response headers
+       header("Content-Type: application/pdf");
+       header("Cache-Control: max-age=0");
+       header("Accept-Ranges: none");
+       header("Content-Disposition: attachment; filename=\"Ticket.pdf\"");
+       readfile("/var/www/html/$time.ticket.pdf");
+
+       unlink("/var/www/html/$time.ticket.pdf");
+
+        return $this->checkListPdf( $request);
+
+    }
+
+    public function checkListPdf(Request $request){
+
+        $tournament = Tournament::where('id',$request->id)->first();
+        $teams = [];
+        if(count(Tournament::where('id',$request->id)->first()->teams)>0){
+
+            $teams = Tournament::where('id',$request->id)->first()->teams;
+            return view('CheckList',compact('tournament','teams'));
+
+        }else{
+
+            $userIds = Match::where([['tournament_id',$request->id],['team_id',0]])->get();
+            for ($i=0 ; $i < count($userIds) ; $i++){
+
+                $singulars[$i] = User::where('id',$userIds[$i]->user_id)->first();
+            }
+
+
+            return  view('CheckList',compact('tournament','singulars'));
+
+        }
+
+
+    }
+// runs at page creation
+    public function getDays(Request $request){
+
+        $month = jDate::forge('now')->format('date')[5].jDate::forge('now')->format('date')[6];
+        $year = jDate::forge('now')->format('%Y');
+        $calender = Calender::where([['tournament_id',$request->id],['year',$year]])->get();
+
+        return [$calender,$month-1];
+    }
+
+    public function calender(Request $request){
+
+        if(count(Calender::where([['tournament_id',$request->id],['day',$request->day],['month',$request->month]])->first()) > 0){
+
+           $calender = Calender::where([['tournament_id',$request->id],['day',$request->day],['month',$request->month]])->first();
+            $calender->text = $request->text;
+            $calender->save();
+            return 'تقویم مسابقه ویرایش شد';
+        }
+        else{
+
+
+        $calender  = new Calender();
+        $calender->tournament_id = $request->id;
+        $calender->text = $request->text;
+        $calender->day = $request->day;
+        $calender->month = $request->month;
+        $calender->year = $request->year;
+        $calender->save();
+        return 'تقویم مسابقه ویرایش شد';
+
+        }
+    }
+    public function getCalender(Request $request){
+
+
+
+        if(count(Calender::where([['tournament_id',$request->id],['day',$request->day],['month',$request->month]])->first()) > 0){
+            $calender = Calender::where([['tournament_id',$request->id],['day',$request->day],['month',$request->month],['year',$request->year]])->first();
+
+
+            $text = $calender->text;
+
+            return $text;
+        }
+
+        return 1;
+
+    }
+
+    public function rmCalender(Request $request){
+
+        if(count(Calender::where([['tournament_id',$request->id],['day',$request->day],['month',$request->month]])->first()) > 0){
+            $calender = Calender::where([['tournament_id',$request->id],['day',$request->day],['month',$request->month],['year',$request->year]])->first();
+
+
+            $calender->delete();
+
+
+            return 1;
+        }else{
+            return 0;
+
+        }
+
+
+    }
 
 }

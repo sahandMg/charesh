@@ -11,7 +11,7 @@
 
         <div style="position: absolute;top:300px;left:520px"><h5><a style="text-decoration: none" href="{{route('login')}}">! برای ورود به حساب خود کلیک کنید </a></h5></div>
 
-        <img src="../../storage/app/public/images/bulb.jpg" alt="" style="position: absolute;top: 100px;right:200px">
+
 
 
 

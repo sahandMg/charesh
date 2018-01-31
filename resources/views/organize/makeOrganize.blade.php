@@ -3,12 +3,7 @@
 
 
  <div class="container" style="direction: rtl;" id="app">
-
-  <nav class="nav nav-pills nav-fill" style="padding-top: 50px;">
-    <a class="nav-item nav-link active" href="#">اطلاعات پایه</a>
-    <a class="nav-item nav-link disabled" href="#">راه های ارتباطی</a>
-  </nav>
-
+     <h3 style="text-align: center;">پروفایل برگزار کننده</h3>
      <form style="padding-top: 20px;" method="POST" action="{{route('MakeOrganize')}}" enctype="multipart/form-data">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
          <!-- ٍٍError message -->
@@ -24,35 +19,25 @@
          {{--<div class="alert alert-danger" role="alert">--}}
              {{--<strong>ایمیل</strong> خود را اشتباه وارد کرده اید .--}}
          {{--</div>--}}
-         <div class="form-group row">
-             <label for="Name-input" class="col-2 col-form-label">نام سازمان : </label>
-             <div class="col-5">
-                 <input  class="form-control" @input="check" name="OrgName" v-model="name" type="text" value="" id="example-text-input">
-             </div>
+         <div class="form-group ">
+             <label for="Name-input">نام </label>
+             <input  class="form-control" @input="check" name="OrgName" v-model="name" type="text" value="{{Request::old('OrgName')}}" id="example-text-input">
          </div>
 
-         <div class="form-group row">
-             <label for="InputFile" class="col-2 col-form-label">لوگو (100px * 100px) : </label>
-             <div class="col-5">
-                 <input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-             </div>
+         <div class="form-group">
+             <label for="InputFile">عکس لوگو (100px * 100px حداکثر ۱ مگابایت)  </label>
+             <input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
          </div>
 
-         <div class="form-group row">
-             <label for="InputFile" class="col-2 col-form-label">توضیحات : </label>
-             <div class="col-5">
-                 <textarea  class="form-control" name="comment" id="summernote" rows="3"></textarea>
-             </div>
+         <div class="form-group">
+             <label for="InputFile">توضیحات  </label>
+             <textarea  class="form-control" name="comment" id="summernote" rows="3"></textarea>
          </div>
 
-         <div class="form-group row">
-             <label for="InputFile" class="col-2 col-form-label">عکس پشت زمینه (1150px * 380px) : </label>
-
-             <div class="col-5">
-                 <input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">
-             </div>
+         <div class="form-group">
+             <label for="InputFile">عکس پشت زمینه (1150px * 380px حداکثر ۱ مگابایت)  </label>
+             <input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">
          </div>
-
          <a  href="{{route('OrganizeContact')}}"><button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button></a>
 
      </form>

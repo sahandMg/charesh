@@ -4,7 +4,7 @@
 
 
 
-    <div class="container" style="direction: rtl;margin-top: 100px;">
+    <div id="app" class="container" style="direction: rtl;margin-top: 100px;">
         <div class="card" style="box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
      <h3 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">ارتباط با ما</h3>
      <form style="padding: 20px;" method="POST" action="{{route('contact')}}">
@@ -37,7 +37,9 @@
         {{--<textarea name="message" type="text" class="form-control" id="exampleInputPassword1" rows="5" style="resize: none"></textarea>--}}
       </div>
 
-       <button type="submit" class="btn btn-primary">ارسال </button>
+
+         <input v-show="!hide" @click="hidden" type="submit" class="btn btn-primary" value="ارسال پیام">
+         <button v-show="hide" class="btn btn-primary "><i class="fa fa-spinner fa-spin"></i> درحال ارسال</button>
 
       </form>
     </div>
@@ -46,22 +48,31 @@
 
 
 
-</div>
 
 
-    <div>
-        <ul style="list-style: none">
-            @foreach($errors->all() as $error)
 
-                <li>{{$error}}</li>
 
-            @endforeach
-        </ul>
-    </div>
 
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
-    <script type="text/javascript" src="../../public/js/main.js"></script>
+    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
 
+
+    <script>
+        new Vue({
+
+            el:'#app',
+            data:{
+                hide:false
+            },
+            methods:{
+
+                hidden:function () {
+                    this.hide = true
+                }
+            }
+
+        })
+    </script>
 
     {{--<script type="text/javascript">--}}
         {{--$(document).ready(function(){--}}

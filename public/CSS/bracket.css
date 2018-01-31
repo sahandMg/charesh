@@ -63,7 +63,8 @@ div.jQBracket .team {
   position: relative;
   z-index: 1;
   float: left;
-  background-color: #EEE;
+  /*background-color: #EEE;*/
+  background-color: #666;
   width: 100px;
   cursor: default
 }
@@ -77,7 +78,8 @@ div.jQBracket .team input {
   padding: 0;
   width: inherit;
   border: 0;
-  margin: 0
+  margin: 0;
+  color: black;
 }
 
 div.jQBracket .team div.label {
@@ -86,7 +88,7 @@ div.jQBracket .team div.label {
   width: 70px;
   height: 22px;
   white-space: nowrap;
-  overflow: hidden
+  overflow: hidden;
 }
 
 div.jQBracket .team div.label[disabled] {
@@ -134,7 +136,7 @@ div.jQBracket .team.lose div.score {
 }
 
 div.jQBracket .team.lose {
-  background-color: #DDD;
+  background-color: #bfbfbf;
   color: #999
 }
 

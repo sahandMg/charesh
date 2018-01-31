@@ -7,8 +7,10 @@ use App\Group;
 use App\Match;
 use App\Message;
 use App\Team;
+use App\Url;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use niklasravnsborg\LaravelPdf\Facades\Pdf;
 use Illuminate\Support\Facades\App;
@@ -39,7 +41,7 @@ class UserController extends Controller
             $matches[$i] = Tournament::where('id', $matchId->tournament_id)->first();
             $i++;
         }
-
+        $matches = array_reverse($matches);
 
         return view('userProfile.UsersChalesh', compact('name', 'matches'));
     }
@@ -55,24 +57,24 @@ class UserController extends Controller
 
     public function postSetting(Request $request)
     {
-	
+
 	$url = 'https://www.google.com/recaptcha/api/siteverify';
 	$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
 // use key 'http' even if you send the request to https://...
-        $options = array(
-        'http' => array(
-        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-        'method'  => 'POST',
-        'content' => http_build_query($data),
-          ),
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        if(json_decode($result)->success === false){
+       $options = array(
+       'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data),
+         ),
+       );
+       $context  = stream_context_create($options);
+       $result = file_get_contents($url, false, $context);
+       if(json_decode($result)->success === false){
 
-        return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+       return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
 
-        }
+       }
 
 
         $user = Auth::user();
@@ -84,7 +86,15 @@ class UserController extends Controller
 
         }
 
+        $user->update(['role'=>$request->radio]);
+
         if ($request->input('password') || $request->input('repeat')) {
+            if(!$request->input('oldPass')){
+                return redirect()->back()->with(['settingError'=>'رمز قبلی را وارد کنید']);
+            }
+           if(!Hash::check($request->oldPass,Auth::user()->password)){
+               return redirect()->back()->with(['settingError'=>'رمز قبلی را اشتباه وارد کردید']);
+           }
             $this->validate($request, ['repeat' => 'required|same:password', 'password' => 'min:8']);
             $user->update(['password' => bcrypt($request->password)]);
 
@@ -109,12 +119,12 @@ class UserController extends Controller
 
 //            }
 
-            $user->update(['path' => $time . $request->file('imageFile')->getClientOriginalName()]);
+            $user->update(['path' => $user->username.'.'.$request->file('imageFile')->getClientOriginalExtension()]);
 //
-            $request->file('imageFile')->move('storage/images', $time . $request->file('imageFile')->getClientOriginalName());
+            $request->file('imageFile')->move('storage/images', $user->username.'.'.$request->file('imageFile')->getClientOriginalExtension());
 	$imgName = Auth::user()->path;
 	$imgEx = $request->file('imageFile')->getClientOriginalExtension();
-	$imgNameNoEx = basename($time . $request->file('imageFile')->getClientOriginalName(),'.'.$request->file('imageFile')->getClientOriginalExtension());
+	$imgNameNoEx = basename($user->username ,'.'.$request->file('imageFile')->getClientOriginalExtension());
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
 	Auth::user()->update(['path'=>$imgNameNoEx.'.jpg']);
 
@@ -127,7 +137,24 @@ class UserController extends Controller
             exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
         }
 
-        return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['message' => 'مشخصات شما ویرایش شد']);
+//        dd(Auth::user()->role);
+
+        if(Auth::user()->role == 'customer'){
+
+            return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['message'=>'تغییرات اعمال شد']);
+        }else
+            if(Auth::user()->role == 'supplier'){
+
+                if(isset(Auth::user()->organize)){
+
+                    return redirect()->route('orgEdit',['orgName'=>Auth::user()->organize->slug])->with(['message'=>'تغییرات اعمال شد']);
+                }else{
+                    return redirect()->route('home');
+                }
+
+        }
+
+
 
     }
 
@@ -246,7 +273,7 @@ class UserController extends Controller
         $cost = $tournament->cost;
         $credit = $user->credit;
         $owner = $user->username;
-	 $png = QrCode::size(400)->color(20,20,200)->backgroundColor(255,255,255)->generate("$tournament->code");
+	 $png = QrCode::size(200)->color(20,20,200)->backgroundColor(255,255,255)->generate("$tournament->code");
 //	 $png = QrCode::size(100)->color(20,20,200)->backgroundColor(255,255,255)->generate(request()->url($_SERVER['REQUEST_URI']));
 
 	$png = base64_encode($png);
@@ -255,7 +282,7 @@ class UserController extends Controller
     }
 //
     public function generatePdf2(Request $request){
-	$time = time();		
+	$time = time();
 	$id = $request->id;
 	$url = $request->name;
         require 'pdfcrowd.php';
@@ -270,7 +297,7 @@ class UserController extends Controller
             // convert a web page and store the generated PDF into a $pdf variable
       //      $pdf = $client->convertURI("http://165.227.170.114/challenge/$request->matchName/$request->name/ticket2?id=$id");
 //		 exec("xvfb-run wkhtmltopdf  http://google.com  /var/www/html/ticket2.pdf");
-		 exec("xvfb-run wkhtmltopdf http://gameinja.com/challenge/$request->matchName/$request->name/ticket2?id=$id  /var/www/html/$time.ticket.pdf");
+		 exec("xvfb-run wkhtmltopdf http://charesh.ir/challenge/$request->matchName/$request->name/ticket2?id=$id  /var/www/html/$time.ticket.pdf");
             // set HTTP response headers
             header("Content-Type: application/pdf");
             header("Cache-Control: max-age=0");
@@ -317,39 +344,158 @@ class UserController extends Controller
     }
 
 
-
     public function credit()
     {
 
         $name = Auth::user();
 
-        if(pathinfo($_SERVER['HTTP_REFERER']) != route('credit',['username'=>Auth::user()->username])) {
+        $url = new Url();
+        $url->token = csrf_token();
+        $url->ip = request()->ip();
+        $url->pageUrl = $_SERVER['HTTP_REFERER'];
+        $url->save();
 
-            session(['lastPage' => $_SERVER['HTTP_REFERER']]);
-
-        }
-        $lastPage = session('lastPage');
-	 $transactions = Transaction::where('user_id',Auth::id())->orderBy('created_at','dcs')->get();
+        $transactions = Transaction::where('user_id',Auth::id())->orderBy('created_at','dcs')->get();
         return view('userProfile.credit', compact('name','lastPage','transactions'));
 
 
     }
 
-    public function postCredit(Request $request)
-    {
-  	$transaction = new Transaction();
-        $transaction->user_id = Auth::id();
-        $transaction->money = $request->credit;
-        $transaction->type = "افزایش اعتبار";
-        $transaction->save();
 
-        $credit = Auth::user()->credit;
-        Auth::user()->credit = $request->credit + $credit;
-        Auth::user()->save();
-        $lastPage = session('lastPage');
-        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['message'=>'اعتبار شما با موفقیت افزایش یافت. ']);
+    public function postCredit(Request $request){
+
+
+        $MerchantID = '955f0452-ef04-11e7-9ab3-005056a205be'; //Required
+        $data = array('MerchantID' => '955f0452-ef04-11e7-9ab3-005056a205be',
+            'Amount' => $request->credit,
+            'Email' => Auth::user()->email,
+            'CallbackURL' => "http://charesh.ir/$request->username/credit/verify",
+            'Description' => 'افزایش اعتبار');
+        $jsonData = json_encode($data);
+        $ch = curl_init('https://www.zarinpal.com/pg/rest/WebGate/PaymentRequest.json');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v1');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        ));
+        $result = curl_exec($ch);
+        $err = curl_error($ch);
+        $result = json_decode($result, true);
+        curl_close($ch);
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            if ($result["Status"] == 100) {
+                $transaction = new Transaction();
+                $transaction->user_id = Auth::id();
+                $transaction->money = $request->credit;
+                $transaction->type = "افزایش اعتبار";
+                $transaction->authority = $result['Authority'];
+                $transaction->save();
+                header('Location: https://www.zarinpal.com/pg/StartPay/' . $result["Authority"]);
+            } else {
+                echo'ERR: ' . $result["Status"];
+            }
+        }
+
 
     }
+
+
+
+    public function verify(Request $request){
+        $Authority = $_GET['Authority'];
+        $transaction = Transaction::where('user_id',Auth::id())->orderBy('created_at','decs')->first();
+        $data = array('MerchantID' => '955f0452-ef04-11e7-9ab3-005056a205be', 'Authority' => $Authority, 'Amount'=>$transaction->money);
+        $jsonData = json_encode($data);
+        $ch = curl_init('https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v1');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonData)
+        ));
+        $result = curl_exec($ch);
+        $err = curl_error($ch);
+        curl_close($ch);
+        $result = json_decode($result, true);
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            if ($result['Status'] == 100) {
+                //echo 'Transation success. RefID:' . $result['RefID'];
+
+                $transaction->completed = 1;
+                $transaction->refId = $result['RefID'];
+                $transaction->save();
+                $credit = Auth::user()->credit;
+                Auth::user()->update(['credit' => $transaction->money + $credit]);
+
+                if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
+                    $page = Url::where('ip',request()->ip())->first()->pageUrl;
+                    Url::where('ip',request()->ip())->first()->delete();
+                    return redirect($page)->with(['message'=>'اعتبار شما با موفقیت افزایش یافت']);
+                }else{
+                    return redirect()->route('home');
+                }
+
+
+
+
+
+            } else {
+// echo 'Transation failed. Status:' . $result['Status'];
+//	return redirect()->route('credit',['username'=>$request->username])->with(['Error'=>'تراکنش موفقیت آمیز نبود']);
+                switch($result['Status']){
+
+                    case '-33':
+
+                        $transaction->delete();
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'رقم تراكنش با رقم پرداخت شده مطابقت ندارد￼￼￼']);
+                        break;
+
+                    case '-22':
+                        $transaction->delete();
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'تراكنش نا موفق مي باشد']);
+                        break;
+
+                    case '-21':
+                        $transaction->delete();
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'هيچ نوع عمليات مالي براي اين تراكنش يافت نشد￼']);
+                        break;
+
+                    case '-12':
+                        $transaction->delete();
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'امكان ويرايش درخواست ميسر نمي باشد']);
+                        break;
+
+                    case '-3':
+                        $transaction->delete();
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'با توجه به محدوديت هاي شاپرك امكان پرداخت با رقم درخواست شده ميسر نمي باشد']);
+                        break;
+
+                    case '-54':
+                        $transaction->delete();
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'درخواست مورد نظر آرشيو شده است']);
+                        break;
+
+
+                }
+                $transaction->delete();
+                return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'ﺕﺭﺎﻜﻨﺷ ﻥﺍ ﻡﻮﻔﻗ ﻢﻴﺑﺎﺷﺩ']);
+
+            }
+        }
+
+
+
+    }
+
 
 
 

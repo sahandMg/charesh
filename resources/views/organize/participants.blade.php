@@ -1,71 +1,62 @@
 @extends('masterUserHeader.body')
 @section('content')
 
-    <div class="row" style=" direction: rtl;" id="app">
-        <!— right menu —>
-        <div class="col-2">
-            <ul class="Vnav">
- <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
-            </ul>
-        </div>
-        <!— content —>
-        <div class="container col-8">
-    <br>
-       @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-       <br>
-    <br>
-    <!-- Send message -->
-    <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
-
-       <h2> شرکت کنندگان</h2>
-
-        {{--Team--}}
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+  <div class="container">
+    <div class="wallDiv">
+       <h3> شرکت کنندگان</h3>
+        <br>
+        <a href="{{route('CheckList',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button class="btn btn-info">دریافت چک لیست شرکت کنندگان</button></a>
+        <br>
+        <br>
         @if(count($teams)>0)
-        @foreach($teams as $team)
-          <div class="row" style="padding: 25px;float: left;direction: ltr;">
-           <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$team->path)}}" alt="Card image cap" height="50px;">
-           <h3 style="padding: 8px;"> {{$team->teamName}} </h3>
-          </div>
-          <div class="row" style="border: 2px solid;border-radius: 10px;">
+          @foreach($teams as $team)
+                <div class="team">
+                    <img src="{{URL::asset('storage/images/'.$team->path)}}">
+                    <b>{{$team->teamName}}</b>
+                </div>
+           {{--<div class="row" style="padding: 25px;float: left;direction: ltr;">--}}
+            {{--<img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$team->path)}}" alt="Card image cap" height="50px;">--}}
+            {{--<h3 style="padding: 8px;"> {{$team->teamName}} </h3>--}}
+           {{--</div>--}}
+           {{--<div class="row" style="border: 2px solid;border-radius: 10px;">--}}
 
-            <div class="col-5">
-                <p><strong>اعضای تیم   </strong></p>
-                @for($i=0 ; $i < count($team->groups);$i++)
-              <p>{{$team->groups[$i]->name}}</p>
-                    @endfor
-            </div>
-            <div class="col-7">
-                <p><strong>توضیحات</strong></p>
-              <p>{!!$team->match->moreInfo!!}</p>
-            </div>
-          </div>
-        @endforeach
-
-        {{--Single--}}
+             {{--<div class="col-5">--}}
+                 {{--<p><strong>اعضای تیم   </strong></p>--}}
+                 {{--@for($i=0 ; $i < count($team->groups);$i++)--}}
+               {{--<p>{{$team->groups[$i]->name}}</p>--}}
+                    {{--@endfor--}}
+              {{--</div>--}}
+              {{--<div class="col-7">--}}
+                 {{--<p><strong>توضیحات</strong></p>--}}
+               {{--<p>{!!$team->match->moreInfo!!}</p>--}}
+             {{--</div>--}}
+           {{--</div>--}}
+         @endforeach
         @else
 
             @foreach($matches as $match)
-                <div class="row" style="padding: 25px;float: left;direction: ltr;">
-                    <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">
-
+                <div class="team">
+                    <img src="{{URL::asset('storage/images/'.$match->user->path)}}">
+                    <b>{{$match->user->username}}</b>
                 </div>
-                <div class="row" style="border: 2px solid;border-radius: 10px;">
+                {{--<div class="row" style="padding: 25px;float: left;direction: ltr;">--}}
+                    {{--<img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">--}}
 
-                    <div class="col-5">
-                        <p><strong> نام شرکت کننده </strong></p>
+                {{--</div>--}}
+                {{--<div class="row" style="border: 2px solid;border-radius: 10px;">--}}
 
-                            <p>{{$match->user->username}}</p>
+                    {{--<div class="col-5">--}}
+                        {{--<p><strong> نام شرکت کننده </strong></p>--}}
 
-                    </div>
-                    <div class="col-7">
-                        <p><strong>توضیحات</strong></p>
-                        <p>{!!$match->moreInfo!!}</p>
-                    </div>
-                </div>
+                            {{--<p>{{$match->user->username}}</p>--}}
+
+                    {{--</div>--}}
+                    {{--<div class="col-7">--}}
+                        {{--<p><strong>توضیحات</strong></p>--}}
+                        {{--<p>{!!$match->moreInfo!!}</p>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             @endforeach
 
         @endif
@@ -73,7 +64,7 @@
     </div>
     <br>
     <br>
-   </div>
+
 
   
   </div> 
@@ -81,37 +72,85 @@
 
 
   <style>
-      .Vnav {
-          margin-top: 20px;
-          margin-right: 40px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 0.1;
-          background-color: #f1f1f1;
-          max-height: 200px;
-          list-style-type: none;
-          /*margin: 0;*/
-          padding: 0;
-          width: 200px;
-          /*background-color: #f1f1f1;*/
-      }
-
-
-      .Vnav li a {
+      .wallDiv {
+          width: 90%;
+          height: auto;
+          margin-left: 5%;
+          margin-top: 2%;
+          margin-bottom: 2%;
+          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+          transition: 0.3s;
+          border-radius: 5px; /* 5px rounded corners */
           display: block;
-          color: #000;
-          padding: 8px 16px;
-          text-decoration: none;
+          background-color: white;
+          direction: rtl;
+          float: left;
+          padding: 1%;
+          text-align: center;
+
+      }
+      .wallDiv h3 {
+          text-align: center;
+          font-weight: bold;
+      }
+      .team {
+          width: 20%;
+          float: left;
+          direction: ltr;
+          margin-bottom: 1%;
+      }
+      .team img {
+          height: 100px;
+          width: 100px;
+      }
+      .team b {
+          font-weight: bold;
+      }
+      @media screen and (max-width: 1000px) {
+          .team {
+              width: 25%;
+          }
+          .team img {
+              height: 80px;
+              width: 80px;
+          }
+          .wallDiv h3 {
+
+          }
       }
 
-      .Vnav li.active {
-          background-color: #008CBA;
-          color: white;
+      @media screen and (max-width: 800px) {
+          .team {
+              width: 25%;
+          }
+          .team b {
+              font-size: 100%;
+          }
+          .team img {
+              height: 60px;
+              width: 60px;
+          }
+          .wallDiv h3 {
+              font-size: 150%;
+          }
       }
 
-      .Vnav li a:hover:not(.active) {
-          background-color: #555;
-          color: white;
+      @media screen and (max-width: 600px) {
+          .team {
+              width: 50%;
+          }
+          .team img {
+              height: 40px;
+              width: 40px;
+          }
+          .wallDiv h3 {
+              font-size: 100%;
+          }
+          .team b {
+              font-size: 75%;
+          }
       }
+
   </style>
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}

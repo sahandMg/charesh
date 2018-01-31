@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\BracketController;
+use App\Http\Requests\ContactUsRequest;
+use App\Message;
 use App\Transaction;
 use App\EliminationBracket;
 use App\Group;
@@ -16,8 +18,10 @@ use App\Player;
 use App\Team;
 use App\Tournament;
 use App\Junk;
+use App\Url;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -37,7 +41,23 @@ class MatchController extends Controller
 
     public function create(){
         $name = Auth::user();
+        if(Url::where('ip',request()->ip())->first() != null){
 
+          $url =  Url::where('ip',request()->ip())->first();
+            $url->delete();
+
+        }
+        $record = new Url();
+        $record->token = csrf_token();
+        $record->pageUrl = $_SERVER['HTTP_REFERER'];
+        $record->ip = request()->ip();
+        $record->save();
+
+
+        if(Junk::where('user_id',Auth::id())->first()){
+            Junk::where('user_id',Auth::id())->truncate();
+
+        }
 
         return view('matchCreate.baseInfo',compact('name'));
 
@@ -57,7 +77,8 @@ class MatchController extends Controller
     {
 
 
-        $this->validate($request,['matchName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required']);
+
+        $this->validate($request,['matchName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required|between:10,1500','path'=>'image|max:1000']);
 //        dd($request->comment);
 //        if( count(Tournament::where('organize_id',Auth::id())->orderBy('created_at','decs')->get())>0){
 //
@@ -84,7 +105,7 @@ class MatchController extends Controller
 
         $tournament->matchName = $request->matchName;
 //        $tournament->url = $time.$request->url;
-        $tournament->startTime = $request->startTime;
+        $tournament->startTime = serialize([$request->startDay,$request->startMonth,$request->startYear]);
         $tournament->endTime = $request->endTime;
         $tournament->comment = $request->comment;
 
@@ -103,19 +124,21 @@ class MatchController extends Controller
 //            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
             $request->file('path')->move('storage/images',$time.$request->file('path')->getClientOriginalName());
 
-	$imgName = $time.$request->file('path')->getClientOriginalName();
-        $imgEx = $request->file('path')->getClientOriginalExtension();
-        $imgNameNoEx = basename($time . $request->file('path')->getClientOriginalName(),'.'.$request->file('path')->getClientOriginalExtension());
-        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
-        $tournament->path = $imgNameNoEx.'.jpg';
+            $imgName = $time.$request->file('path')->getClientOriginalName();
+            $imgEx = $request->file('path')->getClientOriginalExtension();
+            $imgNameNoEx = basename($time . $request->file('path')->getClientOriginalName(),'.'.$request->file('path')->getClientOriginalExtension());
+            exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+            $tournament->path = $imgNameNoEx.'.jpg';
 
-        if(public_path('storage/images/' . $imgName) != null &&  $imgEx != 'jpg'){
+            if(public_path('storage/images/' . $imgName) != null &&  $imgEx != 'jpg'){
 
                 unlink(public_path('storage/images/' . $imgName));
 
-        }
+            }
 
             exec("mogrify  -resize '1290x600!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+
+
 
         }else{
 
@@ -147,8 +170,7 @@ class MatchController extends Controller
     public function post_matchInfo(Request $request){
 
 
-
-        $this->validate($request,['prize'=>'required']);
+        $this->validate($request,['prize'=>'required|between:10,1500']);
         $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
 //        $tournament = $tournament[0];
 
@@ -159,10 +181,11 @@ class MatchController extends Controller
             'attendType'=>$request->attendType,
             'prize'=> $request->prize,
             'maxTeam'=>$request->maxTeam,
-            'minMember'=>$request->minMember,
+            'subst'=>$request->subst,
             'maxMember'=>$request->maxMember,
             'lat'=> $request->lat,
             'lng' => $request->lng,
+            'address' => $request->address
         ]);
 
 //        $tournament->mode = $request->mode;
@@ -199,30 +222,30 @@ class MatchController extends Controller
         $request->file('rulesPath')->move('storage/pdfs',$time.$request->file('rulesPath')->getClientOriginalName());
 
         $tournament->save();
-        return redirect()-> route('plan');
-
-    }
-
-
-    public function plan(){
-
-        $name = Auth::user();
-
-        return view('matchCreate.table',compact('name'));
-
-    }
-
-
-    public function post_plan(Request $request){
-        $this->validate($request,['plan'=>'required']);
-        $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
-
-        $tournament->plan = $request->plan;
-
-        $tournament->save();
         return redirect()-> route('cost');
 
     }
+
+
+//    public function plan(){
+//
+//        $name = Auth::user();
+//
+//        return view('matchCreate.table',compact('name'));
+//
+//    }
+
+
+//    public function post_plan(Request $request){
+//        $this->validate($request,['plan'=>'required|between:10,1500']);
+//        $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
+//
+//        $tournament->plan = $request->plan;
+//
+//        $tournament->save();
+//        return redirect()-> route('cost');
+//
+//    }
 
     public function cost(){
 
@@ -233,37 +256,18 @@ class MatchController extends Controller
     }
 
 
+
     public function post_cost(Request $request){
 
 
-
         $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
-        $tournament->cost = $request->cost;
-        $tournament->moreInfo = $request->moreInfo;
-        $tournament->save();
-
-        return redirect()-> route('contactInfo');
-
-    }
-
-
-
-    public function contactInfo(){
-
-
-        $name = Auth::user();
-
-        return view('matchCreate.contact',compact('name'));
-
-
-    }
-
-    public function post_contactInfo(Request $request){
-
-
-        $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
-        $tournament->email = $request->email;
-        $tournament->telegram = $request->telegram;
+        $tournament->free = $request->free;
+        if($request->free == 'on'){
+            $tournament->cost = 0;
+        }else{
+            $tournament->cost = $request->cost;
+        }
+        $tournament->moreInfo = serialize([$request->column,$request->column2,$request->column3,$request->column4,$request->column5]);
         $tournament->save();
 
         $junks  = Junk::all();
@@ -294,6 +298,7 @@ class MatchController extends Controller
         $tournamentItems->endRemain = $tournament->endRemain;
         $tournamentItems->endRemain = $tournament->endRemain;
         $tournamentItems->comment = $tournament->comment;
+        $tournamentItems->address = $tournament->address;
         $tournamentItems->lat = $tournament->lat;
         $tournamentItems->lng = $tournament->lng;
         $tournamentItems->path = $tournament->path;
@@ -302,15 +307,13 @@ class MatchController extends Controller
         $tournamentItems->maxAttenders = $tournament->maxAttenders;
         $tournamentItems->maxTeam = $tournament->maxTeam;
         $tournamentItems->maxMember = $tournament->maxMember;
-        $tournamentItems->minMember = $tournament->minMember;
+        $tournamentItems->subst = $tournament->subst;
         $tournamentItems->attendType = $tournament->attendType;
         $tournamentItems->prize = $tournament->prize;
         $tournamentItems->rules = $tournament->rules;
-        $tournamentItems->plan = $tournament->plan;
+//        $tournamentItems->plan = $tournament->plan;
         $tournamentItems->cost = $tournament->cost;
         $tournamentItems->moreInfo = $tournament->moreInfo;
-        $tournamentItems->email = $tournament->email;
-        $tournamentItems->telegram = $tournament->telegram;
         $tournamentItems->user_id = Auth::id();
         $tournamentItems->organize_id = Auth::user()->organize->id;
         $tournamentItems->sold = 0;
@@ -322,6 +325,7 @@ class MatchController extends Controller
         }
 
         $tournamentItems -> save();
+        Url::where('ip',request()->ip())->first()->delete();
         $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
         $matchDays = Tournament::all()->pluck('endRemain');
 
@@ -355,7 +359,7 @@ class MatchController extends Controller
 
 //        Junk::truncate();
 
-        Junk::where('organize_id',Auth::id())->orderBy('created_at','decs')->delete();
+        Junk::where('organize_id',Auth::user()->organize->id)->orderBy('created_at','decs')->delete();
         return redirect()->route('orgMatches',['orgName'=>Auth::user()->organize->slug]);
 
     }
@@ -424,10 +428,15 @@ class MatchController extends Controller
     }
 
 
-    public function getTournament(){
+    public function getTournament(Request $request){
 
+        if(session('tournamentId')){
+            $id = session('tournamentId');
+        }else{
+            $id = $request->id;
 
-        $id = session('tournamentId');
+        }
+
 
         $tournament = Tournament::where('id',$id)->first();
 
@@ -470,7 +479,7 @@ class MatchController extends Controller
 
 
 
-        return redirect()->route('plan');
+        return redirect()->route('rules');
 
     }
 
@@ -505,13 +514,17 @@ class MatchController extends Controller
                 Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i]]);
 
             }
-        
 
 
-        $name = Auth::user();
+            if($tournament = Tournament::where('id' , $id)->first() == null){
+
+                abort('404');
+            }
+            $tournament = Tournament::where('id' , $id)->first();
         $users = Match::where([['tournament_id',$id],['user_id',Auth::id()]])->first();
-        $tournament = Tournament::where('id' , $id)->first();
+
         $route = 'register';
+
         $org = $tournament->organize;
 
         if(Auth::check()){
@@ -546,14 +559,13 @@ class MatchController extends Controller
 
     }
 
-//    public function MatchRules($uri,$id){
-//
-//        $name = Auth::user()->username;
-//        session(['routeName'=>'rules']);
-//        $tournament = Tournament::where(['matchName' => $uri ,'id' => $id])->first();
-//        $route = 'rules';
-//        return view('matchReg.matchRule',compact('name','tournament','route'));
-//    }
+    public function RegOverView(Request $request){
+
+        $name = Auth::user();
+        $tournament = Tournament::where('id',$request->id)->first();
+        return view('matchReg.RegOverview',compact('name','tournament'));
+    }
+
 
     public function MatchBracket(Request $request){
 	$id = $request->id;
@@ -564,7 +576,7 @@ class MatchController extends Controller
         $bracketDetail =  Tournament::where('id',$id)->first()->groupBracket;
         $teamName = unserialize($bracketDetail->bracketTable);
         $tableData = unserialize($bracketDetail->GroupBracketTableEdit);
-//        dd($tableData);
+//        dd($teamName);
         if(Auth::check()){
             $name = Auth::user();
             $auth = 1;
@@ -729,6 +741,7 @@ class MatchController extends Controller
         if(Auth::check()){
             $name = Auth::user();
             $auth = 1;
+
             return view('matchReg.matchUser',compact('name','tournament','route','users','auth','player','team','groupMem'));
 
         }else{
@@ -762,6 +775,15 @@ class MatchController extends Controller
 
 
         $teammates=[];
+        $match = Tournament::where('id', $request->id)->first();
+        $sub = 0;
+        for($s=0;$s<count(unserialize($match->moreInfo));$s++){
+
+            if(unserialize($match->moreInfo)[$s]==null){
+                $sub ++;
+            }
+        }
+
 //            Single register
         if ($request->input('single') == 'single') {
 
@@ -773,18 +795,27 @@ class MatchController extends Controller
             }
 
 
-            if(isset($_POST['additionalData'])&& null == $request->input('additionalData')){
 
-                $this->validate($request,['additionalData'=>'required']);
+            if($match->moreInfo){
+
+                for($p=1 ; $p<=count(unserialize($match->moreInfo))-$sub;$p++){
+
+                    if($request->info[$p] == null){
+
+                       return redirect()->back()->with(['RegError'=>'بخش اطلاعات اضافه را تکمیل کنید'])->withInput();
+
+                    }
+
+                }
 
             }
 
 
 
-            $match = Tournament::where('id', $request->id)->first();
 
-            if (Auth::user()->credit >= $match->cost) {
 
+            if (Auth::user()->credit >= $match->cost ) {
+                $info =[];
                 Auth::user()->update(['credit' => Auth::user()->credit - $match->cost]);
                 $match->organize->totalTickets =  $match->organize->totalTickets + 1;
                 $match->organize->update(['credit'=>$match->organize->credit + $match->cost]) ;
@@ -802,16 +833,20 @@ class MatchController extends Controller
 
                 $matchTable->image = Auth::user()->path;
 
-                $matchTable->moreInfo = $request->additionalData;
+                for ($p = 1; $p <= count(unserialize($match->moreInfo)) - $sub; $p++) {
+
+                    array_push($info, $request->info[$p]);
+                }
+                $matchTable->moreInfo = serialize($info);
 
                 $matchTable->save();
 
-		 $transaction = new Transaction();
-                $transaction->type = "شرکت در مسابقه ".$match->matchName;
-                $transaction->money = $match->cost;
-                $transaction->user_id = Auth::id();
-                $transaction->tournament_id = $match->id;
-                $transaction->save();
+                    $transaction = new Transaction();
+                    $transaction->type = "شرکت در مسابقه " . $match->matchName;
+                    $transaction->money = $match->cost;
+                    $transaction->user_id = Auth::id();
+                    $transaction->tournament_id = $match->id;
+                    $transaction->save();
 
                 $data = ['match'=>$match ,'matchName' => $match->matchName, 'credit' => Auth::user()->credit, 'cost' => $match->cost, 'startTime' => $match->startTime, 'email' => Auth::user()->email, 'teammates'=>$teammates];
                 Mail::send('email.matchData', $data, function ($message) use ($data) {
@@ -827,7 +862,7 @@ class MatchController extends Controller
                 return redirect()->route('userChallenge',['username'=>Auth::user()->slug]);
             } else {
 
-                return redirect()->back()->with(['message' => 'متاسفانه اعتبار شما برای خرید بلیط کافی نیست. ']);
+                return redirect()->back()->with(['creditError' => 'متاسفانه اعتبار شما برای خرید بلیط کافی نیست.'])->withInput();
 
             }
         }
@@ -835,15 +870,19 @@ class MatchController extends Controller
 //        Team register
         else{
 
-            if( isset($_POST['additionalData']) ){
-
-                $sub = 4;
-            }else{
-                $sub = 3;
-            }
-//            dd($_POST);
 //
-            for($i = 0; $i < count($_POST) - $sub; $i++) {
+
+//        dd($match->subst + $match->maxMember);
+            $sub = 0;
+            for($s=0;$s<count(unserialize($match->moreInfo));$s++){
+
+                if(unserialize($match->moreInfo)[$s]==null){
+                    $sub ++;
+                }
+            }
+
+
+            for($i = 1; $i <= ($match->subst + $match->maxMember); $i++) {
 
                 if(null == $request->input("teammate$i")){
 
@@ -851,15 +890,28 @@ class MatchController extends Controller
 
                 }
 
-            }
+                if($match->moreInfo){
 
-            $this->validate($request,['teamName'=>'required|unique:teams|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','TeamLogo'=>'image']);
+                    for($p=1 ; $p<=count(unserialize($match->moreInfo))-$sub;$p++){
 
-            if($sub == 4 && null == $request->input('additionalData')){
+                        if($request->info[$i][$p] == null){
 
-                $this->validate($request,['additionalData'=>'required']);
+                            return redirect()->back()->with(['RegError'=>'بخش اطلاعات اضافه را تکمیل کنید'])->withInput();
+                        }
 
-            }
+                    }
+
+                }
+                }
+
+
+            $this->validate($request,['teamName'=>'required|unique:teams|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','logo'=>'image']);
+
+//            if($sub == 4 && null == $request->input('additionalData')){
+//
+//                $this->validate($request,['additionalData'=>'required']);
+//
+//            }
 
             $match = Tournament::where('id', $request->matchId)->first();
 
@@ -870,77 +922,96 @@ class MatchController extends Controller
             }
 
 //                dd($_POST);
-            if ($match->cost *  (count($_POST)- $sub) <= User::where('username', Auth::user()->username)->first()->credit ) {
-                if ($match->tickets - $match->sold -  1 >= 0) {
 
 
-                    $number = $match->maxMember;
-                    $time = time();
-                    $team = new Team();
-
-                    $team->teamName = $request->teamName;
-                    $team->tournament_id = $request->matchId;
-                    if (null != $request->file('TeamLogo')) {
-
-                        $team->path = $time . $request->file('TeamLogo')->getClientOriginalName();
-                        $request->file('TeamLogo')->move('storage/images', $time . $request->file('TeamLogo')->getClientOriginalName());
-                    }else{
-                        $team->path = 'Blank100_100.png' ;
-                    }
-                    $team->save();
 
 
-                    for ($i = 0; $i < count($_POST) - $sub; $i++) {
+            if ($match->cost * ($match->subst +$match->maxMember) <= User::where('username', Auth::user()->username)->first()->credit) {
+
+                    if ($match->tickets - $match->sold - 1 >= 0) {
 
 
-                        $group = new Group();
+                        $number = $match->maxMember;
+                        $time = time();
+                        $team = new Team();
 
-                        $group->name = $request["teammate$i"];
-//                $group->user_id = Auth::id();
-                        $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
-                        $group->tournament_id = $request->matchId;
-                        $group->organize_id = $match->organize->id;
-                        $group->save();
+                        $team->teamName = $request->teamName;
+                        $team->tournament_id = $request->matchId;
+                        if (null != $request->file('logo')) {
 
-                    }
+                            $team->path = $team->teamName;
+//            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
+                            $request->file('logo')->move('storage/images',$team->teamName.'.'. $request->file('logo')->getClientOriginalExtension());
+
+                            $imgName = $team->teamName;
+                            $imgEx = $request->file('logo')->getClientOriginalExtension();
+                            $imgNameNoEx = basename($team->teamName,'.'.$request->file('logo')->getClientOriginalExtension());
+                            exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+                            $team->path = $imgNameNoEx.'.jpg';
+
+                            if(public_path('storage/images/' . $imgName) != null &&  $imgEx != 'jpg'){
+
+                                unlink(public_path('storage/images/' . $imgName));
+
+                            }
+
+                            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
 
 
-//                for ($i = 0; $i < count($_POST) - $sub; $i++) {
-
-//                dd($match->cost * count($_POST) > User::where('username', Auth::user()->username)->first()->credit);
 
 
-//                if(
-//
-//                count(Match::where([['user_id',User::where('username',$request["teammate$i"])->first()->id],['tournament_id',$request->id]]))>0
-////
-//                ){
-////                    dd(Match::where([['user_id',User::where('username',$request["teammate$i"])->first()->id],['tournament_id',$request->id]])->first());
-//                    return redirect()->back()->with(['message'=> 'پیش از این نام یکی از هم تیمی ها در مسابقه ثبت شده است.']);
-//                }
+
+                        } else {
+                            $team->path = 'Blank100_100.png';
+                        }
+                        $team->save();
+
+
+
+
+                        for ($i = 1; $i <= ($match->maxMember + $match->subst); $i++) {
+
+                            $info = [];
+                            $group = new Group();
+
+                            $group->name = $request["teammate$i"];
+
+                            $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
+                            $group->tournament_id = $request->matchId;
+                            $group->organize_id = $match->organize->id;
+
+                            for ($p = 1; $p <= count(unserialize($match->moreInfo)) - $sub; $p++) {
+
+                                array_push($info, $request->info[$i][$p]);
+                            }
+                            $group->moreInfo = serialize($info);
+
+                            $group->save();
+
+                        }
 
 //                dd(count($_POST)-4);
 //                dd(Match::where([['user_id',$userId],['tournament_id',$request->matchId]])->first());
-                    $match->organize->totalTickets = $match->organize->totalTickets + 1;
-                    $match->organize->update(['credit' => $match->organize->credit + $match->cost * (count($_POST)-$sub)]);
+                        $match->organize->totalTickets = $match->organize->totalTickets + 1;
+                        $match->organize->update(['credit' => $match->organize->credit + $match->cost * ($match->maxMember + $match->subst)]);
 //                    dd($match->organize->totalTickets);
-                    $match->organize->update(['totalTickets' => $match->organize->totalTickets]);
+                        $match->organize->update(['totalTickets' => $match->organize->totalTickets]);
 
-                    $match->sold = $match->sold + 1;
+                        $match->sold = $match->sold + 1;
 
-                    $match->update(['sold' => $match->sold]);
+                        $match->update(['sold' => $match->sold]);
 
-                    User::where('username', Auth::user()->username)->first()->update(['credit' => User::where('username', Auth::user()->username)->first()->credit - $match->cost * (count($_POST)-$sub)]);
+                        User::where('username', Auth::user()->username)->first()->update(['credit' => User::where('username', Auth::user()->username)->first()->credit - $match->cost * ($match->maxMember + $match->subst)]);
 
 
 //                }
-                }else{
-                    return redirect()->back()->with(['message' => 'تعداد بلیط های درخواستی بیشتر از بلیط های مسابقه می باشد']);
-                }
-            }else{
+                    } else {
+                        return redirect()->back()->with(['message' => 'تعداد بلیط های درخواستی بیشتر از بلیط های مسابقه می باشد'])->withInput();
+                    }
+                } else {
 //                dd($match->cost * count($_POST) > User::where('username', Auth::user()->username)->first()->credit);
-                return redirect()->back()->with(['message' => 'متاسفانه اعتبار شما برای خرید بلیط کافی نیست']);
-            }
+                    return redirect()->back()->with(['RegError' => 'متاسفانه اعتبار شما برای خرید بلیط کافی نیست'])->withInput();
+                }
 
 
             $matchTable2 = new Match();
@@ -967,9 +1038,10 @@ class MatchController extends Controller
 //            $player->tournament_id = $request->matchId;
 //            $player->team_id = Team::where('teamName',$request->teamName)->first()->id;
 //            $player->save();
-		 $transaction = new Transaction();
-                $transaction->type = "شرکت در مسابقه ".$match->matchName;
-                $transaction->money = $match->cost*(count($_POST)-$sub);
+
+                $transaction = new Transaction();
+                $transaction->type = "شرکت در مسابقه " . $match->matchName;
+                $transaction->money = $match->cost * ($match->subst + $match->maxMember);
                 $transaction->user_id = Auth::id();
                 $transaction->tournament_id = $match->id;
                 $transaction->save();
@@ -1172,6 +1244,38 @@ class MatchController extends Controller
 
 
 
+    }
+    public function userMessage(ContactUsRequest $request){
+
+        $msg = new Message();
+        if($request->input('name')){
+            $msg->name = $request->name;
+        }
+        if($request->input('email')){
+            $msg->email = $request->email;
+        }
+        $msg->message = $request->message;
+        $msg->sender = 'user';
+        if(Auth::check()){
+            $msg->user_id = Auth::id();
+        }
+        $org = Tournament::where('id',$request->id)->first()->organize;
+        $msg->organize_id = $org->id;
+        $msg->tournament_id = Tournament::where('id',$request->id)->first()->id;
+        $msg->save();
+        $org->update(['unread'=>$org->unread+1]);
+        $data = ['name'=>$request->name,'email'=>$request->email,'comment'=>$request->message];
+
+        Mail::send('email.matchRegisterMail',$data,function ($message) use($data){
+
+            $message->from($data['email']);
+            $message->to('sahand.mg.ne@gmail.com');
+            $message->subject('تماس با برگزار کننده');
+
+        });
+
+        return redirect()->back()->with(['message'=>'پیام شما ارسال شد']);
+//
     }
 
     public function challengeDetail(Request $request){

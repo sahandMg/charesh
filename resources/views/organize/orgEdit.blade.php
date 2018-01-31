@@ -1,17 +1,7 @@
 @extends('masterUserHeader.body')
 @section('content')
 
-  <div class="row" style=" direction: rtl;">
-      <div class="Vnav">
-          <ul>
-              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-              <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a class="active" href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
-              <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
-
-          </ul>
-      </div>
-   <div class="container">
+   <div class="container" style=" direction: rtl;" id="Edit">
     <!-- Tiket Counter -->
     <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
 
@@ -42,113 +32,77 @@
             @endif
 
 
-       <div class="form-group row">
-        <label for="InputFile" class="col-2 col-form-label">لوگو (100px * 100px) : </label>
-        <div class="col-5">
-         <input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-        </div>
+       <div class="form-group">
+        <label for="InputFile">لوگو (100px * 100px) : </label>
+        <input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
        </div>
 
-      <div class="form-group row">
-        <label for="InputFile" class="col-2 col-form-label">توضیحات : </label>
-        <div class="col-5">
-         <textarea class="form-control" name="comment" id="summernote" rows="3"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="InputFile">توضیحات : </label>
+        <textarea class="form-control" name="comment" id="summernote" rows="3"></textarea>
        </div>
 
-       <div class="form-group row">
-        <label for="InputFile" class="col-2 col-form-label">عکس پشت زمینه (1150px * 380px) : </label>
-        <div class="col-5">
-         <input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">
-        </div>
+       <div class="form-group">
+        <label for="InputFile">عکس پشت زمینه (1150px * 380px) : </label>
+        <input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">
        </div>
        
-        <div class="form-group row">
-          <label for="email-input" class="col-2 col-form-label">ایمیل : </label>
-          <div class="col-5">
-            <input class="form-control" type="email" name="email" placeholder="bootstrap@example.com" id="example-email-input">
-          </div>
-        </div>
-	<br>
+        {{--<div class="form-group">--}}
+          {{--<label for="email-input">ایمیل : </label>--}}
+          {{--<input class="form-control" type="email" name="email" placeholder="bootstrap@example.com" id="example-email-input">--}}
+        {{--</div>--}}
+            @if(Auth::user()->role == 'supplier')
+                <div class="form-group" style="font-weight: 400;font-size: 125%;">
+                    <label class="container" style="color:darkgreen"> برگزار کننده مسابقه
+                        <input type="radio" checked="checked" name="radio" value="supplier">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">  شرکت کننده در مسابقه
+                        <input type="radio" name="radio" value="customer">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+            @else
+
+                <div class="form-group" style="font-weight: 400;font-size: 125%;">
+                    <label class="container" > برگزار کننده مسابقه
+                        <input type="radio"  name="radio" value="supplier">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container" style="color:darkgreen">  شرکت کننده در مسابقه
+                        <input type="radio" name="radio" checked="checked" value="customer">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+            @endif
+
         <h3>اختیاری</h3>
         <br>
-        <div class="form-group row">
-          <label for="Telegram-input" class="col-2 col-form-label">تلگرام : </label>
-          <div class="col-5">
-            <input class="form-control" type="name" name="telegram" placeholder="@example" id="Telegram-input">
-          </div>
+        <div class="form-group">
+          <label for="Telegram-input">آدرس : </label>
+          <input class="form-control" type="name" name="address" placeholder="خیابان" id="Telegram-input">
         </div>
 
-        <div class="form-group row">
-          <label for="Telegram-input" class="col-2 col-form-label">شماره تلفن : </label>
-          <div class="col-5">
-            <input class="form-control" type="name" name="phoneNumber" placeholder="0xxxxxxxxx" id="Telegram-input">
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label for="Telegram-input" class="col-2 col-form-label">آدرس : </label>
-          <div class="col-5">
-            <input class="form-control" type="name" name="address" placeholder="خیابان" id="Telegram-input">
-          </div>
-        </div>
-
-        <div class="form-group row">
+        <div class="form-group">
          <div id="map" style="width:80%;height: 250px; background:whitesmoke;"></div>
         </div>
 	<br>
 	<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
 	<br>
-       <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+       <button  @click="hidden" type="submit" v-show="!hide" class="btn btn-primary">ذخیره تغییرات</button>
+      <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ذخیره </button>
 
     </form>
     </div>
     <br>
-
-     <br>
-     <br>
    </div>
-
-  
-  </div> 
 
 
 
   <style>
-    .Vnav {
-      margin-top: 20px;
-      margin-right: 40px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 0.5;
-      background-color: #f1f1f1;
-      max-height: 200px;
-    }
 
-    .Vnav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 200px;
-        background-color: #f1f1f1;
-        
-    }
-
-    .Vnav li a {
-        display: block;
-        color: #000;
-        padding: 8px 16px;
-        text-decoration: none;
-    }
-
-    .Vnav li a.active {
-        background-color: #008CBA;
-        color: white;
-    }
-
-    .Vnav li a:hover:not(.active) {
-        background-color: #555;
-        color: white;
-    }
   </style>
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
@@ -161,7 +115,20 @@
   <script>
 
 
+      new Vue({
 
+          el:'#Edit',
+          data:{
+              hide:false
+          },
+          methods:{
+
+              hidden:function () {
+                  this.hide = true
+              }
+          }
+
+      })
 
       var map = null;
       var marker = null;

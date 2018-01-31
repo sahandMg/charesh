@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Url;
 use App\User;
 use Illuminate\Contracts\Session\Session;
 
@@ -33,27 +34,39 @@ class AuthController extends Controller
 $url = 'https://www.google.com/recaptcha/api/siteverify';
 $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
 // use key 'http' even if you send the request to https://...
-        $options = array(
-        'http' => array(
-        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-        'method'  => 'POST',
-        'content' => http_build_query($data),
-          ),
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        if(json_decode($result)->success === false){
+       $options = array(
+       'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data),
+         ),
+       );
+       $context  = stream_context_create($options);
+       $result = file_get_contents($url, false, $context);
+       if(json_decode($result)->success === false){
 
-        return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ]);
+       return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ]);
 
-        }
+       }
 
         $user = new User();
         $user->username = $request->username;
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
         $user->email = $request->email;
         if($request->email == 'sahand.mg.ne@gmail.com'){
             $user->role = 'admin';
         }
+
+        if($request->radio == 'supplier'){
+
+            $user->role = 'supplier';
+
+        }elseif($request->radio == 'customer'){
+
+            $user->role = 'customer';
+        }
+
         $user->password = bcrypt($request->password);
         $user->reset_password = str_shuffle("ajleyqwncx3497");
         $user->path = 'Blank100_100.png';
@@ -161,7 +174,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
             Mail::send('email.registerMail',$data,function ($message) use($data){
 
-                $message->from('');
+                $message->from('sahand.mg.ne@gmail.com');
                 $message->to($data['email']);
 
 		$message->subject('تایید حساب کاربری');
@@ -220,6 +233,17 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
     public function getLogin(){
 
+        if(!Auth::check()){
+
+            if(isset($_SERVER['HTTP_REFERER'])){
+                $record = new Url();
+                $record->token = csrf_token();
+                $record->pageUrl = $_SERVER['HTTP_REFERER'];
+                $record->ip = request()->ip();
+                $record->save();
+            }
+
+        }
         return view('auth.login');
     }
 
@@ -252,22 +276,21 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
 	}
 //dd(json_decode($result)->success);
-            if(session('lastPage')) {
-                $url = session('lastPage');
-                session()->forget('lastPage');
-//                dd(session('lastPage'));
-                return redirect()->intended($url);
 
+            if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
+                $page = Url::where('ip',request()->ip())->first()->pageUrl;
+                Url::where('ip',request()->ip())->first()->delete();
+                return redirect($page);
             }else{
-
                 return redirect()->route('home');
-
             }
+
+
         }
         else{
 
 //            echo 'false';
-            return redirect()->back()->with(['LoginError'=>'ایمیل یا رمز عبور را نادرست وارد کرده اید']);
+            return redirect()->back()->with(['LoginError'=>'ایمیل یا رمز عبور را نادرست وارد کرده اید'])->withInput();
         }
 
 
@@ -283,7 +306,8 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
             Mail::send('email.resetPassword', $data, function ($message) use ($data) {
 
                 $message->to($data['email']);
-                $message->from('s23.moghadam@gmail.com');
+                $message->from('sahand.mg.ne@gmail.com');
+                $message->subject('بازیابی رمز عبور');
             });
             $user->password = bcrypt($user->reset_password);
             $user->reset_password =  str_shuffle("ajleodncx3497");
@@ -334,7 +358,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
         $data = ['username'=>$user->username,'email'=>$user->email,'password'=>$user->password];
         Mail::send('email.update',$data,function ($message) use($data){
 
-            $message->from('s23.mogadam@gmail.com');
+            $message->from('sahand.mg.ne@gmail.com');
             $message->to($data['email']);
 
         });

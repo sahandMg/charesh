@@ -1,111 +1,93 @@
 @extends('masterUserHeader.body')
 @section('content')
-  <div class="row" style=" direction: rtl;">
-      <div class="Vnav">
-          <ul>
-              <li><a  href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-              <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
-              <li><a class="active" href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
 
-          </ul>
-      </div>
-   <div class="container">
-    <!-- Tiket Counter -->
-    <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;">
-
-        <form style="padding: 20px;" method="POST" action="{{route('organizeAccount',['id'=>$org->id,'orgName'=>$name->organize->slug])}}">
+    <div class="formDiv" id="account">
+        <h3>حساب من</h3>
+        <h5>   {{$org->credit * 0.98}} تومان</h5>
+        <form method="POST" action="{{route('organizeAccount',['id'=>$org->id,'orgName'=>$name->organize->slug])}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
-       <h2>موجودی حساب شما : {{$org->credit}} تومان </h2>
-       <br>
-       <!-- ٍٍError message -->
-          @if(count(session('message')) && session('code') == 0)
-              <div class="alert alert-success ">
-                  {{session('message')}}
-              </div>
-          @elseif(count(session('message')) && session('code') == 1)
+            <!-- ٍٍError message -->
+            @if(count(session('message')) && session('code') == 0)
+                <div class="alert alert-success ">
+                    {{session('message')}}
+                </div>
+            @elseif(count(session('message')) && session('code') == 1)
 
                 <div class="alert alert-danger ">
                     {{session('message')}}
                 </div>
 
-              @endif
-          @if(count($errors->all()))
-              <div class="alert alert-danger" role="alert">
+            @endif
+            @if(count($errors->all()))
+                <div class="alert alert-danger" role="alert">
 
-                  @foreach($errors->all() as $error)
+                    @foreach($errors->all() as $error)
 
-                      <li>{{$error}}</li>
+                        <li>{{$error}}</li>
 
-                  @endforeach
+                    @endforeach
 
-              </div>
-          @endif
-       <br>
-      <div class="form-group row">
-        <label for="Name-input" class="col-2 col-form-label">نام دارنده حساب</label>
-        <div class="col-5">
-         <input class="form-control" name="owner" type="text" value="" id="example-text-input">
-       </div>
-      </div>
+                </div>
+            @endif
+            <div class="form-group">
+                <label for="Name-input">شماره حساب  </label>
+                <input class="form-control" name="accountNumber" type="text" value="" id="example-text-input">
+            </div>
 
-      <div class="form-group row">
-        <label for="Name-input" class="col-2 col-form-label">شماره حساب  </label>
-        <div class="col-5">
-         <input class="form-control" name="accountNumber" type="text" value="" id="example-text-input">
-       </div>
-      </div>
-
-      <div class="form-group row">
-        <label for="Name-input" class="col-2 col-form-label">بانک  </label>
-        <div class="col-5">
-         <input class="form-control" name="bank" type="text" value="" id="example-text-input">
-       </div>
-      </div>
-      <br>
-       <button type="submit" class="btn btn-primary" >درخواست واریز</button>
-      </form>
+            <div class="form-group">
+                <label for="Name-input">بانک  </label>
+                <input class="form-control" name="bank" type="text" value="">
+            </div>
+            <br>
+            <button @click="hidden" v-show="!hide" type="submit" class="btn btn-primary" >درخواست واریز</button>
+            <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ارسال درخواست </button>
+        </form>
     </div>
-  
-  </div> 
 
-</div>  
 
-  <style>
-    .Vnav {
-      margin-top: 20px;
-      margin-right: 40px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 0.5;
-      background-color: #f1f1f1;
-      max-height: 200px;
-    }
+    <script>
+        new Vue({
 
-    .Vnav ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 200px;
-        background-color: #f1f1f1;
-        
-    }
+            el:'#account',
+            data:{
+                hide:false
+            },
+            methods:{
 
-    .Vnav li a {
-        display: block;
-        color: #000;
-        padding: 8px 16px;
-        text-decoration: none;
-    }
+                hidden:function () {
+                    this.hide = true
+                }
+            }
 
-    .Vnav li a.active {
-        background-color: #008CBA;
-        color: white;
-    }
+        })
+    </script>
 
-    .Vnav li a:hover:not(.active) {
-        background-color: #555;
-        color: white;
-    }
+
+    <style>
+      .formDiv {
+          width: 80%;
+          margin: 0 auto;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+          direction: rtl;
+          background-color: white;
+      }
+
+      .formDiv h3 {
+          background-color: #42CBC8;
+          padding: 20px;
+          color: white;
+      }
+
+      .formDiv form {
+          padding: 20px;
+      }
+      h5 {
+          font-weight: 400;
+          font-size: 150%;
+          text-align: center;
+      }
+
   </style>
 
 
@@ -115,20 +97,5 @@
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
   <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
   <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
- <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
- </script>
- <script>
-  function myMap() {
-  var mapOptions = {
-      center: new google.maps.LatLng(51.5, -0.12),
-      zoom: 10,
-      mapTypeId: google.maps.MapTypeId.HYBRID
-  }
-  var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-  }
-
-
-  </script>
 
 @endsection

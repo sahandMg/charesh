@@ -6,21 +6,24 @@
 
         @if(count($userMessages) != 0)
 
-             <form style="padding: 20px;" method="POST" action="{{route('deleteNotification',['username'=>Auth::user()->slug])}}">
-                      <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <form style="padding: 20px;" method="POST" action="{{route('deleteNotification',['username'=>Auth::user()->username])}}">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-                    <button type="submit" class="btn btn-danger"> حذف همه پیام ها </button>
+                <button type="submit" class="btn btn-danger"> حذف همه پیام ها </button>
 
-                   </form>
+            </form>
 
             <div id="accordion" role="tablist" aria-multiselectable="true">
 
                 @for($i = 0 ; $i< count($userMessages) ; $i++)
-
-                    <div class="card">
+                    <button class="accordion"> <span style="margin-left:40%;"> {{$remain[$i]}} روز قبل </span> {{$userMessages[$i]->tournament->matchName}} : {{$userMessages[$i]->organize->name}} </button>
+                    <div class="panel">
+                        <p>{!!$userMessages[$i]->message!!}</p>
+                    </div>
+                <!-- <div class="card">
                         <div class="card-header" role="tab" id="heading{{$i}}">
                             <h5 class="mb-0">
-                                <a  data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="false" aria-controls="collapse{{$i}}">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$i}}" aria-expanded="false" aria-controls="collapse{{$i}}">
                                     <span style="color: blue;"> {{$userMessages[$i]->organize->name}} </span>
                                     : <span style="color: blue"> {{$userMessages[$i]->tournament->matchName}} </span>
 
@@ -33,9 +36,9 @@
                             <div class="card-block">
 
                                 {!!$userMessages[$i]->message!!}
-                            </div>
                         </div>
                     </div>
+                </div> -->
 
                 @endfor
 
@@ -55,9 +58,61 @@
     <br>
 
 
+    <style>
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            /*direction: ltr;*/
+        }
 
-    <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
-    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .accordion:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active:after {
+            content: "\2212";
+        }
+
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+    </style>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight){
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
 
 
 @endsection

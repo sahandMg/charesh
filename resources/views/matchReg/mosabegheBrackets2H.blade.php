@@ -8,14 +8,16 @@
 
     </div>
 
-    <div class="container" id="app">
+    <div class="container" id="GelBrack">
 
 
-        <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-            <a class="nav-item nav-link active" href="{{route('MatchGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">حذفی</a>
-            <a class="nav-item nav-link " href="{{route('matchGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">گروهی</a>
+        <br>
 
+        <nav class="nav nav-tabs" style="padding: 30px;">
+            <li><a class="active" href="{{route('matchGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">گروهی</a></li>
+            <li><a href="{{route('MatchGElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">حذفی</a></li>
         </nav>
+        <br>
         <br>
         <!-- Brackets -->
         <div id="playoff"></div>
@@ -41,7 +43,7 @@
 
         new Vue({
 
-            el:'#app',
+            el:'#GelBrack',
             data:{
                 detail:''
 
@@ -169,7 +171,7 @@
                 case "entry-no-score":
                 case "entry-default-win":
                 case "entry-complete":
-                    container.append('<img src="../../public/storage/images/' +img2 +'" /> ').append(data.name)
+                    container.append('<img style="height:20px;width:20px" src="{{URL::asset('storage/images')}}'+'/'+data.flag+'.jpg" /> ').append(data.name)
                     return;
             }
         }

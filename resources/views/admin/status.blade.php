@@ -7,15 +7,38 @@
 
 
       <link rel="stylesheet" href="{{URL::asset('CSS/style.css')}}">
-
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-  <h2>Bargraph title</h2>
-<div id="bargraph"></div>
 
-  <h4><a href="{{route('moreInfo')}}">اطلاعات بیشتر</a></h4>
+
+
+  <div class="row" style="margin:auto">
+      <ul  class="nav nav-tabs">
+          <li><a href="{{route('contents')}}">تصاویر کاربران</a></li>
+          <li><a href="{{route('matchImg')}}">تصاویر مسابقات</a></li>
+          <li><a href="{{route('text')}}">متن مسابقات</a></li>
+          <li ><a href="{{route('orgImg')}}">تصاویر برگزار کنندگان</a></li>
+          <li><a href="{{route('orgText')}}">متن های برگزار کننده</a></li>
+          <li  ><a href="{{route('canceled')}}">مسابقات کنسل شده</a></li>
+          <li class="active" ><a href="{{route('barGraph')}}">وضعیت اعضای سایت</a></li>
+          <li><a href="{{route('payment')}}">تسویه حساب  </a></li>
+          <li><a href="{{route('home')}}">خانه</a></li>
+      </ul>
+  </div>
+
+  <br>
+
+  <h2 style="text-align: center">وضعیت اعضای سایت </h2>
+  <br>
+  <div style="margin: auto" id="bargraph"></div>
+
+
+
+  <h4 style="text-align: center"><a href="{{route('moreInfo')}}">اطلاعات بیشتر</a></h4>
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://d3js.org/d3.v3.min.js'></script>
 

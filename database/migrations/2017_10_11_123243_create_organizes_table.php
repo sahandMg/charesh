@@ -24,9 +24,10 @@ class CreateOrganizesTable extends Migration
             $table->mediumText('comment')->nullable();
             $table->integer('user_id')->default('0')->nullable();
             $table->integer('tournament_id')->default('0')->nullable();
-            $table->longText('lat')->default('0');
-            $table->longText('lng')->default('0');
+            $table->longText('lat')->nullable();
+            $table->longText('lng')->nullable();
             $table->integer('rating')->default('0');
+            $table->integer('unread')->default('0');
             $table->string('email')->nullable();
             $table->string('telegram')->nullable();
             $table->string('address')->nullable();

@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
         'admin'=>       \App\Http\Middleware\Admin::class,
         'bracket'   => \App\Http\Middleware\BracketMiddleware::class,
+        'ticket' =>     \App\Http\Middleware\Ticket::class,
+        'supplier' => \App\Http\Middleware\Supplier::class,
     ];
 }

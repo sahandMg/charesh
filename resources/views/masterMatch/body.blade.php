@@ -1,31 +1,11 @@
 
 
 <ul class="nav nav-tabs" id="app">
-    <li class="nav-item">
-
-
-
-
-            <a  href="{{route('matchRegistered',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="RegClass">ثبت نام</a>
-
-
-    </li>
-    {{--<li class="nav-item">--}}
-        {{--<a  @click="activeRule"  :class="RuleClass" href="challenge-rules-{{$tournament->matchName}}-{{$tournament->id}}">قوانین</a>--}}
-    {{--</li>--}}
-    <li class="nav-item">
-        <a   href="{{route('matchBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="BracketClass" >براکت مسابقه</a>
-    </li>
-    <li class="nav-item">
-        <a  href="{{route('matchTimeline',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="TimelineClass" >زمان بندی</a>
-    </li>
-    <li class="nav-item">
-        <a   href="{{route('matchAttenders',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" :class="attendersClass"> شرکت کنندگان </a>
-    </li>
-
+    <li :class="attendersClass"><a href="{{route('matchAttenders',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" > شرکت کنندگان </a></li>
+    <li :class="TimelineClass"><a href="{{route('matchTimeline',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"  > زمان بندی </a></li>
+    <li :class="BracketClass"><a href="{{route('matchBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" > براکت مسابقه </a></li>
+    <li :class="RegClass"><a href="{{route('matchRegistered',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" >ثبت نام</a></li>
 </ul>
-
-
 
 <script>
 
@@ -65,7 +45,9 @@
 //                vm.route = response.data
 
             vm = this
+
             switch ({!! json_encode($route) !!}){
+
 
                 case 'detail':
 

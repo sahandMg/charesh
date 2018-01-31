@@ -1,16 +1,15 @@
 @extends('masterUserHeader.body')
 @section('content')
+    <ul class="nav nav-tabs">
+        {{--<li class="disabled"><a href=""> راه های ارتباطی </a></li>--}}
+        <li class="disabled"><a href=""> اطلاعات ثبت نام </a></li>
 
- <div class="container" style="direction: rtl;" id="app">
+        <li class="disabled"><a href=""> قوانین </a></li>
+        <li class="active"><a href=""> اطلاعات مسابقه </a></li>
+        <li class="disabled"><a href="">اطلاعات پایه</a></li>
+    </ul>
+ <div class="container" style="direction: rtl;width: 80%;" id="app">
 
-  <nav class="nav nav-pills nav-fill" style="padding-top: 50px;">
-    <a class="nav-item nav-link disabled" href="#">اطلاعات پایه</a>
-    <a class="nav-item nav-link active" href="#">اطلاعات مسابقه</a>
-    <a class="nav-item nav-link disabled" href="#">قوانین</a>
-    <a class="nav-item nav-link disabled" href="#">برنامه مسابقات</a>
-    <a class="nav-item nav-link disabled" href="#">اطلاعات ثبت نام</a>
-    <a class="nav-item nav-link disabled" href="#">راه های ارتباطی</a>
-  </nav>
 
    <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('matchInfo')}}">
 
@@ -20,86 +19,72 @@
        @if(count($errors->all()))
        <div class="alert alert-danger" role="alert">
            @foreach($errors->all() as $error)
-
                <li>{{$error}}</li>
-
            @endforeach
        </div>
        @endif
 
-    <div class="form-group row">
-      <label for="Name-input" class="col-2 col-form-label">به صورت :</label>
-      <div class="col-5">
-       <select @change="check" v-model="mode" name="mode" class="form-control form-control-lg" style="height: 35px;padding: 0px;padding-right: 5px;" id="mySelect">
-           <option disabled value="">انتخاب ...</option>
-           <option value="غیر حضوری">غیر حضوری</option>
+    <div class="form-group">
+      <label> به صورت </label>
+      <select @change="check" v-model="mode" name="mode" class="form-control form-control-lg" style="height: 35px;padding: 0px;padding-right: 5px;" id="mySelect">
+        <option disabled value="">انتخاب ...</option>
+        <option value="غیر حضوری">غیر حضوری</option>
         <option value="حضوری">حضوری</option>
       </select>
-     </div>
     </div>
 
-    <div class="form-group row">
-      <label for="Name-input" class="col-2 col-form-label">نوع مسابقه :</label>
-      <div class="col-5">
+    <div class="form-group">
+      <label> نوع مسابقه  </label>
        <select name="matchType" v-model="matchType" @change="check" class="form-control form-control-lg" style="height: 35px;padding: 0px;padding-right: 5px;" id="selectkind">
-           <option disabled value="">انتخاب ...</option>
-           <option value="انفرادی">انفرادی</option>
-        <option value="تیمی">تیمی</option>
+         <option disabled value="">انتخاب ...</option>
+         <option value="انفرادی">انفرادی</option>
+         <option value="تیمی">تیمی</option>
       </select>
-     </div>
     </div>
 
-  <div class="form-group row" id="fardi">
-      <label for="Name-input" class="col-2 col-form-label">حداکثر تعداد شرکت کننده ها : </label>
-      <div class="col-5">
-       <input name="maxAttenders" @input="check"  v-model="maxAttenders"  class="form-control" type="number" placeholder="به عدد" id="example-text-input">
-     </div>
+    <div class="form-group" id="fardi">
+      <label>  تعداد شرکت کننده ها  </label>
+      <input name="maxAttenders" @input="check"  v-model="maxAttenders"  class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
     </div>
 
-   <div class="form-group row" id="Timi3" style="display: none;">
-      <label for="Name-input" class="col-2 col-form-label">حداکثر تعداد تیم ها : </label>
-      <div class="col-5">
-       <input name="maxTeam" @input="check"  v-model="maxTeam"  class="form-control" type="number" placeholder="به عدد" id="example-text-input">
-     </div>
+   <div class="form-group" id="Timi3" style="display: none;">
+      <label>  تعداد تیم ها  </label>
+
+      <input name="maxTeam" @input="check"  v-model="maxTeam"  class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
     </div>
 
-   <div class="form-group row" id="Timi2" style="display: none;">
-      <label for="Name-input" class="col-2 col-form-label">حداقل تعداد اعضای تیم : </label>
-      <div class="col-5">
-       <input name="minMember" @input="check"  v-model="minMember" class="form-control" type="number" placeholder="به عدد" id="example-text-input">
-     </div>
-    </div>
+   <div class="form-group" id="Timi1" style="display: none;">
+      <label>  تعداد اعضای تیم  </label>
+      <input name="maxMember" @input="check"  v-model="maxMember" class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
+   </div>
 
-   <div class="form-group row" id="Timi1" style="display: none;">
-      <label for="Name-input" class="col-2 col-form-label">حداکثر تعداد اعضای تیم : </label>
-      <div class="col-5">
-       <input name="maxMember" @input="check"  v-model="maxMember" class="form-control" type="number" placeholder="به عدد" id="example-text-input">
-     </div>
-    </div>
+       <div class="form-group" id="Timi2" style="display: none;">
+           <label>  تعداد افراد ذخیره تیم  </label>
+           <input name="subst" @input="check"  v-model="subst" class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
+       </div>
 
-    <div class="form-group row">
-      <label for="Name-input" class="col-2 col-form-label">نوع برگزاری :</label>
-      <div class="col-5">
+
+    <div class="form-group">
+      <label for="Name-input"> نوع برگزاری </label>
        <select name="attendType" v-model="attendType" @change="check" class="form-control form-control-lg" style="height: 35px;padding: 0px;padding-right: 5px;">
-           <option disabled value="">انتخاب ...</option>
-           <option value="یک مرحله ای - حذفی">یک مرحله ای - حذفی</option>
+        <option disabled value="">انتخاب ...</option>
+        <option value="یک مرحله ای - حذفی">یک مرحله ای - حذفی</option>
         <option value="دو مرحله ای - گروهی - حذفی">دو مرحله ای - گروهی - حذفی</option>
         <option value="لیگ">لیگ</option>
       </select>
-     </div>
     </div>
 
-   <div class="form-group row">
-    <label for="InputFile" class="col-2 col-form-label">جوایز : </label>
-    <div class="col-5">
-     <textarea name="prize"   class="form-control" id="summernote" rows="3"></textarea>
-    </div>
+   <div class="form-group">
+    <label for="InputFile"> جوایز  </label>
+    <textarea name="prize"   class="form-control" id="summernote" rows="3"></textarea>
    </div>
-
-
-       <div id="map" style="width:80%;height: 250px; background:whitesmoke;position: relative;display: none"></div>
-
-       <br>
+    <h4 id="guide" style="display: none">در صورت معلوم نبودن محتوای نقشه، روی علامت [ ] در بالای نقشه کلیک کنید</h4>
+    <div class="form-group" id="address" style="display: none;">
+       <label> آدرس </label>
+       <input name="address" class="form-control" type="text" placeholder="آدرس" >
+    </div>
+   <div id="map" style="width:80%;height: 250px; background:whitesmoke;position: relative;display: none"></div>
+   <br>
     <div class="form-group row">
      <a href="{{route('returnBaseInfo')}}" class="btn btn-danger" style="margin-left: 20px;">بازگشت</a>
      <button :disabled="btn" type="submit" class="btn btn-primary">ادامه</button>
@@ -113,6 +98,25 @@
 
 
 </div>
+    <style>
+        .nav-tabs li {
+            width: 20%;
+            font-size: 100%;
+            font-weight: 400;
+        }
+        @media screen and (max-width: 800px) {
+            .nav-tabs li {
+                font-size: 80%;
+                font-weight: 400;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .nav-tabs li {
+                font-size: 50%;
+                font-weight: 400;
+            }
+        }
+    </style>
  <script>
 
      vm = new Vue({
@@ -154,7 +158,7 @@
                    else{
 
 
-                       if (this.mode.length > 0 && this.matchType.length > 0 && this.minMember.length > 0 && this.maxMember.length > 0  && this.maxTeam.length > 0  && this.attendType.length > 0 ) {
+                       if (this.mode.length > 0 && this.matchType.length > 0 && this.subst.length > 0 && this.maxMember.length > 0  && this.maxTeam.length > 0  && this.attendType.length > 0 ) {
 
                            this.btn = false
                        } else {
@@ -176,18 +180,18 @@
 
 <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
 <script type="text/javascript">
-    function myFunction() {
-        var x = document.getElementById("mySelect").value ;
-
-        if( x == "انفرادی" ) {
-            document.getElementById("fardi").style.display = "block"
-            document.getElementById("Timi").style.display = "none" ;
-        }
-        if ( x == "غیرحضوری" ) {
-            document.getElementById("fardi").style.display = "none" ;
-            document.getElementById("Timi").style.display = "block  "
-        }
-    }
+    // function myFunction() {
+    //     var x = document.getElementById("mySelect").value ;
+    //
+    //     if( x == "انفرادی" ) {
+    //         document.getElementById("fardi").style.display = "block"
+    //         document.getElementById("Timi").style.display = "none" ;
+    //     }
+    //     if ( x == "غیرحضوری" ) {
+    //         document.getElementById("fardi").style.display = "none" ;
+    //         document.getElementById("Timi").style.display = "block  "
+    //     }
+    // }
 </script>
 </div>
 
@@ -306,15 +310,15 @@
          $('#selectkind').change(function(){
 
              if ($(this).find("option:selected").attr('value') == "تیمی") {
-                 $('#Timi1').css({"display":"flex"});
-                 $('#Timi2').css({"display":"flex"});
-                 $('#Timi3').css({"display":"flex"});
+                 $('#Timi1').css({"display":"block"});
+                 $('#Timi2').css({"display":"block"});
+                 $('#Timi3').css({"display":"block"});
                  $('#fardi').css({"display":"none"});
              } else {
                  $('#Timi1').css({"display":"none"});
                  $('#Timi2').css({"display":"none"});
                  $('#Timi3').css({"display":"none"});
-                 $('#fardi').css({"display":"flex"});
+                 $('#fardi').css({"display":"block"});
              }
 
          });
@@ -323,11 +327,14 @@
 
              if ($(this).find("option:selected").attr('value') == "حضوری") {
                  $('#map').css({"display":"flex"});
+                 $('#guide').css({"display":"flex"});
+                 $('#address').css({"display":"block"});
                  initialize();
              } else {
                  $('#map').css({"display":"none"});
+                 $('#guide').css({"display":"none"});
+                 $('#address').css({"display":"none"});
              }
-
          });
      });
 

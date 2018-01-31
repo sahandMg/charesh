@@ -1,7 +1,7 @@
 @extends('masterHeader.body')
 @section('content')
 
-  <div class="container" style="direction: rtl;margin-top: 50px;margin-bottom: 50px;">
+  <div id="app" class="container" style="direction: rtl;margin-top: 50px;margin-bottom: 50px;">
 
     <div class="card" style="box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 1;">
      <h3 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">تایید ایمیل</h3>
@@ -26,7 +26,9 @@
          @endif
 
             <h4>برای تایید حساب کاربری، بر روی لینک ارسال شده به ایمیل خود کلیک کنید.</h4>
-       <br>
+       <hr>
+
+         <h4>در صورت دریافت نکردن ایمیل از طرف سایت، مجدداً ایمیل خود را وارد کنید.</h4>‌
 
       <div class="form-group row">
           <label class="col-2 col-form-label">ایمیل : </label>
@@ -36,8 +38,10 @@
       </div>
 
       <br>
-       <button type="submit" class="btn btn-primary"> ارسال مجدد</button>
-      </form>
+         <button @click="hidden" v-show="!hide" type="submit" class="btn btn-primary" id="btnReg">ارسال مجدد</button>
+         <button v-show="hide" class="btn btn-primary "><i class="fa fa-spinner fa-spin"></i>در حال ارسال</button>
+
+     </form>
     </div>
 
   
@@ -50,6 +54,25 @@
  <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
  <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
+
+
+  <script>
+      new Vue({
+
+          el:'#app',
+          data:{
+              hide:false
+          },
+          methods:{
+
+              hidden:function () {
+                  this.hide = true
+              }
+          }
+
+      })
+  </script>
+
 
 @endsection
 

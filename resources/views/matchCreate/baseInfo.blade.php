@@ -1,15 +1,15 @@
 @extends('masterUserHeader.body')
 @section('content')
- <div class="container" style="direction: rtl;" id="app">
+    <ul class="nav nav-tabs">
 
-  <nav class="nav nav-pills nav-fill" style="padding-top: 50px;">
-    <a class="nav-item nav-link active" href="#">اطلاعات پایه</a>
-    <a class="nav-item nav-link disabled" href="#">اطلاعات مسابقه</a>
-    <a class="nav-item nav-link disabled" href="#">قوانین</a>
-    <a class="nav-item nav-link disabled" href="#">برنامه مسابقات</a>
-    <a class="nav-item nav-link disabled" href="#">اطلاعات ثبت نام</a>
-    <a class="nav-item nav-link disabled" href="#">راه های ارتباطی</a>
-  </nav>
+        <li class="disabled"><a href=""> اطلاعات ثبت نام </a></li>
+
+        <li class="disabled"><a href=""> قوانین </a></li>
+        <li class="disabled"><a href=""> اطلاعات مسابقه </a></li>
+        <li class="active"><a href="">اطلاعات پایه</a></li>
+    </ul>
+ <div class="container" style="direction: rtl;width: 80%;" id="app">
+
 
    <form style="padding-top: 20px;font-size: 20px;" method="POST" action="{{route('baseInfo')}}" enctype="multipart/form-data">
        <input type="hidden" name="_token" value="{{csrf_token()}}">
@@ -47,18 +47,34 @@
      </div>
     </div>
 
-    <div class="form-group row">
-           <label for="Name-input" class="col-2 col-form-label">تاریخ شروع مسابقه : </label>
-           <div class="col-5">
-               <input class="form-control" @input="check"  :style="style3" v-model="startTime" name="startTime" type="text" placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">
+    <div class="form-group">
+           <label for="Name-input">تاریخ شروع مسابقه : </label>
+           <div>
+               <input style="float: right;margin-left: 1%;width: 30%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="روز" name="startDay" type="text" value="" id="example-text-input">
+               <select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 30%;" class="form-control" id="sel1">
+                   <option>فروردین</option>
+                   <option>اردیبهشت</option>
+                   <option>خرداد</option>
+                   <option>تیر</option>
+                   <option>مرداد</option>
+                   <option>شهریور</option>
+                   <option>مهر</option>
+                   <option>آبان</option>
+                   <option>آذر</option>
+                   <option>دی</option>
+                   <option>بهمن</option>
+                   <option>اسفند</option>
+               </select>
+               <select name="startYear" v-model="startYear" style="float: right;margin-left: 1%;width: 30%;" class="form-control" id="sel2">
+                   <option>1396</option>
+                   <option>1397</option>
+               </select>
            </div>
        </div>
-
-  <div class="form-group row">
-    <label for="InputFile" class="col-2 col-form-label">توضیحات : </label>
-    <div class="col-5">
-     <textarea class="form-control"  name="comment" id="summernote" rows="3"></textarea>
-    </div>
+       <br>
+  <div class="form-group">
+    <label for="InputFile">توضیحات ضروری (تکمیل شود) : </label>
+    <textarea class="form-control"  name="comment" id="summernote" rows="3"></textarea>
    </div>
 
    <div class="form-group row">
@@ -67,12 +83,33 @@
      <input type="file" class="form-control-file" name="path" style="font-size:15px" id="exampleInputFile" aria-describedby="fileHelp">
     </div>
    </div>
-       <a href="{{route('orgMatches',['orgName'=>$name->organize->name])}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
+       <a href="{{url(\App\Url::where('token',csrf_token())->first()->pageUrl)}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
 
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
 
   </form>
 </div>
+
+ <style>
+        .nav-tabs li {
+            width: 20%;
+            font-size: 100%;
+            font-weight: 400;
+        }
+        @media screen and (max-width: 800px) {
+            .nav-tabs li {
+                font-size: 80%;
+                font-weight: 400;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .nav-tabs li {
+                font-size: 50%;
+                font-weight: 400;
+            }
+        }
+    </style>
+
 
  <script>
 
@@ -87,6 +124,10 @@
  startTime:'',
  endTime:'',
  comment:'',
+     startDay:'',
+     startMonth:'فروردین',
+     startYear:'1396',
+
  style1:{borderColor:'#d9d9d9',borderStyle:'solid'},
  style2:{borderColor:'#d9d9d9',borderStyle:'solid'},
  style3:{borderColor:'#d9d9d9',borderStyle:'solid'},
@@ -104,7 +145,7 @@
 //     document.getElementsByClassName('nicEdit-main')[0].addEventListener('input',this.check)
 //     this.comment = document.getElementsByClassName('nicEdit-main')[0].innerHTML
 // console.log(this.comment)
- if(this.endTime.length > 0 && this.startTime.length > 0  && this.matchName.length > 0){
+ if(this.endTime.length > 0 && this.startDay.length > 0 && this.startMonth.length > 0 && this.startYear.length > 0 &&  this.matchName.length > 0){
 
  this.next = false
  }else{

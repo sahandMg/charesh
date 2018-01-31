@@ -15,6 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('fName');
+            $table->string('lName');
             $table->string('username')->unique();
             $table->text('slug')->nullable();
             $table->string('email')->unique();
@@ -27,10 +29,10 @@ class CreateUsersTable extends Migration
             $table->integer('unread')->default(0);
 //            $table->string('organize_id')->default('0');
 //            mosabeqate sakhte shode
-            $table->string('tournament_id')->default('0');
+            $table->text('pageUrl')->nullable();
             //            mosabeqate shrkat karde
-            $table->string('match_id')->default('0');
-            $table->string('role')->nullable();
+            $table->string('is_admin')->default('0');
+            $table->string('role')->default('customer');
             $table->string('api_token', 60)->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();

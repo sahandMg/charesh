@@ -1,30 +1,16 @@
 @extends('masterUserHeader.body')
 @section('content')
-
-    <div class="row" style=" direction: rtl;">
-        <!— right menu —>
-        <div class="col-2">
-            <ul class="Vnav">
-                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
-            </ul>
-        </div>
-        <!— content —>
-        <div class="container col-8" id="app">
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+        <div class="container" style=" direction: rtl;" id="app">
             <br>
-            @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+            <button @click="confirm" type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button>
 
-            <br>
-            <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
-            <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
 
             <br>
 
-            <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-                <a class="nav-item nav-link active" href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">گروهی</a>
-                <a class="nav-item nav-link" href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">حذفی</a>
+            <nav class="nav nav-tabs" style="padding: 30px;">
+                <li><a class="active" href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">گروهی</a></li>
+                <li><a href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}">حذفی</a></li>
             </nav>
             <br>
 
@@ -152,44 +138,10 @@
             <h4 v-if="fail">خطا در برقراری ارتباط با سرور</h4>
         </div>
 
-    </div>
 
     <style>
         .rounded {
             padding-right: 5px;
-        }
-
-
-        .Vnav {
-            margin-top: 20px;
-            margin-right: 40px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 0.1;
-            background-color: #f1f1f1;
-            max-height: 200px;
-            list-style-type: none;
-            /*margin: 0;*/
-            padding: 0;
-            width: 200px;
-            /*background-color: #f1f1f1;*/
-        }
-
-
-        .Vnav li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-        .Vnav li.active {
-            background-color: #008CBA;
-            color: white;
-        }
-
-        .Vnav li a:hover:not(.active) {
-            background-color: #555;
-            color: white;
         }
     </style>
 
@@ -256,7 +208,17 @@
 
 
 
-                }
+                },
+                confirm:function () {
+
+                    var ans = prompt('در صورت تغییر نوع برگزاری ، تمامی اطلاعات جدول امتیازات و براکت مسابقه پاک می شود. برای ادامه، تایید را وارد کنید');
+                    if(ans == 'تایید'){
+
+                        window.location.href = {!! json_encode(route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])) !!}
+                    }
+
+                },
+
 
 
             }

@@ -1,30 +1,11 @@
 @extends('masterUserHeader.body')
 @section('content')
-
-  <div class="row" style=" direction: rtl;" id="app">
-    <!-- right menu -->
-      <div class="Vnav">
-          <ul>
-              <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-              <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-              <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
-              <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
-	</ul>
-      </div>
-  <!-- content -->
-   <div class="container">
-
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+<div class="container" id="app" style=" direction: rtl;">
     <br>
-       @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-       <br>
-    <br>
-<div v-if="select">
-<center>
+ <div v-if="select" style="text-align: center;">
 
   <h3 style="padding: 30px;">نحوه برگزاری مسابقه</h3>
-
-
     <div class="sub-main">
         <a href="{{route('groupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button   class="button-one">  گروهی - حذفی</button></a>
     </div>
@@ -37,9 +18,7 @@
         <a href="{{route('leagueBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button class="button-three">لیگ</button></a>
    </div>
 
-  </center>
-
-    </div>
+ </div>
        {{-- group - elimination --}}
 
 
@@ -48,7 +27,7 @@
 </div>
 
 
-  </div>
+
 
 
 

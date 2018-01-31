@@ -19,8 +19,13 @@ class Organize
         $user = Auth::user()->organize;
 
 
-        if(!count($user)>0){
+        if(!count($user)>0 ){
             return redirect()->route('MakeOrganize');
+        }
+
+        if(Auth::user()->role == 'customer'){
+
+            return redirect()->route('setting',['username',Auth::user()->username])->with(['settingError'=>'برای ساخت مسابقه، سطح دسترسی خود را به برگزارکننده تغییر دهید']);
         }
         return $next($request);
     }

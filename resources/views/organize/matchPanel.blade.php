@@ -1,43 +1,19 @@
 @extends('masterUserHeader.body')
 @section('content')
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+    <div class="container" id="edit">
 
-    <div class="row" style=" direction: rtl;" id="app">
-        <!— right menu —>
-        <div class="col-2">
-            <ul class="Vnav">
-                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ﻭیرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}"> حساب من</a></li>
-            </ul>
+        <div class="wallDiv">
+            <h2>کل بلیت هایی که فروخته اید :  <span id="counter">{{$tournament->sold}}</span></h2>
         </div>
-        <!— content —>
-        <div class="container col-8" id="app">
-    <br>
-   @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-
-       <br>
-    <br>
-    <!-- Tiket Counter -->
-
+        @if(session('bracketError'))
+            <div class="alert alert-danger" role="alert">
+                <p style="direction: rtl">{{session('bracketError')}}</p>
+            </div>
+        @endif
+     <div class="wallDiv">
        <form style="padding: 20px;" method="POST" action="{{route('challengePanel',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" enctype="multipart/form-data">
            <input type="hidden" name="_token" value="{{csrf_token()}}">
-           @if(session('bracketError'))
-
-
-               <div class="alert alert-danger" role="alert">
-
-                   <p>{{session('bracketError')}}</p>
-
-
-               </div>
-           @endif
-
-           <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index:0.5;padding: 20px;margin-top: 20px;width: 100%;">
-        <h2>کل بلیت هایی که فروخته اید :  <span id="counter">{{$tournament->sold}}</span></h2>
-      </div>
-      <br>
            {{--<div>--}}
            @if(count($errors->all()))
                <div class="alert alert-danger" role="alert">
@@ -50,10 +26,7 @@
                 </ul>
                </div>
                    @endif
-
-
-
-               @if(session('message'))
+           @if(session('message'))
                <div class="alert alert-success" role="alert">
                    <ul>
                        <li>{{session('message')}}</li>
@@ -62,96 +35,50 @@
                </div>
            @endif
 
-
-           {{--</div>--}}
-
-
-
-      <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;width: 100%;">
-
-
-
-        <div class="form-group row">
-            <label for="InputFile" class="col-3 col-form-label"><h2>فایل قوانین</h2></label>
-            <div class="col-6">
-              <input type="file" name="rulesPath" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" style="margin-top: 15px;">
-            </div>
+        <div class="form-group">
+            <label for="InputFile">فایل قوانین</label>
+            <input type="file" name="rulesPath" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" style="margin-top: 15px;">
         </div>
 
-          <div class="form-group row">
-              <label class="col-3 col-form-label">زمان پایان ثبت نام : </label>
-              <!-- <label class="col-2 col-form-label">ایمیل : </label> -->
-              <div class="col-5">
-                  <input class="form-control"  :style="style4"  name="endTime" type="number" min="1" value="{{Request::old('matchName')}}" placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
-              </div>
+          <div class="form-group">
+              <label>زمان پایان ثبت نام : </label>
+              <input class="form-control"  :style="style4"  name="endTime" type="number" min="1" value="{{Request::old('matchName')}}" placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
           </div>
 
-          <div class="form-group row">
-              <label class="col-3 col-form-label">تاریخ شروع مسابقه : </label>
-              <div class="col-5">
-                  <input class="form-control"  :style="style3"  name="startTime" type="text" placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">
-              </div>
+          <div class="form-group">
+              <label>تاریخ شروع مسابقه : </label>
+              <input class="form-control"  :style="style3"  name="startTime" type="text" placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">
           </div>
-
-          <div class="form-group row">
-              <label class="col-3 col-form-label">توضیحات : </label>
-              <div class="col-5">
-                  <textarea class="form-control"  :style="style5"  name="comment" id="summernote" rows="3"></textarea>
-              </div>
-          </div>
-
-          <div class="form-group row" id="fardi">
-              <label class="col-3">حداکثر تعداد شرکت کننده ها : </label>
-              <div class="col-5">
-                  <input type="number" name="maxAttenders" class="form-control" placeholder="به عدد" id="example-text-input">
-              </div>
-          </div>
-
-          <div class="form-group row">
-              <label class="col-3 col-form-label">ایمیل : </label>
-              <div class="col-5">
-                  <input name="email" style="text-align: left;direction: ltr"   class="form-control"  type="email" placeholder="bootstrap@example.com" id="example-email-input">
-              </div>
-          </div>
-
-          <div class="form-group row">
-              <label class="col-3 col-form-label">تلگرام : </label>
-              <div class="col-5 col-form-label">
-                  <input class="form-control" style="text-align: left;direction: ltr" v-model="telegram"   name="telegram" type="text" placeholder="@example" id="Telegram-input">
-              </div>
-          </div>
-
-
-
-
-      </div>
-
-      <br>
-        @if($tournament -> mode == "حضوری")
-      <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;width: 100%;">
-       <div class="form-group row">
-          <div id="map" style="width:100%;height: 250px; background-color: rgb(229, 227, 223);">
-          </div>
-        </div>
-      </div>
-
-        @endif
-
-      <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.2;padding: 20px;margin-top: 20px;width: 100%;">
-       <div class="form-group row" style="padding-right: 20px;">
-         <button type="submit"  class="btn btn-info">ذخیره تغییرات</button>
-
-        </div>
-      </div>
-
-           <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 20px;margin-top: 20px;width: 100%;">
-               <div class="form-group row" style="padding-right: 20px;">
-                   <button type="button" @click="cancel" class="btn btn-danger">لغو مسابقه</button>
+            @if($tournament->matchType == 'تیمی')
+               <div class="form-group" id="fardi">
+                   <label> تعداد شرکت تیم ها : </label>
+                   <input type="number" name="maxAttenders" min="1" class="form-control" placeholder="به عدد" id="example-text-input">
                </div>
-           </div>
+            @elseif($tournament->matchType == 'فردی')
+
+             @endif
+
+          <div class="form-group">
+              <label>توضیحات : </label>
+              <textarea class="form-control"  :style="style5"  name="comment" id="summernote" rows="3"></textarea>
+          </div>
+
+
+        @if($tournament -> mode == "حضوری")
+          <div class="form-group">
+              {{--<div id="map" style="width:100%;height: 250px; background-color: rgb(229, 227, 223);"></div>--}}
+          </div>
+        @endif
+        <div class="form-group" style="padding-right: 20px;">
+
+            <button  @click="hidden" type="submit" v-show="!hide" class="btn btn-primary">ذخیره تغییرات</button>
+            <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ذخیره </button>
+
+            <button type="button" @click="cancel" class="btn btn-danger">لغو مسابقه</button>
+        </div>
 
    </form>
-
+  </div>
     <br>
     <br>
     <br>
@@ -162,37 +89,37 @@
 
 
   <style>
-      .Vnav {
-          margin-top: 20px;
-          margin-right: 40px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 0.1;
-          background-color: #f1f1f1;
-          max-height: 200px;
-          list-style-type: none;
-          /*margin: 0;*/
-          padding: 0;
-          width: 200px;
-          /*background-color: #f1f1f1;*/
-      }
-
-
-      .Vnav li a {
+      .wallDiv {
+          width: 95%;
+          height: auto;
+          margin: auto;
           display: block;
-          color: #000;
-          padding: 8px 16px;
-          text-decoration: none;
+          margin-top: 2%;
+          margin-bottom: 2%;
+          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+          transition: 0.3s;
+          border-radius: 5px; /* 5px rounded corners */
+          background-color: white;
+          direction: rtl;
+          /*float: left;*/
+          padding: 1%;
+
+      }
+      .wallDiv h4 {
+          text-align: center;
+      }
+      @media screen and (max-width: 800px) {
+          .wallDiv h4 {
+              font-size: 125%;
+          }
+      }
+      @media screen and (max-width: 800px) {
+          .wallDiv h4 {
+              font-size: 100%;
+          }
       }
 
-      .Vnav li.active {
-          background-color: #008CBA;
-          color: white;
-      }
 
-      .Vnav li a:hover:not(.active) {
-          background-color: #555;
-          color: white;
-      }
   </style>
 
  {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
@@ -206,58 +133,52 @@
 
 
  <script>
-//     function myMap() {
-//         var mapCanvas = document.getElementById("map");
-//         var myCenter = new google.maps.LatLng(51.508742,-0.120850);
-//         alert(myCenter);
-//         var mapOptions = {center: myCenter, zoom: 5};
-//         var map = new google.maps.Map(mapCanvas,mapOptions);
-//         var marker = new google.maps.Marker({
-//             position: myCenter,
-//             animation: google.maps.Animation.BOUNCE,
-//             draggable: true
-//         });
-//
-//         marker.setMap(map);
-//     }
-//new Vue({
-//    el:'#app',
-//    data:{
-//
-//    },
-//    methods:{
-//
-//        getCoordinate:function () {
-//
-//            this.build_info_window()
-//
-//        }
-//    },
-//
-//})
 
-new Vue({
 
-    el:'#app',
-    data:{},
+//     if(history.length>0)alert("the user clicked back!")
+//
+////     window.location.href = "https://www.google.com";
+//
+
+
+     new Vue({
+
+    el:'#edit',
+
+         data:{
+             hide:false
+         },
+
     methods:{
         cancel:function () {
-            vm = this;
+            var ans = prompt('جهت لغو مسابقه کلمه لغو را وارد کنید');
+            if(ans == 'لغو'){
+                vm = this;
 
-            axios.post({!! json_encode(route('cancelChallenge',['id'=>$tournament->id]))!!}).then(function (response) {
+                axios.get({!! json_encode(route('cancelChallenge'))!!}+'?id='+ {!!$tournament->id !!}).then(function (response) {
 
-                if(response.status == 200){
+                    if(response.status == 200){
 
-                    alert(response.data)
+                        alert(response.data)
 
-                } else{
+                        window.location.href = {!! json_encode(route('orgMatches',['orgName'=>Auth::user()->organize->slug])) !!}
 
-                    alert( 'خطا در برقراری ارتباط با سرور' )
-                }
+                    } else{
 
-            })
+                        alert( 'خطا در برقراری ارتباط با سرور' )
+                    }
+
+                })
+            }
+
+        },
+        hidden:function () {
+            this.hide = true
         }
+
     }
+
+
 
 });
 

@@ -21,7 +21,6 @@ class Guest
 
 
             if (!Auth::check()) {
-                session(['lastPage' => $request->url()]);
                 return redirect()->route('login');
 
         }

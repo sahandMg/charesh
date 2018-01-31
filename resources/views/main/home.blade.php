@@ -1,123 +1,268 @@
 @extends('masterHeader.body')
 @section('content')
 
+    <section class="tournoments" id="app">
 
-
-    <div class="container" style="direction: rtl;">
-
-        <div class="row" style="padding: 20px;">
-            <h3>همه مسابقه ها</h3>
-            <a href="{{route('matchCreate')}}"  class="btn btn-primary mr-auto" style="height: 35px;">ایجاد مسابقه جدید</a>
-        </div>
-
-    </div>
-
-    <div class="container" style="direction: rtl;" id="app">
-        <div class="row">
-            <!-- First -->
-            @foreach($matches as $match)
-
-
-                <div class="col-md-6 col-lg-4" style="padding-top: 10px;">
-                    @if($match->canceled == 1)
-
-                        <div class="box sample">
-
-                            @else
-                                <div>
-
-                                    @endif
-                    <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
-                        <div>
-                            <h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>
-                            <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>
-                            <div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">
-                                <div class="back-stars">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-
-                                    <div class="front-stars" style="width: {{$match->organize->rating*10}}%">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                </div>
+        @foreach($matches as $match)
+            @if($match->canceled == 1)
+                <div class="tournomentSmall box sample">
+                    @else
+                        <div class="tournomentSmall">
+                            @endif
+                            <div class="tournomentSmallHeader">
+                                <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}">
+                                    <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                </a>
+                                <h6>مسابقه  {{$match->matchName}}</h6>
                             </div>
-                        </div>
+                            <!--<a href="supplier/supplierName">d</a>-->
+                            <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->
+                            <div class="bannerSM">
+                                @if($match->canceled == 1)
+                                    <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
+                                @else
+                                    <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                                @endif
 
-
-                        @if($match->canceled == 1)
-                            <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
-                        @else
-                            <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
-
-                        @endif
-
-                        <div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">
-                            <p style="padding: 0px;margin: 0px;">{{$match->endTimeDays}} روز مانده </p>
-                        </div>
-                        <div class="card-block">
-                            <div class="row" >
-                                <span class="badge badge-default">{{$match->cost}} تومان</span>
-                                <span class="badge badge-default">{{$match->mode}}</span>
-                                {{--<span class="badge badge-default">{{$match->matchType}}</span>--}}
-                                {{--<span class="badge badge-default">{{$match->attendType}}</span>--}}
-                                {{--<span class="badge badge-default"> تعداد بلیط های باقی مانده {{$match->tickets - $match->sold}}</span>--}}
-
+                                <div class="top-right">  {{$match->endTimeDays}}   روز مانده</div>
+                                <button class="top-left" style="color: white;" onclick="showModal({{$match->id}})"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></button>
+                            </div>
+                            <div style="text-align: center">
+                               @if($match->cost == 0)
+                                    <small><i class="fa fa-usd"></i>رایگان</small>
+                                @else
+                                <small></i> {{$match->cost}}  تومان </small>
+                                @endif
+                                <small><i class="fa fa-calendar"></i> {{unserialize($match->startTime)[0]}} {{unserialize($match->startTime)[1]}} {{unserialize($match->startTime)[2]}} </small>
+                                <small><i class="fa fa-address-card-o"></i> {{$match->mode}} </small>
+                                @if($match->matchType == 'تیمی')
+                                    <small><i class="fa fa-users"></i> {{$match->matchType}} </small>
+                                @else
+                                    <small><i class="fa fa-user"></i> {{$match->matchType}} </small>
+                                @endif
                             </div>
                             @if($match->endTime == 0 && $match->canceled == 0)
-
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>
-
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger" style="text-align: center;margin: auto;display: block;width: 60%;margin-bottom: 1%;">زمان ثبت نام به پایان رسید</a>
                             @elseif($match->tickets == $match->sold && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
-
-
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" style="background:salmon;color:white;margin: auto;text-align: center;display: block;width: 60%;margin-bottom: 1%;" class="btn">بلیط های مسابقه تمام شد!</a>
                             @elseif($match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug  ])}}" class="btn btn-success">ثبت نام</a>
-
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName  ])}}" class="regButton">ثبت نام</a>
                             @else
+                                <br>
                             @endif
+                            {{--@if($match->canceled == 1)--}}
+                            {{--</div>--}}
+                            {{--@endif--}}
                         </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+    </section>
 
-            @endforeach
+    {{--<div class="col-md-6 col-lg-4" style="padding-top: 10px;">--}}
+    {{--@if($match->canceled == 1)--}}
 
-            {{--<div>{{$matches->links()}}</div>--}}
+    {{--<div class="box sample">--}}
+
+    {{--@else--}}
+    {{--<div>--}}
+
+    {{--@endif--}}
+    {{--<div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">--}}
+    {{--<div>--}}
+    {{--<h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$match->matchName}}</h4>--}}
+    {{--<a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>--}}
+    {{--<div class="star-rating" title="{{$match->organize->rating*10}}%" style="padding-top: 13px;float: left;">--}}
+    {{--<div class="back-stars">--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+
+    {{--<div class="front-stars" style="width: {{$match->organize->rating*10}}%">--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+
+
+    {{--@if($match->canceled == 1)--}}
+    {{--<img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">--}}
+    {{--@else--}}
+    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>--}}
+
+    {{--@endif--}}
+
+    {{--<div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">--}}
+    {{--<p style="padding: 0px;margin: 0px;">{{$match->endTimeDays}} روز مانده </p>--}}
+    {{--</div>--}}
+    {{--<div class="card-block">--}}
+    {{--<div class="row" >--}}
+    {{--<span class="badge badge-default">{{$match->cost}} تومان</span>--}}
+    {{--<span class="badge badge-default">{{$match->mode}}</span>--}}
+    {{--<span class="badge badge-default">{{$match->matchType}}</span>--}}
+    {{--<span class="badge badge-default">{{$match->attendType}}</span>--}}
+    {{--<span class="badge badge-default"> تعداد بلیط های باقی مانده {{$match->tickets - $match->sold}}</span>--}}
+
+    {{--</div>--}}
+    {{--@if($match->endTime == 0 && $match->canceled == 0)--}}
+
+    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید</a>--}}
+
+    {{--@elseif($match->tickets == $match->sold && $match->canceled == 0)--}}
+    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>--}}
+
+
+    {{--@elseif($match->canceled == 0)--}}
+    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug  ])}}" class="btn btn-success">ثبت نام</a>--}}
+
+    {{--@else--}}
+    {{--@endif--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+    {{--</div>--}}
+
+
+    {{--<div>{{$matches->links()}}</div>--}}
 
 
 
 
 
 
+
+    <br>
+    <br>
+    {{--<button @click = "view"  class="btn btn-primary">مشاهده موارد بیشتر</button>--}}
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content" style="height: 80px;">
+            <span class="close">&times;</span>
+            <input  style="width: 50%;float: left" class="form-control" id="link" readonly type="search" >
+            <button style="float: left;margin-left: 2%;margin-top: 5px;" class="btn btn-success" onclick="copyLink()"><i class="fa fa-files-o"></i></button>
         </div>
-
-        <br>
-        <br>
-        {{--<button @click = "view"  class="btn btn-primary">مشاهده موارد بیشتر</button>--}}
     </div>
+    <script>
+        function copyLink()
+        {
+            copyText = document.getElementById("link");
+            copyText.select();
+            document.execCommand("Copy");
+        }
+        // Get the modal
+        var modal = document.getElementById('myModal');
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        function showModal(id) {
+            modal.style.display = "block";
+            axios.get({!! json_encode(route('getLink'))!!}+'?id='+id).then(function (response) {
+
+
+                $('#link').val({!! json_encode(route('home'))!!}+'/'+response.data.url)
+
+            })
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 
 
 
-    </div>
-
-    {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
     <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
 
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
 
+        /* The Close Button */
+        .close {
+            color: red;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /*.tournoments {*/
+        /*position: relative;*/
+        /*}*/
+        .top-left {
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            background-color: darkorange;
+            padding: 4px;
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 8px;
+            border: none;
+        }
+        .top-left:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            background-color:  #b36b00;
+        }
+        .btn {
+            font-size:125%;
+            border: none;
+            padding: 0px;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-bottom: 5px;
+        }
+        div.box
+        {
+            display:inline-block;
+            vertical-align:top;
+            position:relative;
+        }
         div.box.sample:after
         {
             content:"مسابقه لغو شد";
             position:absolute;
-            top:130px;
-            left:60px;
+            top:105px;
+            left:95px;
             z-index:0.5;
             font-family:Arial,sans-serif;
             -webkit-transform: rotate(-45deg); /* Safari */
@@ -125,7 +270,7 @@
             -ms-transform: rotate(-45deg); /* IE */
             -o-transform: rotate(-45deg); /* Opera */
             transform: rotate(-45deg);
-            font-size:50px;
+            font-size:40px;
             color: #f09f0a;
             background:transparent;
             border:solid 4px #c00;
@@ -138,41 +283,91 @@
             text-shadow: 0 0 2px #c00;
             box-shadow: 0 0 2px #c00;
         }
+        @media screen and (max-width: 1000px) {
+            div.box.sample:after
+            {
+                top:100px;
+                left:60px;
+                font-size:30px;
+            }
+            .top-left {
+                top: 15px;
+                left: 6px;
+                padding: 2px;
+                padding-left: 5px;
+                padding-right: 5px;
+                border-radius: 4px;
+            }
+        }
+        @media screen and (max-width: 800px) {
+            div.box.sample:after
+            {
+                top:90px;
+                left:90px;
+                font-size:30px;
+            }
+            .top-left {
+                top: 10px;
+                left: 6px;
+                padding: 2px;
+                padding-left: 5px;
+                padding-right: 5px;
+                border-radius: 4px;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            div.box.sample:after
+            {
+                top:80px;
+                left:160px;
+                font-size:30px;
+            }
+            .top-left {
+                top: 15px;
+            }
+        }
+        @media screen and (max-width: 400px) {
+            div.box.sample:after
+            {
+                top:60px;
+                left:100px;
+                font-size:25px;
+            }
+        }
     </style>
-    <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
 
     {{--<script>--}}
 
-        {{--new Vue({--}}
+    {{--new Vue({--}}
 
-            {{--el:'#app',--}}
-            {{--data:{--}}
-                {{--matches:[''],--}}
-                {{--show:false,--}}
-            {{--},--}}
-            {{--methods:{--}}
+    {{--el:'#app',--}}
+    {{--data:{--}}
+    {{--matches:[''],--}}
+    {{--show:false,--}}
+    {{--},--}}
+    {{--methods:{--}}
 
-                {{--view:function () {--}}
+    {{--view:function () {--}}
 
-                    {{--vm = this--}}
-                    {{--axios.get( {!! json_encode(route('viewMore',['num'=>10]))!!}).then(function (response) {--}}
-
-
-                        {{--vm.matches = response.data--}}
-                        {{--console.log(response.data)--}}
-                        {{--vm.show = true--}}
-
-                    {{--})--}}
+    {{--vm = this--}}
+    {{--axios.get( {!! json_encode(route('viewMore',['num'=>10]))!!}).then(function (response) {--}}
 
 
-                {{--}--}}
+    {{--vm.matches = response.data--}}
+    {{--console.log(response.data)--}}
+    {{--vm.show = true--}}
+
+    {{--})--}}
 
 
-            {{--}--}}
+    {{--}--}}
 
 
-        {{--})--}}
+    {{--}--}}
+
+
+    {{--})--}}
 
 
     {{--</script>--}}

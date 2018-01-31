@@ -1,35 +1,13 @@
 @extends('masterUserHeader.body')
 @section('content')
-    <div class="row" style=" direction: rtl;">
-        <!-- right menu -->
-        <div>
-            <div class="Vnav">
-                <ul>
-                    <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-                    <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                    <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
-                    <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
-                </ul>
-            </div>
-
-        </div>
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
         <!-- content -->
-        <div class="container" id="app">
-            <br>
-            @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-            <div>
-                <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
-                <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
-            </div>
-
-
-            <br>
+        <div class="container" style=" direction: rtl;" id="app">
             <br>
 
-            <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-                <a class="nav-item nav-link active" href="{{route('makeGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" >گروهی</a>
-                <a class="nav-item nav-link" href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}} " >حذفی</a>
+            <nav class="nav nav-tabs" id="secondNav">
+                <li><a  href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}} " >حذفی</a></li>
+                <li class="active"><a href="{{route('makeGroupBracket',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" >گروهی</a></li>
             </nav>
             <br>
             <h4 style="direction: rtl;">با استفاده از drag & drop ، تیم ها را گروه بندی کنید. </h4>
@@ -41,14 +19,14 @@
 
                     @if($tournament->matchType == 'انفرادی')
 
-                <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->username}}">
-                    <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->username}}
-                </div>
+                     <div class="teamiaFardi"  ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->username}}">
+                       <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$team->path)}}"> {{$team->username}}
+                     </div>
 
                     @else
 
-                        <div style="padding: 5px;" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->teamName}}">
-                            <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->teamName}}
+                        <div class="teamiaFardi" ondrop="notAllowDrop(event)" draggable="true" ondragstart="drag(event)" id="{{$team->teamName}}">
+                            <img class="rounded" draggable="false" src="{{URL::asset('storage/images/'.$team->path)}}"> {{$team->teamName}}
                         </div>
                     @endif
 
@@ -171,28 +149,30 @@
                 <br>
 
             </div>
-            <div v-if="success">
-                <h4 >تغییرات اعمال شد</h4>
-                <a href="{{route('makeGroupBracket3',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button  type="button" class="btn btn-success">ادامه </button></a>
+
+          <div style="text-align: center;">
+            <button v-show="!success" @click="save" type="submit" class="btn btn-primary">ذخیره</button>
+             <a v-if="success" href="{{route('makeGroupBracket3',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}"><button  type="button" class="btn btn-success">ادامه </button></a>
+          </div>
+            <div style="text-align: center;">
+                <button @click="confirm" type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button>
+
             </div>
-
-            <center><button @click="save" type="submit" class="btn btn-primary">ذخیره</button> </center>
-
-
-            <br>
-            <br>
         </div>
 
-    </div>
+
 
 
 
     <script>
+
+
         new Vue({
             el:'#app',
             data:{
                 teamNames:'',
                 success :false,
+
 
             },
             methods:{
@@ -222,51 +202,52 @@
                        if(response.data == 1){
 
                            vm.success = true
+                           alert('تغییرات اعمال شد')
 
                        }
 
                     })
 
-                }
+                },
+                confirm:function () {
+
+                    var ans = prompt('در صورت تغییر نوع برگزاری ، تمامی اطلاعات جدول امتیازات و براکت مسابقه پاک می شود. برای ادامه، تایید را وارد کنید');
+                    if(ans == 'تایید'){
+
+                        window.location.href = {!! json_encode(route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])) !!}
+                    }
+
+                },
+
 
 
             }
         })
     </script>
     <style>
-        .Vnav {
-            margin-top: 20px;
-            margin-right: 40px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            background-color: #f1f1f1;
-            max-height: 200px;
+        #secondNav {
+            width: 50%;
         }
-
-        .Vnav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 200px;
-            background-color: #f1f1f1;
-
+        #secondNav li {
+            width: 50%;
         }
-
-        .Vnav li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
+        .teamiaFardi {
+            padding: 5px;
+            float: left;
         }
-
-        .Vnav li a.active {
-            background-color: #008CBA;
-            color: white;
+        .teamiaFardi img {
+            height: 30px;
+            width: 30px;
         }
-
-        .Vnav li a:hover:not(.active) {
-            background-color: #555;
-            color: white;
+        @media screen and (max-width: 600px) {
+            .teamiaFardi {
+                padding: 3px;
+                font-size: 75%;
+            }
+            .teamiaFardi img {
+                height: 20px;
+                width: 20px;
+            }
         }
     </style>
 

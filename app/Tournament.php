@@ -9,7 +9,7 @@ class Tournament extends Model
     use Sluggable;
     protected $fillable =['mode','matchType','maxAttenders','attendType','prize','rules','plan','cost','moreInfo','email','telegram',
 
-        'matchName','url','startTime','endTimeDays','endTime','tickets','canceled','comment','endRemain','maxTeam','minMember','maxMember','sold',
+        'free','matchName','path','url','startTime','endTimeDays','endTime','tickets','canceled','comment','endRemain','maxTeam','subst','maxMember','sold','address'
 
         ];
     public function organize(){
@@ -41,6 +41,12 @@ class Tournament extends Model
 
         return $this->hasMany('App\Match');
     }
+
+    public function groups(){
+
+        return $this->hasMany('App\Group');
+    }
+
 
     /**
      * Return the sluggable configuration array for this model.

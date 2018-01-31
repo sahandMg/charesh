@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "blob-stream": "^0.1.3",
-
-    "glub": "^1.0.3"
+    "glub": "^1.0.3",
+    "vue-clipboard2": "0.0.8"
   }
 }

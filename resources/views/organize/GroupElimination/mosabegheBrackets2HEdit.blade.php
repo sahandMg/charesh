@@ -1,50 +1,12 @@
 @extends('masterUserHeader.body')
 @section('content')
-
-    <div class="row" style=" direction: rtl;">
-        <!— right menu —>
-        <div class="col-2">
-            <ul class="Vnav">
-                <li><a class="active" href="{{route('orgMatches',['orgName'=>$name->organize->slug])}}">پنل مدیریت</a></li>
-                <li><a href="{{route('matchCreate')}}">مسابقه جدید</a></li>
-                <li><a href="{{route('orgEdit',['orgName'=>$name->organize->slug])}}">ویرایش اطلاعات من</a></li>
-                <li><a href="{{route('organizeAccount',['orgName'=>$name->organize->slug])}}">حساب من</a></li>
-            </ul>
-        </div>
-        <!— content —>
-        <div class="container col-8" id="app">
+    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
+        <div class="container" style=" direction: rtl;"  id="elBracket">
             <br>
-            @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-           <div>
-            <a href="{{route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}"><button type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button></a>
-            <p style="width: 200px;margin-right: 50px;">در صورت تغییر نوع برگزاری براکت ، تمام اطلاعات براکت قبلی شما پاک می شود ، باید از ابتدا به دسته بندی مسابقه دهندگان بپردازید.</p>
-           </div>
-
-
-
-            <br>
-            <br>
-            <nav class="nav nav-pills nav-fill" style="padding: 30px;">
-                <a class="nav-item nav-link " href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" >گروهی</a>
-                <a class="nav-item nav-link active" href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}} " >حذفی</a>
+            <nav  class="nav nav-tabs" id="secondNav">
+               <li class="active"><a href="{{route('ElBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}} " >حذفی</a></li>
+               <li ><a href="{{route('challengeBracket',['id'=>$tournament->id,'matchName'=>$tournament->matchName])}}" >گروهی</a></li>
             </nav>
-            <!-- Brackets -->
-            <!--   <div class="row" style="padding: 30px;direction: ltr;">
-                  <div style="padding: 5px;">
-                    <img class="rounded" src="images/LOLBack.jpg" height="30" > Tigers
-                  </div>
-                  <div style="padding: 5px;">
-                    <img class="rounded" src="images/LOLBack.jpg" height="30" > Tigers
-                  </div>
-              </div>
-               -->
-            <!-- <hr> -->
-
-            {{--<div id="playoff"></div>--}}
-
-
-
             <h4 style="direction: rtl;padding-top: 10px;">نام تیم ها و نتایج مسابقات را داخل براکت بنویسید.</h4>
 
             <br>
@@ -55,7 +17,7 @@
                 @foreach($teams as $team)
 
 
-                    <div style="padding: 5px;">
+                    <div class="teamiaFardi" >
                         @if($tournament->matchType == 'انفرادی')
                             <img class="rounded" src="{{URL::asset('storage/images/'.$team->path)}}" height="30" > {{$team->username}}
                         @else
@@ -69,51 +31,47 @@
 
 
 
-        </div>
     </div>
-    <div id="customHandlers" style="direction: ltr;margin-left: 20px;z-index:0;"></div>
+    <div class="container">
+       <div id="customHandlers" style="direction: ltr;margin-left: 20px;z-index:0;"></div>
+    </div>
     <br>
-    <br>
-    <br>
-    <div >
-        <center><button onclick="saveFn('finish',null)" type="button" class="btn btn-primary">ذخیره</button></center>
+    <div style="text-align: center;">
+        <button onclick="saveFn('finish',null)" type="button" class="btn btn-primary">ذخیره</button>
     </div>
 
     <h4 id="saveData"></h4>
 
+    <div style="text-align: center;">
+        <button onclick="confirm()" type="button" class="btn btn-warning" style="margin-right: 40px;margin-top: 40px;margin-bottom: 5px;">تغییر نوع برگزاری براکت</button>
+
+    </div>
 
 
     <style>
-        .Vnav {
-            margin-top: 20px;
-            margin-right: 40px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 0.1;
-            background-color: #f1f1f1;
-            max-height: 200px;
-            list-style-type: none;
-            /*margin: 0;*/
-            padding: 0;
-            width: 200px;
-            /*background-color: #f1f1f1;*/
+        #secondNav {
+            width: 50%;
         }
-
-
-        .Vnav li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
+        #secondNav li {
+            width: 50%;
         }
-
-        .Vnav li.active {
-            background-color: #008CBA;
-            color: white;
+        .teamiaFardi {
+            padding: 5px;
+            float: left;
         }
-
-        .Vnav li a:hover:not(.active) {
-            background-color: #555;
-            color: white;
+        .teamiaFardi img {
+            height: 30px;
+            width: 30px;
+        }
+        @media screen and (max-width: 600px) {
+            .teamiaFardi {
+                padding: 3px;
+                font-size: 75%;
+            }
+            .teamiaFardi img {
+                height: 20px;
+                width: 20px;
+            }
         }
     </style>
 
@@ -130,13 +88,24 @@
             results: []
         };
 
+        function confirm() {
 
+
+
+                var ans = prompt('در صورت تغییر نوع برگزاری ، تمامی اطلاعات جدول امتیازات و براکت مسابقه پاک می شود. برای ادامه، تایید را وارد کنید');
+                if(ans == 'تایید'){
+
+                    window.location.href = {!! json_encode(route('bracketDelete',['id'=>$tournament->id,'matchName'=>$tournament->slug])) !!}
+                }
+
+
+        }
 
         //        Fetching Data
 
         new Vue({
 
-            el:'#app',
+            el:'#elBracket',
             data:{
                 detail:''
 
@@ -174,6 +143,7 @@
                 },
 
 
+
                 run: function() {
 
 
@@ -183,7 +153,9 @@
                         save: saveFn, /* without save() labels are disabled */
                         decorator: {edit: edit_fn,
                             render: render_fn}})
-                }
+                },
+
+
 
             },
             created:function () {
@@ -269,7 +241,7 @@
                 case "entry-complete":
 
 
-                    container.append('<img src="../../public/storage/images/'+data.flag+'" /> ').append(data.name)
+                    container.append('<img style="height:20px;width:20px" src="{{URL::asset('storage/images')}}'+'/'+data.flag+'.jpg" /> ').append(data.name)
                     return;
             }
         }

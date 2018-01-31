@@ -45,13 +45,13 @@
 </div>
 
 
-    <h6 style="position: absolute;top:56%;left:64%;font-size: 14px">{{$time}}</h6>
+    <h6 style="position: absolute;top:56%;left:64%;font-size: 14px;direction: rtl">{{unserialize($time)[0]}}  {{unserialize($time)[1]}} {{unserialize($time)[2]}}  </h6>
 
     <h6  style="position: absolute;top:64%;left:63%;font-size: 14px;direction: rtl">  {{$cost}} تومان  </h6>
 
 <div style="word-wrap: break-word;position: absolute;top:80%;left:19%;height: 80px;width:49%;">
 
-    <h6 style="position: relative;top: -20px;direction: rtl">{!!  $tournament->moreInfo !!}</h6>
+    <h6 style="position: relative;top: -20px;direction: rtl">{!!  unserialize($tournament->moreInfo)[0] !!}</h6>
 
 </div>
 
