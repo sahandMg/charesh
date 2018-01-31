@@ -77,7 +77,7 @@
 
 </head>
 
-<body style="padding: 0px;width: 100%;background: whitesmoke;">
+<body style="padding: 0px;width: 100%;">
 
 <header>
     <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/Logo.png')}}"></a>

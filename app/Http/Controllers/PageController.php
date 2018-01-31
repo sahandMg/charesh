@@ -214,6 +214,21 @@ class PageController extends Controller
 
     }
 
+    public function rules(){
+
+        if(Auth::check()){
+            $name = Auth::user();
+            $auth = 1;
+            return view('rules',compact('auth','name'));
+        }else{
+
+            $auth = 0;
+            return view('rules',compact('auth'));
+        }
+
+
+    }
+
 
 
 }

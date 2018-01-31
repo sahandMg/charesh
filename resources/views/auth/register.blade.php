@@ -53,11 +53,11 @@
          <hr>
          <h4> پس از ثبت نام، در قسمت تنظیمات می توانید این سطح دسترسی را تغییر دهید </h4>
       <div class="form-group" style="font-weight: 400;font-size: 125%;">
-          <label class="container">ثبت نام به عنوان برگزار کننده مسابقه
+          <label class="container respon">ثبت نام به عنوان برگزار کننده مسابقه
               <input type="radio" checked="checked" name="radio" value="supplier">
               <span class="checkmark"></span>
           </label>
-          <label class="container"> ثبت نام به عنوان شرکت کننده در مسابقه
+          <label class="container respon"> ثبت نام به عنوان شرکت کننده در مسابقه
               <input type="radio" name="radio" value="customer">
               <span class="checkmark"></span>
           </label>
@@ -65,8 +65,20 @@
 
 	<br>
 <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
-<br>
-         <button @click="hidden" v-show="!hide" type="submit" class="btn btn-primary" id="btnReg">ثبت نام</button>
+       <br>
+         <label class="container">
+             <div class="checkbox">
+                 <a href="#" > قوانین  </a> <span style="padding-left: 0.5%;">سایت چارش را قبول دارم</span>
+                 <input   @click="show" type="checkbox" >
+             </div>
+
+         </label>
+
+
+
+         <br>
+         <br>
+         <button @click="hidden" v-show="!hide" :disabled="rule" type="submit" class="btn btn-primary" id="btnReg">ثبت نام</button>
          <button v-show="hide" class="btn btn-warning" :disabled="true"><i class="fa fa-spinner fa-spin"></i>در حال ارسال فرم ثبت نام</button>
 
          <a href="{{route('login')}}" class="btn btn-link">قبلا ثبت نام کرده ام</a>
@@ -74,24 +86,41 @@
     </div>
   </div>
 
-
+<style>
+    @media screen and (max-width: 600px) {
+       label {
+           font-size: 75%;
+       }
+        h4 {
+            font-size: 75%;
+        }
+        .respon {
+            font-size: 55%;
+        }
+    }
+</style>
 
   <script>
       new Vue({
 
           el:'#app',
           data:{
-              hide:false
+              hide:false,
+              rule:true
           },
           methods:{
 
               hidden:function () {
                   this.hide = true
+              },
+              show:function () {
+
+              this.rule = !this.rule
+
               }
           }
 
       })
   </script>
-  <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
- <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
+
 @endsection
