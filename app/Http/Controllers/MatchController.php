@@ -563,7 +563,7 @@ class MatchController extends Controller
 
         $name = Auth::user();
         $tournament = Tournament::where('id',$request->id)->first();
-        return view('matchReg.RegOverview',compact('name','tournament'));
+        return view('matchReg.RegOverView',compact('name','tournament'));
     }
 
 
@@ -1006,7 +1006,7 @@ class MatchController extends Controller
 
 //                }
                     } else {
-                        return redirect()->back()->with(['message' => 'تعداد بلیط های درخواستی بیشتر از بلیط های مسابقه می باشد'])->withInput();
+                        return redirect()->back()->with(['RegError' => 'تعداد بلیط های درخواستی بیشتر از بلیط های مسابقه می باشد'])->withInput();
                     }
                 } else {
 //                dd($match->cost * count($_POST) > User::where('username', Auth::user()->username)->first()->credit);

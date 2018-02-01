@@ -18,7 +18,7 @@
                         تعرفه ؟</a>
                 </dt>
                 <dd class="accordion-content accordionItem is-collapsed" id="accordion2" aria-hidden="true">
-                    <p>تیم چارش 2% از مبلغ فروش بلیت ها را به عنوان حق کمیسیون بر می دارد. </p>
+                    <p> 2% از مبلغ فروش بلیت ها را به عنوان حق کمیسیون به تیم چارش تعلق می گیرد. </p>
                 </dd>
                 <dt>
                     <a href="#accordion3" aria-expanded="false" aria-controls="accordion3" class="accordion-title accordionTitle js-accordionTrigger">

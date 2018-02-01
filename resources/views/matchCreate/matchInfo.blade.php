@@ -100,7 +100,7 @@
 </div>
     <style>
         .nav-tabs li {
-            width: 20%;
+            width: 25%;
             font-size: 100%;
             font-weight: 400;
         }

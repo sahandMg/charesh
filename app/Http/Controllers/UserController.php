@@ -246,7 +246,7 @@ class UserController extends Controller
     }
 
 
-    public function generatePdf(Request $request)
+    public function generatePdf2(Request $request)
     {
 	$url = $request->name;
 	$id = $request->id;
@@ -281,11 +281,11 @@ class UserController extends Controller
         return view('ticket',compact('tournament','name','time','cost','credit','owner','names','png'));
     }
 //
-    public function generatePdf2(Request $request){
+    public function generatePdf(Request $request){
 	$time = time();
 	$id = $request->id;
 	$url = $request->name;
-        require 'pdfcrowd.php';
+
 
 
 //        dd(request());
