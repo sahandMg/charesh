@@ -185,7 +185,7 @@ class PageController extends Controller
         Mail::send('email.contactMail',$data,function ($message) use($data){
 
             $message->to('sahand.mg.ne@gmail.com');
-            $message->from('sahand.mg.ne@gmail.com');
+            $message->from('admin@charesh.ir');
             $message->subject('تماس کاربر');
 
         });

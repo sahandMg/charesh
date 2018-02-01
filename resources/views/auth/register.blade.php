@@ -68,7 +68,7 @@
        <br>
          <label class="container">
              <div class="checkbox">
-                 <a href="#" > قوانین  </a> <span style="padding-left: 0.5%;">سایت چارش را قبول دارم</span>
+                 <a href="{{route('chareshRule')}}" > قوانین  </a> <span style="padding-left: 0.5%;">سایت چارش را قبول دارم</span>
                  <input   @click="show" type="checkbox" >
              </div>
 

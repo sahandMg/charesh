@@ -79,7 +79,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
         Mail::send('email.registerMail',$data,function ($message) use($data){
 
-            $message->from('sahand.mg.ne@gmail.com');
+            $message->from('admin@charesh.ir');
             $message->to($data['email']);
 		$message->subject('تایید حساب کاربری');
         });
@@ -109,7 +109,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
                 'id' => $user->id];
             Mail::send('email.registerMail', $data, function ($message) use ($data) {
 
-                $message->from('sahand.mg.ne@gmail.com');
+                $message->from('admin@charesh.ir');
                 $message->to($data['email']);
 
 		$message->subject('تایید حساب کاربری');
@@ -174,7 +174,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
             Mail::send('email.registerMail',$data,function ($message) use($data){
 
-                $message->from('sahand.mg.ne@gmail.com');
+                $message->from('admin@charesh.ir');
                 $message->to($data['email']);
 
 		$message->subject('تایید حساب کاربری');
@@ -233,6 +233,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
     public function getLogin(){
 
+
         if(!Auth::check()){
 
             if(isset($_SERVER['HTTP_REFERER'])){
@@ -254,27 +255,27 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
 //
         if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])){
-
-
-$url = 'https://www.google.com/recaptcha/api/siteverify';
-$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-// use key 'http' even if you send the request to https://...
-	$options = array(
-  	'http' => array(
-    	'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-    	'method'  => 'POST',
-    	'content' => http_build_query($data),
-	  ),
-	);
-	$context  = stream_context_create($options);
-	$result = file_get_contents($url, false, $context);
-	if(json_decode($result)->success === false){
-
-	Auth::logout();
-
-	return redirect()->route('login')->with(['LoginError'=>'reCAPTCHA  را تایید کنید' ]);
-
-	}
+//
+//
+//$url = 'https://www.google.com/recaptcha/api/siteverify';
+//$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+//// use key 'http' even if you send the request to https://...
+//	$options = array(
+//  	'http' => array(
+//    	'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+//    	'method'  => 'POST',
+//    	'content' => http_build_query($data),
+//	  ),
+//	);
+//	$context  = stream_context_create($options);
+//	$result = file_get_contents($url, false, $context);
+//	if(json_decode($result)->success === false){
+//
+//	Auth::logout();
+//
+//	return redirect()->route('login')->with(['LoginError'=>'reCAPTCHA  را تایید کنید' ])->withInput();
+//
+//	}
 //dd(json_decode($result)->success);
 
             if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
@@ -306,7 +307,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
             Mail::send('email.resetPassword', $data, function ($message) use ($data) {
 
                 $message->to($data['email']);
-                $message->from('sahand.mg.ne@gmail.com');
+                $message->from('admin@charesh.ir');
                 $message->subject('بازیابی رمز عبور');
             });
             $user->password = bcrypt($user->reset_password);
@@ -358,7 +359,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
         $data = ['username'=>$user->username,'email'=>$user->email,'password'=>$user->password];
         Mail::send('email.update',$data,function ($message) use($data){
 
-            $message->from('sahand.mg.ne@gmail.com');
+            $message->from('admin@charesh.ir');
             $message->to($data['email']);
 
         });

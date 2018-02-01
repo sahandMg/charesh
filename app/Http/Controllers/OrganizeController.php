@@ -1309,7 +1309,7 @@ class OrganizeController extends Controller
             Mail::send('email.paymentReq', $data, function ($message) use ($data) {
 
                 $message->to('sahand.mg.ne@gmail.com');
-                $message->from('sahand.mg.ne@gmail.com');
+                $message->from('admin@charesh.ir');
                 $message->subject('درخواست واریز');
 
 
@@ -1387,7 +1387,7 @@ class OrganizeController extends Controller
                 Mail::send('email.cancelEmail', $data, function ($message) use ($data,$participant) {
 
                     $message->to(User::where('id', $participant->user_id)->first()->email);
-                    $message->from('sahand.mg.ne@gmail.com');
+                    $message->from('admin@charesh.ir');
                     $message->subject('لغو مسابقه');
 
 
@@ -1475,7 +1475,7 @@ class OrganizeController extends Controller
             Mail::send('email.cancelEmail', $data, function ($message) use ($data) {
 
                 $message->to('sahand.mg.ne@gmail.com');
-                $message->from('sahand.mg.ne@gmail.com');
+                $message->from('admin@charesh.ir');
                 $message->subject('لغو مسابقه');
 
 

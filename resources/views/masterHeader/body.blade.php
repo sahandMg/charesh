@@ -2,18 +2,10 @@
 <html lang="fa">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,ورزش, ">
+
+<meta name="keywords" content="برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,بازی های رایانه ای">
 <head>
     <title>Index</title>
-
-    {{--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>--}}
-
-    {{--<script type="text/javascript" src="../../public/js/nicEdit.js"></script>--}}
-    {{--<script type="text/javascript">--}}
-        {{--//        <![CDATA[--}}
-        {{--bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });--}}
-        {{--//        ]]>--}}
-    {{--</script>--}}
 
 
 
@@ -59,7 +51,18 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
     <!-- include libraries(jQuery, bootstrap) -->
 
-
+    <style>
+        @media screen and (max-width: 600px) {
+            .g-recaptcha {
+                transform:scale(0.5);
+                -webkit-transform:scale(0.5);
+                transform-origin:0 0;
+                -webkit-transform-origin:0 0;
+                margin-left: 50%;
+                display: block;
+            }
+        }
+    </style>
 
     @if(isset($request) && $request->route()->getName() == 'matchElBracket')
 

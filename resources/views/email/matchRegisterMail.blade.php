@@ -14,13 +14,12 @@
     <title>Document</title>
 </head>
 <body>
-<center>
-    <label for="name">نام</label>
-    <h3 id="name">{{$name}} </h3>
-    <label for="email">ایمیل</label>
-    <h3 id="email">{{$email}}</h3>
-    <label for="message">پیام</label>
-    <h3 id="message">{!! $comment!!}</h3>
-</center>
+<div class="container">
+    <h3>شما یک پیام خوانده نشده از سمت شرکت کننده دارید</h3>
+    <a href="{{route('OrgMsg',['orgName'=>$org->slug])}}">صندوق پیام ها</a>
+
+
+</div>
+
 </body>
 </html>

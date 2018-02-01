@@ -851,7 +851,7 @@ class MatchController extends Controller
                 $data = ['match'=>$match ,'matchName' => $match->matchName, 'credit' => Auth::user()->credit, 'cost' => $match->cost, 'startTime' => $match->startTime, 'email' => Auth::user()->email, 'teammates'=>$teammates];
                 Mail::send('email.matchData', $data, function ($message) use ($data) {
 
-                    $message->from('sahand.mg.ne@gmail.com');
+                    $message->from('admin@charesh.ir');
                     $message->to($data['email']);
                     $message->subject('ثبت نام مسابقه');
 
@@ -1050,7 +1050,7 @@ class MatchController extends Controller
             $data = ['match'=>$match,'matchName' => $match->matchName, 'credit' =>User::where('id',Auth::user()->id)->first()->credit, 'cost' => $match->cost, 'startTime' => $match->startTime, 'email' => Auth::user()->email,'teammates'=>$teammates];
             Mail::send('email.matchData', $data, function ($message) use ($data) {
 
-                $message->from('sahand.mg.ne@gmail.com');
+                $message->from('admin@charesh.ir');
                 $message->to($data['email']);
                 $message->subject('ثبت نام مسابقه');
 
@@ -1264,12 +1264,12 @@ class MatchController extends Controller
         $msg->tournament_id = Tournament::where('id',$request->id)->first()->id;
         $msg->save();
         $org->update(['unread'=>$org->unread+1]);
-        $data = ['name'=>$request->name,'email'=>$request->email,'comment'=>$request->message];
+        $data = ['name'=>$request->name,'email'=>$request->email,'comment'=>$request->message,'org'=>$org];
 
         Mail::send('email.matchRegisterMail',$data,function ($message) use($data){
 
-            $message->from($data['email']);
-            $message->to('sahand.mg.ne@gmail.com');
+            $message->from('admin@charesh.ir');
+            $message->to($data['org']->user->email);
             $message->subject('تماس با برگزار کننده');
 
         });

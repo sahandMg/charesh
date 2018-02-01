@@ -90,10 +90,10 @@ class UserController extends Controller
 
         if ($request->input('password') || $request->input('repeat')) {
             if(!$request->input('oldPass')){
-                return redirect()->back()->with(['settingError'=>'رمز قبلی را وارد کنید']);
+                return redirect()->back()->with(['settingError'=>'کلمه عبور قبلی را وارد کنید']);
             }
            if(!Hash::check($request->oldPass,Auth::user()->password)){
-               return redirect()->back()->with(['settingError'=>'رمز قبلی را اشتباه وارد کردید']);
+               return redirect()->back()->with(['settingError'=>'کلمه عبور قبلی را اشتباه وارد کردید']);
            }
             $this->validate($request, ['repeat' => 'required|same:password', 'password' => 'min:8']);
             $user->update(['password' => bcrypt($request->password)]);
@@ -408,8 +408,19 @@ class UserController extends Controller
 
     public function verify(Request $request){
         $Authority = $_GET['Authority'];
+//        if($request->Status == 'NOK') {
+//            Transaction::where('user_id', Auth::id())->orderBy('created_at', 'decs')->first()->delete();
+//
+//            if (isset(Url::where('ip', request()->ip())->first()->pageUrl)) {
+//                $page = Url::where('ip', request()->ip())->first()->pageUrl;
+//                Url::where('ip', request()->ip())->first()->delete();
+//                return redirect($page)->with(['message' => 'عملیات لغو شد']);
+//
+//            }
+//        }
         $transaction = Transaction::where('user_id',Auth::id())->orderBy('created_at','decs')->first();
         $data = array('MerchantID' => '955f0452-ef04-11e7-9ab3-005056a205be', 'Authority' => $Authority, 'Amount'=>$transaction->money);
+
         $jsonData = json_encode($data);
         $ch = curl_init('https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json');
         curl_setopt($ch, CURLOPT_USERAGENT, 'ZarinPal Rest Api v1');
@@ -452,6 +463,10 @@ class UserController extends Controller
 // echo 'Transation failed. Status:' . $result['Status'];
 //	return redirect()->route('credit',['username'=>$request->username])->with(['Error'=>'تراکنش موفقیت آمیز نبود']);
                 switch($result['Status']){
+
+                    case 'NOK':
+                        return redirect()->route('credit',['username'=>Auth::user()->slug])->with(['Error'=>'هيچ نوع عمليات مالي براي اين تراكنش يافت نشد￼']);
+                        break;
 
                     case '-33':
 
