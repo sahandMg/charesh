@@ -1732,4 +1732,36 @@ class OrganizeController extends Controller
 
     }
 
+    public function teamDetails(Request $request){
+
+        $name = Auth::user();
+        $id = $request->id;
+        $orgName = Auth::user()->organize->name;
+        $tournament = Tournament::where('id', $id)->first();
+        $teams=[];
+
+        if (count(Tournament::where('id', $id)->first()->teams)) {
+
+            $teams = Tournament::where('id', $id)->first()->teams;
+//        dd($teams[0]->groups);
+            $route = 'participants';
+//        Group::where('tournament_id',$id);
+
+            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'teams'));
+        }
+        else{
+
+            $matches = Match::where('tournament_id', $id)->get();
+
+
+            $route = 'participants';
+            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'matches','teams'));
+
+        }
+
+
+
+    }
+
+
 }

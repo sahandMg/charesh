@@ -215,64 +215,69 @@
         background-image: linear-gradient(tomato, #e02200);
     }
 @if(isset(Auth::user()->organize))
-    @if(Auth::user()->role == 'supplier')
-
-        .notification.notify:after {
-            content:' {{Auth::user()->organize->unread}}';
-            display: block;
-            position: absolute;
-            top: -11px;
-            right: 0.1em;
-            /*right: 1.3333em;*/
-            width: 2em;
-            margin: 1.0833em 0;
-            border-radius: 50%;
-            font-size: 0.75em;
-            line-height: 2;
-            text-align: center;
-            background: #f53d3d;
-            box-shadow: 0 0 0 0.25em #c20a0a;
-            animation: pulse 0.75s infinite;
-        }
+    @if(Auth::user()->role == 'supplier' )
+        @if( Auth::user()->organize->unread>0)
+            .notification.notify:after {
+                content:' {{Auth::user()->organize->unread}}';
+                display: block;
+                position: absolute;
+                top: -11px;
+                right: 0.1em;
+                /*right: 1.3333em;*/
+                width: 2em;
+                margin: 1.0833em 0;
+                border-radius: 50%;
+                font-size: 0.75em;
+                line-height: 2;
+                text-align: center;
+                background: #f53d3d;
+                box-shadow: 0 0 0 0.25em #c20a0a;
+                animation: pulse 0.75s infinite;
+            }
+        @endif
     @else
-        .notification.notify:after {
-            content:' {{Auth::user()->unread}}';
-            display: block;
-            position: absolute;
-            top: -11px;
-            right: 0.1em;
-            /*right: 1.3333em;*/
-            width: 2em;
-            margin: 1.0833em 0;
-            border-radius: 50%;
-            font-size: 0.75em;
-            line-height: 2;
-            text-align: center;
-            background: #f53d3d;
-            box-shadow: 0 0 0 0.25em #c20a0a;
-            animation: pulse 0.75s infinite;
-        }
+
+        @if(Auth::user()->unread>0)
+            .notification.notify:after {
+                content:' {{Auth::user()->unread}}';
+                display: block;
+                position: absolute;
+                top: -11px;
+                right: 0.1em;
+                /*right: 1.3333em;*/
+                width: 2em;
+                margin: 1.0833em 0;
+                border-radius: 50%;
+                font-size: 0.75em;
+                line-height: 2;
+                text-align: center;
+                background: #f53d3d;
+                box-shadow: 0 0 0 0.25em #c20a0a;
+                animation: pulse 0.75s infinite;
+            }
+        @endif
 
     @endif
 @else
-
- .notification.notify:after {
-        content:' {{Auth::user()->unread}}';
-        display: block;
-        position: absolute;
-        top: -11px;
-        right: 0.1em;
-        /*right: 1.3333em;*/
-        width: 2em;
-        margin: 1.0833em 0;
-        border-radius: 50%;
-        font-size: 0.75em;
-        line-height: 2;
-        text-align: center;
-        background: #f53d3d;
-        box-shadow: 0 0 0 0.25em #c20a0a;
-        animation: pulse 0.75s infinite;
-    }
+     @if(Auth::user()->unread>0)
+         .notification.notify:after {
+                content:' {{Auth::user()->unread}}';
+                display: block;
+                position: absolute;
+                top: -11px;
+                right: 0.1em;
+                /*right: 1.3333em;*/
+                width: 2em;
+                margin: 1.0833em 0;
+                border-radius: 50%;
+                font-size: 0.75em;
+                line-height: 2;
+                text-align: center;
+                background: #f53d3d;
+                box-shadow: 0 0 0 0.25em #c20a0a;
+                animation: pulse 0.75s infinite;
+            }
+        @endif
     @endif
 
 

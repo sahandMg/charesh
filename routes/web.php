@@ -218,9 +218,14 @@ Route::group(['prefix'=>'organization'],function (){
 
     Route::get('{orgName}/created-matches',['middleware'=> ['guest','organize'],'as'=>'orgMatches','uses'=>'OrganizeController@matches']);
 
+
+
+    Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@teamDetails']);
+
     Route::post('coordinate','OrganizeController@OrgCoordinate')->name('orgLocation');
 
     Route::get('get-money','OrganizeController@GetMoney')->middleware('guest');
+
 
 
 
@@ -254,7 +259,7 @@ Route::group(['prefix'=>'organization'],function (){
 
     Route::post('challenge-contact', ['as' => 'contactInfo', 'uses' => 'MatchController@post_contactInfo'])->middleware('throttle:10,1');
 
-    Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@participants']);
+//    Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@participants']);
 
 
 

@@ -6,18 +6,81 @@
     <div class="container">
         <div class="wallDiv">
             <div class="team" style="margin: auto;">
-                <img src="{{URL::asset('storage/images/'.$match->user->path)}}">
-                <b>{{$match->user->username}}</b>
+                {{--<img src="{{URL::asset('storage/images/'.$tournament->user->path)}}">--}}
+
             </div>
+
+
+            @if(count($teams)>0)
+                @foreach($teams as $team)
+                    <div class="team">
+                        <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$team->path)}}" alt="Card image cap" height="50px;">
+                        <b>{{$team->teamName}}</b>
+                    </div>
+                    <div class="row" style="padding: 25px;float: left;direction: ltr;">
+
+
+                    </div>
+                    <div class="row" style="border: 2px solid;border-radius: 10px;">
+
+                    <div class="col-5">
+                    <p><strong>اعضای تیم   </strong></p>
+
+                    @for($i=0 ; $i < count($team->groups);$i++)
+                    <p>{{$team->groups[$i]->name}}</p>
+                            @for($t=0 ; $t<count(unserialize($team->groups[0]->moreInfo)) ; $t++)
+
+                                <p>{{unserialize($tournament->moreInfo)[$t]}}</p>
+                                <p> {!! unserialize($team->groups[$t]->moreInfo)[$t] !!}</p>
+                            @endfor
+
+                    @endfor
+                    </div>
+
+                    </div>
+                @endforeach
+            @else
+
+                @foreach($matches as $match)
+                    <div class="team">
+                        <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">
+
+                    </div>
+                    <div class="row" style="padding: 25px;float: left;direction: ltr;">
+
+
+                    </div>
+                    <div class="row" style="border: 2px solid;border-radius: 10px;">
+
+                    <div class="col-5">
+                    <p><strong> نام شرکت کننده </strong></p>
+
+                    <p>{{$match->user->username}}</p>
+
+                    </div>
+                    <div class="col-7">
+                    <p><strong>توضیحات</strong></p>
+
+                        @for($t=0 ; $t<count(unserialize($match->moreInfo)) ; $t++)
+
+                        <p>{{unserialize($tournament->moreInfo)[$t]}}</p>
+                       <p> {!! unserialize($match->moreInfo)[$t] !!}</p>
+                        @endfor
+                    </div>
+                    </div>
+                @endforeach
+
+            @endif
+
             {{-- اگر تیم بود --}}
-            <h4> اعضای تیم </h4>
-            <p>محمد وطن دوست </p>
-            <p>استیم : 32113546543</p>
-            <p>محمد وطن دوست </p>
-            <p>استیم : 32113546543</p>
+            {{--<h4> اعضای تیم </h4>--}}
+            {{--<p>محمد وطن دوست </p>--}}
+            {{--<p>استیم : 32113546543</p>--}}
+            {{--<p>محمد وطن دوست </p>--}}
+            {{--<p>استیم : 32113546543</p>--}}
             {{-- اگر فرد بود --}}
-            <p>محمد وطن دوست </p>
-            <p>استیم : 56456645665</p>
+            {{--<p>محمد وطن دوست </p>--}}
+            {{--<p>استیم : 56456645665</p>--}}
         </div>
     </div>
 
