@@ -29,7 +29,7 @@ Route::get('list',function (){
 
 Route::get('test',function (){
 
-   return url('http://localhost/chaleshjoo/public/organization/SiliCon/messages');
+   return view('email.matchData',compact('name'));
 
 });
 

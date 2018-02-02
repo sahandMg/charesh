@@ -25,7 +25,7 @@
              </div>
 
          @endif
-         <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+         <script src="https://www.zarinpal.com/webservice/TrustCode"  type="text/javascript"></script>
 
       <div class="form-group">
         <label for="exampleInputEmail1">افزایش اعتبار (تومان) </label>
