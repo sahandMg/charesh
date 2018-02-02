@@ -1,3 +1,35 @@
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="footer">
+    <!--<div>-->
+    <!--<a href="https://www.instagram.com/gameinja/" style="padding: 10px;"><i class="fa fa-instagram fa-lg"></i></a>-->
+    <!--<a href="https://t.me/GameInja" style="padding: 10px;"><i class="fa fa-telegram fa-lg"></i></a>-->
+    <!--</div>-->
+    <div class="footerCol">
+        <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+    </div>
+    <div class="footerCol" style="margin-top: 30px;">
+        <a href="{{route('contact')}}">ارتباط با ما</a>
+        <a href="{{route('chareshRule')}}">قوانین</a>
+        <a href="{{route('about')}}">درباره ما</a>
+        <a href="">راهنمای سایت</a>
+        <a href="{{route('matchCreate')}}">ایجاد مسابقه جدید</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p style="font-size: 20px;color: white;">تمام حقوق مادی و معنوی این سایت متعلق به سایت    <span style="color:#61892F; "></span> می باشد.</p>
+
+</div>
 <style type="text/css">
     * {
         margin: 0;
@@ -6,39 +38,31 @@
         height: 100%;
     }
     .footer {
-        /*position: absolute;*/
         direction: rtl;
-        /* right: 0;
-         bottom: 0;
-         left: 0;*/
         padding: 1rem;
-        background-color: #000000;
-        /*padding: 15px;*/
+        background-color: #1D2731;
         text-align: center;
-        height: 100px;
-        /* margin-top: 1000px;*/
+        height: 150px;
     }
 
-    #mainDiv {
-        min-height: 100%;
-        /* equal to footer height */
-        margin-bottom: -100px;
-
+    .footer:after {
+        height: 150px;
     }
-    #mainDiv:after {
-        content: "";
-        display: block;
+    .footerCol {
+        width: 50%;
+        text-align: center;
+        color: white;
+        float: left;
     }
-    .footer, #mainDiv:after {
-        height: 100px;
+    .footerCol a {
+        color: white;
+        text-decoration: none;
+        padding: 1%;
+        font-weight: 300;
+        font-size: 125%;
     }
-
+    .footerCol a:hover {
+        color: #328CC1;
+    }
 </style>
 <br>
-<div class="footer">
-    <div>
-        <a href="https://www.instagram.com/gameinja/" style="padding: 10px;"><i class="fa fa-instagram fa-lg"></i></a>
-        <a href="https://t.me/GameInja" style="padding: 10px;"><i class="fa fa-telegram fa-lg"></i></a>
-    </div>
-    <p style="font-size: 20px;color: white;">تمام حقوق مادی و معنوی این سایت متعلق به سایت    <span style="color:#61892F; "></span> می باشد.</p>
-</div>

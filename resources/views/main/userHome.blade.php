@@ -1,36 +1,6 @@
 @extends('masterUserHeader.body')
 @section('content')
 
-    {{--<div class="form-group" style="margin: auto">--}}
-        {{--<label for="Name-input"> </label>--}}
-        {{--<div>--}}
-            {{--<span style="float: right; margin: 1%">فیلتر بر اساس مسابقات</span>--}}
-            {{--<select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 30%;text-align: center" class="form-control" id="sel1">--}}
-                {{--<option>حضوری</option>--}}
-                {{--<option>آنلاین</option>--}}
-                {{--<option>انفردی</option>--}}
-                {{--<option>گروهی</option>--}}
-                {{----}}
-            {{--</select>--}}
-
-
-        {{--</div>--}}
-    {{--</div>--}}
-    {{--<br>--}}
-    {{--<br>--}}
-    {{--<div class="container" style="direction: rtl;">--}}
-
-    {{--<div class="row" style="padding: 20px;">--}}
-    {{--<h3>همه مسابقه ها</h3>--}}
-    {{--<a href="{{route('matchCreate')}}"  class="btn btn-primary mr-auto" style="height: 35px;">ایجاد مسابقه جدید</a>--}}
-    {{--</div>--}}
-
-    {{--</div>  --}}
-
-    {{--<div class="container" style="direction: rtl;">--}}
-    {{--<div class="row">--}}
-    <!-- First -->
-
     <section class="tournoments" id="mainApp">
 
         @for($i=0;$i<count($matches);$i++)
@@ -50,8 +20,7 @@
                                 </a>
                                 <h6>مسابقه  {{$matches[$i]->matchName}}</h6>
                             </div>
-                            <!--<a href="supplier/supplierName">d</a>-->
-                            <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->
+
                             <div class="bannerSM">
                                 @if($matches[$i]->canceled == 1)
                                     <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;">

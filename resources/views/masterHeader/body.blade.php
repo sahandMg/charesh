@@ -5,7 +5,7 @@
 
 <meta name="keywords" content="برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,بازی های رایانه ای">
 <head>
-    <title>Index</title>
+    <title>چارش</title>
 
 
 
@@ -13,13 +13,10 @@
     <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script>
     <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    {{--<script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>--}}
 	<script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!-- Fonts -->
 
-    {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>--}}
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
     <!-- include summernote css/js-->
@@ -42,15 +39,11 @@
 
 
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/flipclock.css')}}">
-    {{--<link rel="stylesheet" type="text/css"  href="{{URL::asset('CSS/bootstrap.css')}}">--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    {{--<link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/main.css')}}">--}}
     <link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/newMain.css')}}">
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-    <!-- include libraries(jQuery, bootstrap) -->
-
     <style>
         @media screen and (max-width: 600px) {
             .g-recaptcha {
@@ -79,10 +72,9 @@
 
 
 </head>
-<body style="padding: 0px;width: 100%;">
+<body style="padding: 0px;width: 100%;background-color: #e6e6e6;">
 
 <header>
-    <a href="{{route('home')}}" class="logo"><img style="height: 100px" src="{{URL::asset('images/Logo.png')}}"></a>
 
     <h2>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h2>
     <br>
@@ -100,53 +92,7 @@
         <a href="javascript:void(0);" style="font-size:15px;" class="icon"  onclick="navResponsive()">&#9776;</a>
     </nav>
 </header>
-{{--<header>--}}
-    {{--<a href="index.html" class="logo"><img src="{{URL::asset('images/Logo.png')}}"></a>--}}
 
-    {{--<h2>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h2>--}}
-    {{--<br>--}}
-    {{--<nav class="topnav" id="myTopnav">--}}
-        {{--<a href="{{route('login')}}" class="leftNav"> ورود <i class="fa fa-sign-in fa-lg"></i></a>--}}
-        {{--<a href="{{route('register')}}" class="leftNav"> ثبت نام <i class="fa fa-user fa-lg"></i></a>--}}
-
-        {{--<a href="{{route('home')}}" class="rightNav active1"> <i class="fa fa-home fa-lg"></i></a>--}}
-        {{--<a href="{{route('matchCreate')}}" class="rightNav">ایجاد مسابقه جدید</a>--}}
-        {{--<a href="{{route('about')}}" class="rightNav"> درباره ما </a>--}}
-        {{--<a href="{{route('contact')}}" class="rightNav"> ارتباط با ما </a>--}}
-
-        {{--<a href="javascript:void(0);" style="font-size:15px;" class="icon"  onclick="navResponsive()">&#9776;</a>--}}
-    {{--</nav>--}}
-{{--</header>--}}
-
-
-{{--<div class="container"  id="mainDiv" style="width: 100%;padding: 0px;">--}}
-
-    {{--<div class="row">--}}
-        {{--<div class="col-md-4 col-sm-6">--}}
-        {{--<!--    <img style="position: absolute;margin-top: 10px;margin-left: 50px;" height="100px"  src="{{URL::asset('images/Logo.png')}}" alt=""> -->--}}
-        {{--</div>--}}
-        {{--<div class="col-md-8 col-sm-6" style="margin: 0px;height: 20px;">--}}
-            {{--<h3 class="pull-right" style="margin:50px;padding: 0px;">راهی <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات</h3>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-
-
-
-
-    {{--<div class="filler one">--}}
-
-    {{--</div>--}}
-
-    <!-- Nav -->
-    {{--<nav id="navbar" class="topNav">--}}
-        {{--<ul>--}}
-            {{--<li><a href="{{route('login')}}" class="setColor"> ورود <i class="fa fa-sign-in fa-lg"></i></a></li>--}}
-            {{--<li><a href="{{route('register')}}" class="setColor"> ثبت نام <i class="fa fa-user fa-lg"></i></a></li>--}}
-            {{--<li><a href="{{route('about')}}" class="setColor">درباره ما</a></li>--}}
-            {{--<li><a href="{{route('contact')}}" class="setColor">ارتباط با ما</a></li>--}}
-            {{--<li><a href="{{route('home')}}" class="setColor"><i class="fa fa-home fa-lg"></i></a></li>--}}
-        {{--</ul>--}}
-    {{--</nav>--}}
 
     @yield('content')
     @yield('round')
