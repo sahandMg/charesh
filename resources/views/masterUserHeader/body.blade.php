@@ -90,7 +90,7 @@
 <body style="padding: 0px;width: 100%;">
 
 <header>
-    <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/Logo.png')}}"></a>
+    <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh2.svg')}}"></a>
 
     <h2>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h2>
     <br>
@@ -126,7 +126,7 @@
                         @else
                             <a href="{{route('OrgMsg',['orgName'=>Auth::user()->organize->slug])}}">پیام ها</a>
                         @endif
-                        <a style="direction: rtl"  href="{{route('organizeAccount',['orgName'=>Auth::user()->organize->slug])}}"> {{Auth::user()->organize->credit * 0.98}}  تومان</a>
+                        <a style="direction: rtl"  href="{{route('organizeAccount',['orgName'=>Auth::user()->organize->slug])}}"> {{Auth::user()->organize->credit}}  تومان</a>
                         <a href="{{route('orgEdit',['orgName'=>Auth::user()->organize->slug])}}"> تنظیمات </a>
                         <a href="{{route('logout',['orgName'=>Auth::user()->organize->slug])}}">خروج</a>
                     @endif
