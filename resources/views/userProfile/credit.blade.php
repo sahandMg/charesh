@@ -19,7 +19,6 @@
                  {{session('message')}}
              </div>
          @endif
-         <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
       <div class="form-group">
         <label for="exampleInputEmail1">افزایش اعتبار (تومان) </label>
         <input type="number" min="2000" step="1000" max="1000000000"  value="2000" name="credit" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="به تومان">

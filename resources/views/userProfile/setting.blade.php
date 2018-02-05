@@ -166,7 +166,7 @@
          width: 100%;
          position: relative;
          overflow: hidden;
-         background-image: url('../../../public/images/100_100.jpg');
+         background-image: url("../../../public/images/100_100.jpg");
          background-color: white;
          background-position: center center;
          background-repeat: no-repeat;

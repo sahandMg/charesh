@@ -13,8 +13,7 @@
     <div class="formDiv">
         <form method="post" action="{{route('cost')}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <p>اگر مسابقه هزینه ثبت نام ندارد ، کلید رایگان را انتخاب کنید . </p>
-            <p> اگر مسابقه هزینه ثبت نام دارد مبلغ آن را به ازای هرفرد در پایین وارد کنید. </p>
+            <p>اگر مسابقه هزینه ثبت نام ندارد ، کلید رایگان را انتخاب کنید در غیر این صورت مبلغ ثبت نام را به ازای هرفرد در بخش زیر وارد کنید. </p>
             <div class="form-group">
                 <label for="Name-input" class="col-2 col-form-label"> رایگان  </label>
                 <div class="col-5">
@@ -25,7 +24,7 @@
                 </div>
             </div>
             <div class="form-group" id="costInput">
-                <label for="Name-input">">هزینه ثبت نام(تومان) : </label>
+                <label for="Name-input">هزینه ثبت نام(تومان)  </label>
                 <input name="cost" v-model="cost"  @input="check"  class="form-control" type="number" min="1000" step="1000" :value="cost" placeholder="به تومان" id="example-text-input">
             </div>
             <h4> اطلاعات اضافه ای را که نیاز دارید تا شرکت کنندگان وارد کنند، در این قسمت مطرح کنید </h4>

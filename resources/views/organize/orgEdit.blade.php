@@ -5,7 +5,9 @@
 @section('content')
 
    <div class="container" style=" direction: rtl;" id="Edit">
+
     <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 1%;margin-top: 2%;background-color: white;">
+        <h2 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">تنظیمات پروفایل</h2>
         <form style="padding: 20px;" method="POST" action="{{route('orgEdit',['id'=>$org->id,'orgName'=>$name->organize->slug])}} " enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             @if(count(session('message')) )
@@ -187,7 +189,7 @@
            width: 100%;
            position: relative;
            overflow: hidden;
-           background-image: url("image/11.jpg");
+           background-image: url('../100_100.jpg');
            background-color: white;
            background-position: center center;
            background-repeat: no-repeat;

@@ -25,7 +25,7 @@ class Organize
             return redirect()->route('setting',['username',Auth::user()->username])->with(['settingError'=>'برای ساخت مسابقه، سطح دسترسی خود را به برگزارکننده تغییر دهید']);
         }
         if(!count($user)>0 ){
-            return redirect()->route('MakeOrganize');
+            return redirect()->route('MakeOrganize')->with(['error'=>'برای ساخت مسابقه، ابتدا پروفایل برگزار کننده را تکمیل کنید']);
         }
 
         return $next($request);

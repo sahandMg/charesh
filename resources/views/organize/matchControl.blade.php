@@ -4,6 +4,12 @@
 @endsection
 
 @section('content')
+
+    @if(count(session('message')))
+        <div class="alert alert-success ">
+            {{session('message')}}
+        </div>
+    @endif
     <div class="wallDiv">
         <h4> تعداد کل بلیت هایی که در تمام مسابقات فروخته اید : <b><span id="counter">0</span></b> </h4>
     </div>

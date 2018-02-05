@@ -45,6 +45,7 @@
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{URL::asset('images/charesh.png')}}" />
     <style>
         @media screen and (max-width: 600px) {
             .g-recaptcha {
@@ -76,6 +77,7 @@
 <body style="padding: 0px;width: 100%;background-color: #e6e6e6;">
 
 <header>
+    <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh.jpg')}}"></a>
 
     <h1>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>

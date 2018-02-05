@@ -83,8 +83,9 @@ class OrganizeController extends Controller
         session(['organizeName' => $request->OrgName]);
         $org->comment = $request->comment;
         if ($request->file('logo_path')) {
+            $rand2 = str_random('4');
             $this->validate($request,['logo_path'=>'image|max:1000']);
-            $org->logo_path = $org->name.'-'.$rand.$request->file('logo_path')->getClientOriginalExtension();
+            $org->logo_path = $org->name.'-'.$rand2.'.'.$request->file('logo_path')->getClientOriginalExtension();
 
         } else {
             $org->logo_path = "Blank100_100.png";
@@ -93,7 +94,7 @@ class OrganizeController extends Controller
         if ($request->file('background_path')) {
 
             $this->validate($request,['background_path'=>'image|max:1000']);
-            $org->background_path = $org->name.'-'.$rand. $request->file('background_path')->getClientOriginalName();
+            $org->background_path = $org->name.'-'.$rand.'.'. $request->file('background_path')->getClientOriginalExtension();
 
         } else {
 
@@ -109,12 +110,12 @@ class OrganizeController extends Controller
 
 //            $exploded = explode('.',$request->file('background_path')->getClientOriginalName());
 //
-            $request->file('background_path')->move('storage/images', $org->name.'-'.$rand. $request->file('background_path')->getClientOriginalExtension());
+            $request->file('background_path')->move('storage/images', $org->name.'-'.$rand.'.'. $request->file('background_path')->getClientOriginalExtension());
 ////
 	    $imgName = $org->name.'-'.$rand.'.'.$request->file('background_path')->getClientOriginalExtension();
         $imgEx = $request->file('background_path')->getClientOriginalExtension();
         $imgNameNoEx = basename($org->name.'-'.$rand,'.'.$request->file('background_path')->getClientOriginalExtension());
-        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['background_path'=> $imgNameNoEx.'.jpg']);
 
         if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
@@ -123,20 +124,20 @@ class OrganizeController extends Controller
 
         }
 
-            exec("mogrify  -resize '1150x380!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+            exec("mogrify  -resize '1150x380!' /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg");
 
 
         }
 
         if ($request->file('logo_path')) {
 
-            $request->file('logo_path')->move('storage/images', $org->name.'-'.$rand,'.' . $request->file('logo_path')->getClientOriginalExtension());
+            $request->file('logo_path')->move('storage/images', $org->name.'-'.$rand2.'.'.$request->file('logo_path')->getClientOriginalExtension());
 //
 
-	    $imgName = $org->name.'-'.$rand.'.'.$request->file('logo_path')->getClientOriginalExtension();
+	    $imgName = $org->name.'-'.$rand2.'.'.$request->file('logo_path')->getClientOriginalExtension();
         $imgEx = $request->file('logo_path')->getClientOriginalExtension();
-        $imgNameNoEx = basename($org->name.'-'.$rand,'.'.$request->file('logo_path')->getClientOriginalExtension());
-        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        $imgNameNoEx = basename($org->name.'-'.$rand2,'.'.$request->file('logo_path')->getClientOriginalExtension());
+        exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
 
         if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
@@ -145,7 +146,7 @@ class OrganizeController extends Controller
 
         }
 
-            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+            exec("mogrify  -resize '100x100!' /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg");
 
 
 
@@ -153,7 +154,7 @@ class OrganizeController extends Controller
         }
 
 
-        return redirect()->route('orgMatches',['orgName'=>$org->slug]);
+        return redirect()->route('orgMatches',['orgName'=>$org->slug])->with(['message'=>'پروفایل برگزار کننده با موفقیت ساخته شد']);
 
 
     }
@@ -1318,7 +1319,7 @@ class OrganizeController extends Controller
 
             Mail::send('email.paymentAdmin', $data, function ($message) use ($data) {
 
-                $message->to($data['email']);
+                $message->to('sahand.mg.ne@gmail.com');
                 $message->from('admin@charesh.ir');
                 $message->subject('درخواست واریز');
 
@@ -1546,7 +1547,7 @@ class OrganizeController extends Controller
             $imgEx = $request->file('logo_path')->getClientOriginalExtension();
             $imgNameNoEx = basename($org->name.'-'.$rand ,'.'.$request->file('logo_path')->getClientOriginalExtension());
 
-            exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+            exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
 
         if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
@@ -1555,7 +1556,7 @@ class OrganizeController extends Controller
 
         }
 
-            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+            exec("mogrify  -resize '100x100!' /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg");
 
 
 
@@ -1581,7 +1582,7 @@ class OrganizeController extends Controller
             $imgEx = $request->file('background_path')->getClientOriginalExtension();
             $imgNameNoEx = basename($org->name.'-'.$rand,'.'.$request->file('background_path')->getClientOriginalExtension());
 
-        exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+        exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['background_path'=> $imgNameNoEx.'.jpg']);
 
         if(public_path('storage/images/' . $imgName) != null && $imgEx != 'jpg'){
@@ -1590,7 +1591,7 @@ class OrganizeController extends Controller
 
         }
 
-            exec("mogrify  -resize '1150x380!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+            exec("mogrify  -resize '1150x380!' /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg");
 
         }
 

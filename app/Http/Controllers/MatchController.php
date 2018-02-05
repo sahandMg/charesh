@@ -120,14 +120,14 @@ class MatchController extends Controller
 
         if($request->file('path')){
 
-            $tournament->path = $tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
+            $tournament->path = $tournament->slug.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
 //            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
             $request->file('path')->move('storage/images',$tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension());
 
-            $imgName = $tournament->matchName.'-'.$rand;
+            $imgName = $tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
             $imgEx = $request->file('path')->getClientOriginalExtension();
             $imgNameNoEx = basename($tournament->matchName.'-'.$rand,'.'.$request->file('path')->getClientOriginalExtension());
-            exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+            exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
             $tournament->path = $imgNameNoEx.'.jpg';
 
             if(public_path('storage/images/' . $imgName) != null &&  $imgEx != 'jpg'){
@@ -136,7 +136,7 @@ class MatchController extends Controller
 
             }
 
-            exec("mogrify  -resize '1290x600!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+            exec("mogrify  -resize '1290x600!' /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg");
 
 
 
@@ -951,11 +951,10 @@ class MatchController extends Controller
                             $team->path = $team->teamName;
 //            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
                             $request->file('logo')->move('storage/images',$team->teamName.'.'. $request->file('logo')->getClientOriginalExtension());
-
-                            $imgName = $team->teamName;
+                            $imgName = $team->teamName.'.'.$request->file('logo')->getClientOriginalExtension();;
                             $imgEx = $request->file('logo')->getClientOriginalExtension();
                             $imgNameNoEx = basename($team->teamName,'.'.$request->file('logo')->getClientOriginalExtension());
-                            exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
+                            exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
                             $team->path = $imgNameNoEx.'.jpg';
 
                             if(public_path('storage/images/' . $imgName) != null &&  $imgEx != 'jpg'){
@@ -964,7 +963,7 @@ class MatchController extends Controller
 
                             }
 
-                            exec("mogrify  -resize '100x100!' /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg");
+                            exec("mogrify  -resize '100x100!' /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg");
 
 
 

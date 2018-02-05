@@ -18,6 +18,16 @@
                  @endforeach
              </div>
          @endif
+
+         @if(count(session('error')))
+             <div class="alert alert-danger" role="alert">
+
+
+                     <li>{{session('error')}}</li>
+
+
+             </div>
+         @endif
          <div class="form-group ">
              <label for="Name-input">نام </label>
              <input  class="form-control" @input="check" name="OrgName" v-model="name" type="text" value="{{Request::old('OrgName')}}" id="example-text-input">

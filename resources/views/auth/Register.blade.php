@@ -66,7 +66,7 @@
            <label class="container">
              <div class="checkbox">
                  <a href="{{route('chareshRule')}}"> قوانین  </a> <span style="padding-left: 0.5%;">سایت چارش را قبول دارم</span>
-                 <input   @click="show" type="checkbox" >
+                 <input   @click="show" type="checkbox" :checked="checkBoxx" >
              </div>
            </label>
          </div>
@@ -92,12 +92,14 @@
 </style>
 
   <script>
+
       new Vue({
 
           el:'#app',
           data:{
               hide:false,
-              rule:true
+              rule:true,
+              checkBoxx:false
           },
           methods:{
 

@@ -149,10 +149,10 @@
         </div>
         <br>
         <div class="container1" style="direction: rtl;">
-            <label><b>نام</b></label>
-            <input type="text" placeholder="نام خود را وارد کنید" name="name" required>
-            <label><b>ایمیل</b></label>
-            <input  type="text" placeholder="ایمیل خود را وارد کنید" name="email" required>
+            {{--<label><b>نام</b></label>--}}
+            {{--<input type="text" placeholder="نام خود را وارد کنید" name="name" required>--}}
+            {{--<label><b>ایمیل</b></label>--}}
+            {{--<input  type="text" placeholder="ایمیل خود را وارد کنید" name="email" required>--}}
             <div class="form-group ">
                 <label> متن پیام </label>
                 <textarea class="form-control"  id="summernote" name="message" rows="3"></textarea>

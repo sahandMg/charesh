@@ -51,6 +51,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/newMainUser.css')}}">
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
+    <link rel="icon" type="image/png" href="{{URL::asset('images/charesh.png')}}" />
 
     <style>
         @media screen and (max-width: 600px) {
@@ -82,7 +83,7 @@
 <body style="padding: 0px;width: 100%;background-color: #e6e6e6;">
 
 <header>
-    <a href="{{route('home')}}" class="logo"><img src=""></a>
+    <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh.jpg')}}"></a>
 
     <h1>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>
@@ -109,8 +110,8 @@
                 @elseif(Auth::user()->role == 'supplier')
                     @if(!isset(Auth::user()->organize))
                         <a href="{{route('MakeOrganize')}}">تکمیل پروفایل</a>
-                        <a href="{{route('setting',['username'=>Auth::user()->username])}}"> تنظیمات </a>
-                        <a href="{{route('logout',['username'=>Auth::user()->username])}}">خروج</a>
+                        <a href="{{route('setting',['username'=>Auth::user()->slug])}}"> تنظیمات </a>
+                        <a href="{{route('logout',['username'=>Auth::user()->slug])}}">خروج</a>
                     @else
                         <a href="{{route('orgMatches',['orgName'=>Auth::user()->organize->slug])}}"> مسابقات من</a>
                         @if(Auth::user()->organize->unread > 0 )
@@ -126,13 +127,13 @@
                     <a href="{{route('userChallenge',['username'=>Auth::user()->slug])}}"> چالش های من</a>
 
                     @if($name->unread > 0 )
-                        <a style="color:red" href="{{route('notification',['username'=>Auth::user()->username])}}">پیام های برگزار کنندگان</a>
+                        <a style="color:red" href="{{route('notification',['username'=>Auth::user()->slug])}}">پیام های برگزار کنندگان</a>
                     @else
-                        <a  href="{{route('notification',['username'=>Auth::user()->username])}}">پیام های برگزار کنندگان</a>
+                        <a  href="{{route('notification',['username'=>Auth::user()->slug])}}">پیام های برگزار کنندگان</a>
                     @endif
-                    <a style="direction: rtl" href="{{route('credit',['username'=>Auth::user()->username])}}"> {{Auth::user()->credit}}  تومان</a>
-                    <a href="{{route('setting',['username'=>Auth::user()->username])}}"> تنظیمات </a>
-                    <a href="{{route('logout',['username'=>Auth::user()->username])}}">خروج</a>
+                    <a style="direction: rtl" href="{{route('credit',['username'=>Auth::user()->slug])}}"> {{Auth::user()->credit}}  تومان</a>
+                    <a href="{{route('setting',['username'=>Auth::user()->slug])}}"> تنظیمات </a>
+                    <a href="{{route('logout',['username'=>Auth::user()->slug])}}">خروج</a>
                 @endif
 
 
