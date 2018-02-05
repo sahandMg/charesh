@@ -67,7 +67,7 @@ class OrganizeController extends Controller
 
     public function postMakeOrganize(Request $request)
     {
-
+        $rand = str_random('4');
         $this->validate($request,['OrgName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/','comment'=>'required|between:10,1500']);
 
 
@@ -84,7 +84,7 @@ class OrganizeController extends Controller
         $org->comment = $request->comment;
         if ($request->file('logo_path')) {
             $this->validate($request,['logo_path'=>'image|max:1000']);
-            $org->logo_path = $time . $request->file('logo_path')->getClientOriginalName();
+            $org->logo_path = $org->name.'-'.$rand.$request->file('logo_path')->getClientOriginalExtension();
 
         } else {
             $org->logo_path = "Blank100_100.png";
@@ -93,7 +93,7 @@ class OrganizeController extends Controller
         if ($request->file('background_path')) {
 
             $this->validate($request,['background_path'=>'image|max:1000']);
-            $org->background_path = $time . $request->file('background_path')->getClientOriginalName();
+            $org->background_path = $org->name.'-'.$rand. $request->file('background_path')->getClientOriginalName();
 
         } else {
 
@@ -109,11 +109,11 @@ class OrganizeController extends Controller
 
 //            $exploded = explode('.',$request->file('background_path')->getClientOriginalName());
 //
-            $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
+            $request->file('background_path')->move('storage/images', $org->name.'-'.$rand. $request->file('background_path')->getClientOriginalExtension());
 ////
-	    $imgName = $time.$request->file('background_path')->getClientOriginalName();
+	    $imgName = $org->name.'-'.$rand.'.'.$request->file('background_path')->getClientOriginalExtension();
         $imgEx = $request->file('background_path')->getClientOriginalExtension();
-        $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
+        $imgNameNoEx = basename($org->name.'-'.$rand,'.'.$request->file('background_path')->getClientOriginalExtension());
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['background_path'=> $imgNameNoEx.'.jpg']);
 
@@ -130,12 +130,12 @@ class OrganizeController extends Controller
 
         if ($request->file('logo_path')) {
 
-            $request->file('logo_path')->move('storage/images', $time . $request->file('logo_path')->getClientOriginalName());
+            $request->file('logo_path')->move('storage/images', $org->name.'-'.$rand,'.' . $request->file('logo_path')->getClientOriginalExtension());
 //
 
-	    $imgName = $time.$request->file('logo_path')->getClientOriginalName();
+	    $imgName = $org->name.'-'.$rand.'.'.$request->file('logo_path')->getClientOriginalExtension();
         $imgEx = $request->file('logo_path')->getClientOriginalExtension();
-        $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
+        $imgNameNoEx = basename($org->name.'-'.$rand,'.'.$request->file('logo_path')->getClientOriginalExtension());
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
 
@@ -1308,7 +1308,17 @@ class OrganizeController extends Controller
 
             Mail::send('email.paymentReq', $data, function ($message) use ($data) {
 
-                $message->to('sahand.mg.ne@gmail.com');
+                $message->to($data['email']);
+                $message->from('admin@charesh.ir');
+                $message->subject('درخواست واریز');
+
+
+            });
+
+
+            Mail::send('email.paymentAdmin', $data, function ($message) use ($data) {
+
+                $message->to($data['email']);
                 $message->from('admin@charesh.ir');
                 $message->subject('درخواست واریز');
 
@@ -1502,26 +1512,26 @@ class OrganizeController extends Controller
 
     public function post_edit(Request $request){
 
-	 $url = 'https://www.google.com/recaptcha/api/siteverify';
-       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-// use key 'http' even if you send the request to https://...
-       $options = array(
-       'http' => array(
-       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-       'method'  => 'POST',
-       'content' => http_build_query($data),
-         ),
-       );
-       $context  = stream_context_create($options);
-       $result = file_get_contents($url, false, $context);
-       if(json_decode($result)->success === false){
+//	 $url = 'https://www.google.com/recaptcha/api/siteverify';
+//       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+//// use key 'http' even if you send the request to https://...
+//       $options = array(
+//       'http' => array(
+//       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+//       'method'  => 'POST',
+//       'content' => http_build_query($data),
+//         ),
+//       );
+//       $context  = stream_context_create($options);
+//       $result = file_get_contents($url, false, $context);
+//       if(json_decode($result)->success === false){
+//
+//       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+//
+//       }
+//
 
-       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
-
-       }
-
-
-        $time = time();
+        $rand = str_random('4');
         $org = Organize::where('id',$request->id)->first();
         if( null != $request->file('logo_path')){
 
@@ -1529,12 +1539,12 @@ class OrganizeController extends Controller
 
 
             unlink(public_path('storage/images/'.$org->logo_path));
-            $org->update(['logo_path'=> $time.$request->file('logo_path')->getClientOriginalName()]);
-            $request->file('logo_path')->move('storage/images/', $time . $request->file('logo_path')->getClientOriginalName());
+            $org->update(['logo_path'=> $org->name.'-'.$rand.'.'.$request->file('logo_path')->getClientOriginalExtension()]);
+            $request->file('logo_path')->move('storage/images/', $org->name.'-'.$rand.'.' . $request->file('logo_path')->getClientOriginalExtension());
 
-		     $imgName = $time.$request->file('logo_path')->getClientOriginalName();
+		     $imgName = $org->name.'-'.$rand.'.'.$request->file('logo_path')->getClientOriginalExtension();
             $imgEx = $request->file('logo_path')->getClientOriginalExtension();
-            $imgNameNoEx = basename($time . $request->file('logo_path')->getClientOriginalName(),'.'.$request->file('logo_path')->getClientOriginalExtension());
+            $imgNameNoEx = basename($org->name.'-'.$rand ,'.'.$request->file('logo_path')->getClientOriginalExtension());
 
             exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['logo_path'=> $imgNameNoEx.'.jpg']);
@@ -1564,12 +1574,12 @@ class OrganizeController extends Controller
             $this->validate($request,['background_path'=>'image|max:1000']);
 
             unlink(public_path('storage/images/'.$org->background_path));
-            $org->update(['background_path'=> $time.$request->file('background_path')->getClientOriginalName()]);
-            $request->file('background_path')->move('storage/images', $time . $request->file('background_path')->getClientOriginalName());
+            $org->update(['background_path'=> $org->name.'-'.$rand.'.'.$request->file('background_path')->getClientOriginalExtension()]);
+            $request->file('background_path')->move('storage/images', $org->name.'-'.$rand.'.' . $request->file('background_path')->getClientOriginalExtension());
 
-            $imgName = $time.$request->file('background_path')->getClientOriginalName();
+            $imgName = $org->name.'-'.$rand.'.'.$request->file('background_path')->getClientOriginalExtension();
             $imgEx = $request->file('background_path')->getClientOriginalExtension();
-            $imgNameNoEx = basename($time . $request->file('background_path')->getClientOriginalName(),'.'.$request->file('background_path')->getClientOriginalExtension());
+            $imgNameNoEx = basename($org->name.'-'.$rand,'.'.$request->file('background_path')->getClientOriginalExtension());
 
         exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['background_path'=> $imgNameNoEx.'.jpg']);

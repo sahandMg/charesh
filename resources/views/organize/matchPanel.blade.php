@@ -1,4 +1,8 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | اطلاعات مسابقه  {{$tournament->matchName}}
+@endsection
+
 @section('content')
     @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
     <div class="container" id="edit">
@@ -14,7 +18,6 @@
      <div class="wallDiv">
        <form style="padding: 20px;" method="POST" action="{{route('challengePanel',['id'=>$tournament->id,'matchName'=>$tournament->slug])}}" enctype="multipart/form-data">
            <input type="hidden" name="_token" value="{{csrf_token()}}">
-           {{--<div>--}}
            @if(count($errors->all()))
                <div class="alert alert-danger" role="alert">
                 <ul>
@@ -34,21 +37,18 @@
 
                </div>
            @endif
-
         <div class="form-group">
             <label for="InputFile">فایل قوانین</label>
             <input type="file" name="rulesPath" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" style="margin-top: 15px;">
         </div>
-
-          <div class="form-group">
+        <div class="form-group">
               <label>زمان پایان ثبت نام : </label>
               <input class="form-control"  :style="style4"  name="endTime" type="number" min="1" value="{{Request::old('matchName')}}" placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
-          </div>
-
-          <div class="form-group">
+        </div>
+        <div class="form-group">
               <label>تاریخ شروع مسابقه : </label>
               <input class="form-control"  :style="style3"  name="startTime" type="text" placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">
-          </div>
+        </div>
             @if($tournament->matchType == 'تیمی')
                <div class="form-group" id="fardi">
                    <label> تعداد شرکت تیم ها : </label>
@@ -57,37 +57,26 @@
             @elseif($tournament->matchType == 'فردی')
 
              @endif
-
           <div class="form-group">
               <label>توضیحات : </label>
               <textarea class="form-control"  :style="style5"  name="comment" id="summernote" rows="3"></textarea>
           </div>
-
-
         @if($tournament -> mode == "حضوری")
           <div class="form-group">
-              {{--<div id="map" style="width:100%;height: 250px; background-color: rgb(229, 227, 223);"></div>--}}
+              <div id="map" style="width:100%;height: 250px; background-color: rgb(229, 227, 223);"></div>
           </div>
         @endif
         <div class="form-group" style="padding-right: 20px;">
-
             <button  @click="hidden" type="submit" v-show="!hide" class="btn btn-primary">ذخیره تغییرات</button>
             <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ذخیره </button>
-
             <button type="button" @click="cancel" class="btn btn-danger">لغو مسابقه</button>
         </div>
-
    </form>
   </div>
     <br>
     <br>
     <br>
-
-
-
   </div>
-
-
   <style>
       .wallDiv {
           width: 95%;
@@ -98,12 +87,10 @@
           margin-bottom: 2%;
           box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
           transition: 0.3s;
-          border-radius: 5px; /* 5px rounded corners */
+          border-radius: 5px;
           background-color: white;
           direction: rtl;
-          /*float: left;*/
           padding: 1%;
-
       }
       .wallDiv h4 {
           text-align: center;
@@ -118,29 +105,12 @@
               font-size: 100%;
           }
       }
-
-
   </style>
-
- {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
- <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
  <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>
-
-
-
-
  <script>
-
-
-//     if(history.length>0)alert("the user clicked back!")
-//
-////     window.location.href = "https://www.google.com";
-//
-
-
      new Vue({
 
     el:'#edit',
@@ -154,23 +124,17 @@
             var ans = prompt('جهت لغو مسابقه کلمه لغو را وارد کنید');
             if(ans == 'لغو'){
                 vm = this;
-
                 axios.get({!! json_encode(route('cancelChallenge'))!!}+'?id='+ {!!$tournament->id !!}).then(function (response) {
-
                     if(response.status == 200){
-
                         alert(response.data)
-
                         window.location.href = {!! json_encode(route('orgMatches',['orgName'=>Auth::user()->organize->slug])) !!}
 
                     } else{
-
                         alert( 'خطا در برقراری ارتباط با سرور' )
                     }
 
                 })
             }
-
         },
         hidden:function () {
             this.hide = true
@@ -178,12 +142,7 @@
 
     }
 
-
-
 });
-
-
-
 var map = null;
 var marker = null;
 var default_lat = {!! json_encode($tournament->lat)!!};
@@ -198,19 +157,13 @@ $(document).ready(function() {
     $("#frm_show_address").submit(function() {
         var street_address = $("#street_address").val();
         if(street_address.length > 0 ){
-            // display code address
             showAddress(street_address);
         }
-
         return false;
     });
-
 });
-
 function myMap() {
-
     var latlng = new google.maps.LatLng(default_lat,default_lng);
-
     var mapOptions = {
         scaleControl: true,
         zoom: default_zoom,
@@ -219,73 +172,37 @@ function myMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         draggableCursor: 'crosshair'
     };
-
     map = new google.maps.Map(document.getElementById(map_div), mapOptions);
-
     showMarker();
 }
 
 function showMarker(){
-    // remove all markers
     remove_all_markers();
-
     marker = new google.maps.Marker({
         position: map.getCenter(),
         map: map,
-//            title: arr_markers[marker_index]["name"],
         draggable: true
     });
-
     build_info_window();
-
     google.maps.event.addListener(marker, 'click', function(event) {
         build_info_window();
     });
-
     google.maps.event.addListener(marker, "dragend", function() {
         build_info_window();
     });
-
 }
-
-
-
 function remove_all_markers(){
     if(this.marker != null){
         this.marker.setMap(null);
     }
 }
-
 function build_info_window() {
-
     var sea_level;
-//    alert(marker.getPosition().lat())
-
-    {{--$.ajax({--}}
-        {{--url: "coordinate",--}}
-        {{--type: "POST",--}}
-        {{--dataType: 'html',--}}
-        {{--data: {--}}
-            {{--lat: marker.getPosition().lat(),--}}
-            {{--lng: marker.getPosition().lng(),--}}
-            {{--id:{!! json_encode($tournament->id) !!}--}}
-        {{--},--}}
-        {{--success: function(respText) {--}}
-
-            {{--console.log(respText)--}}
-        {{--}--}}
-
-
-    {{--})--}}
-//alert (marker.getPosition().lat())
     axios.post('{{route('matchLocation')}}',{'id':{!! json_encode($tournament->id) !!} , 'lat': marker.getPosition().lat(),'lng':marker.getPosition().lng()}).then(function (response) {
-
-//        console.log(response.data)
     })
 }
 function showPosition(position) {
     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
     var mapOptions = {
         scaleControl: true,
         zoom: default_zoom,
@@ -294,12 +211,9 @@ function showPosition(position) {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         draggableCursor: 'crosshair'
     };
-
     map = new google.maps.Map(document.getElementById(map_div), mapOptions);
-
     showMarker();
 }
-
   $({countNum: $('#counter').text()}).animate({countNum: 100}, {
     duration: 1000,
     easing:'linear',

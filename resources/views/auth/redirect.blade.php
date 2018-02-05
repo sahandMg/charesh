@@ -1,8 +1,9 @@
 @extends('masterHeader.body')
+@section('title')
+    چارش | ثبت نام
+@endsection
 
 @section('content')
-    
-    
     <div class="container" style="height:590px;width:100%;background:whitesmoke">
 
         <div style="position: absolute;top:200px;left:640px"> <h3 style="color: rgb(255,160,51)">  ... با تشکر</h3></div>

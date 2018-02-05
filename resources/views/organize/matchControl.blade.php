@@ -1,4 +1,8 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | مسابقات من
+@endsection
+
 @section('content')
     <div class="wallDiv">
         <h4> تعداد کل بلیت هایی که در تمام مسابقات فروخته اید : <b><span id="counter">0</span></b> </h4>
@@ -21,22 +25,23 @@
                                 </a>
                                 <h6>مسابقه {{$match->matchName}}</h6>
                             </div>
-                            <!--<a href="supplier/supplierName">d</a>-->
-                            <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->
                             <div class="bannerSM">
                                 @if($match->canceled == 1)
                                     <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;">
                                 @else
                                     <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->slug])}}" ><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="Responsive image" style="width: 100%;"></a>
                                 @endif
-
                                 <div class="top-right">{{$match->endTimeDays}} روز مانده </div>
-                                <div class="top-left"><a href="" style="color: white;"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></a></div>
                             </div>
                             <div style="text-align: center">
                                 <small> {{$match->cost}} تومان </small>
                                 <small><i class="fa fa-calendar"></i> {{unserialize($match->startTime)[0]}} {{unserialize($match->startTime)[1]}} {{unserialize($match->startTime)[2]}} </small>
                                 <small><i class="fa fa-address-card-o"></i> {{$match->mode}} </small>
+                                @if($match->matchType == 'تیمی')
+                                    <small><i class="fa fa-users"></i> {{$match->matchType}} </small>
+                                @else
+                                    <small><i class="fa fa-user"></i> {{$match->matchType}} </small>
+                                @endif
                             </div>
                             @if( $match->canceled == 0)
                                 <a href="{{route('challengePanel',['id'=>$match->id,'matchName'=>$match->slug])}}" class="btn btn-info" style="margin: auto;display: block;width:50%;margin-bottom: 1%; ">ورود به پنل مسابقه</a>
@@ -46,16 +51,12 @@
                         </div>
                         @endforeach
                 </div>
-
                 <style>
                     .tournoments {
                         clear: both;
                         width: 100%;
                         margin: 0;
-
-                        /*margin-top: 5%;*/
                     }
-
                     .wallDiv {
                         width: 95%;
                         height: auto;
@@ -65,12 +66,10 @@
                         margin-bottom: 2%;
                         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
                         transition: 0.3s;
-                        border-radius: 5px; /* 5px rounded corners */
+                        border-radius: 5px;
                         background-color: white;
                         direction: rtl;
-                        /*float: left;*/
                         padding: 1%;
-
                     }
                     .wallDiv {
                         text-align: center;
@@ -140,26 +139,10 @@
                         }
                     }
                 </style>
-
-                <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
-
                 <script async defer
                         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
                 </script>
                 <script>
-                    //  function myMap() {
-                    //  var mapOptions = {
-                    //      center: new google.maps.LatLng(51.5, -0.12),
-                    //      zoom: 10,
-                    //      mapTypeId: google.maps.MapTypeId.HYBRID
-                    //  }
-                    //      var marker = new google.maps.Marker({
-                    //          position: myCenter,
-                    //          animation: google.maps.Animation.BOUNCE
-                    //      });
-                    //  var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-                    //  }
-
                     var temp = {!! json_encode($totalTickets) !!} ;
                     if(temp != 0) {
                         temp = 1000 ;
@@ -175,6 +158,4 @@
                         }
                     });
                 </script>
-
-
 @endsection

@@ -2,9 +2,10 @@
 <html lang="fa">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="keywords" content="برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,بازی های رایانه ای">
+<meta name="keywords" content=",برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,برگزاری مسابقات بازی های رایانه ای@yield('matchName'),برگزاری مسابقه های آنلاین,بازی های رایانه ای,">
+@yield('location')
 <head>
-    <title>mController</title>
+    <title>@yield('title')</title>
 
     {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
 
@@ -41,21 +42,15 @@
     </script>
 
 
-    {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>--}}
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
-    <!-- include summernote css/js-->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-    {{--<link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/flipclock.css')}}">--}}
-    {{--<link rel="stylesheet" type="text/css"  href="{{URL::asset('CSS/bootstrap.css')}}">--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    {{--<link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/main.css')}}">--}}
     <link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/newMainUser.css')}}">
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
-
 
     <style>
         @media screen and (max-width: 600px) {
@@ -80,19 +75,16 @@
 
     @else
 
-
-    <!-- include libraries(jQuery, bootstrap) -->
-        {{--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">--}}
     @endif
 
 </head>
 
-<body style="padding: 0px;width: 100%;">
+<body style="padding: 0px;width: 100%;background-color: #e6e6e6;">
 
 <header>
-    <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh2.svg')}}"></a>
+    <a href="{{route('home')}}" class="logo"><img src=""></a>
 
-    <h2>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h2>
+    <h1>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>
     <nav class="topnav" id="myTopnav">
         <div class="dropdown1 leftNav" id="dropdownBtn">
@@ -126,7 +118,7 @@
                         @else
                             <a href="{{route('OrgMsg',['orgName'=>Auth::user()->organize->slug])}}">پیام ها</a>
                         @endif
-                        <a style="direction: rtl"  href="{{route('organizeAccount',['orgName'=>Auth::user()->organize->slug])}}"> {{Auth::user()->organize->credit}}  تومان</a>
+                        <a style="direction: rtl"  href="{{route('organizeAccount',['orgName'=>Auth::user()->organize->slug])}}"> {{Auth::user()->organize->credit * 0.98}}  تومان</a>
                         <a href="{{route('orgEdit',['orgName'=>Auth::user()->organize->slug])}}"> تنظیمات </a>
                         <a href="{{route('logout',['orgName'=>Auth::user()->organize->slug])}}">خروج</a>
                     @endif
@@ -150,30 +142,21 @@
         <a href="{{route('matchCreate')}}" class="rightNav">ایجاد مسابقه جدید</a>
         <a href="{{route('faq')}}" class="rightNav">سوالات متداول</a>
         <a href="#" class="rightNav">راهنمای سایت</a>
-        <a href="{{route('about')}}" class="rightNav"> درباره ما </a>
-        <a href="{{route('contact')}}" class="rightNav"> ارتباط با ما </a>
+        {{--<a href="{{route('about')}}" class="rightNav"> درباره ما </a>--}}
+        {{--<a href="{{route('contact')}}" class="rightNav"> ارتباط با ما </a>--}}
 
         <a href="javascript:void(0);" style="font-size:15px;" class="icon"  onclick="navResponsive()">&#9776;</a>
     </nav>
 </header>
 
-<div class="container"  id="mainDiv" style="width: 100%;padding: 0px;">
-
+<div class="container"  id="mainDiv" style="width: 100%;padding: 0px;background-color: #e6e6e6;">
 
     @yield('content')
-
     @yield('round')
-
-
-
-
-
-
 </div>
 
 @include('masterUserHeader.footer')
 <script type="text/javascript">
-
     function navResponsive() {
         var x = document.getElementById("myTopnav");
         var y = document.getElementById('dropdownBtn');
@@ -185,19 +168,35 @@
             y.style.display = 'block';
         }
     }
-
-
 </script>
-
 <style type="text/css">
-
+    .notification.notify:after {
+        display: block;
+        position: absolute;
+        top: 0px;
+        left: 9em;
+        /*right: -0.1em;*/
+        /*top: -30px;*/
+        /*right: 1.3333em;*/
+        width: 2em;
+        /*margin: 1.0833em 0;*/
+        margin:  0;
+        border-radius: 50%;
+        font-size: 0.75em;
+        line-height: 2;
+        text-align: center;
+        background: #f53d3d;
+        box-shadow: 0 0 0 0.25em #c20a0a;
+        animation: pulse 0.75s infinite;
+    }
     @import url(https://fonts.googleapis.com/css?family=Lato:300|Oswald);
 
 
     .notification {
         position: relative;
         width: 20em;
-        padding: 0 1em;
+        /*padding: 0 1em;*/
+        padding: 0 ;
         font-size: 0.8em;
         line-height: 1.125;
         color: white;
@@ -208,80 +207,33 @@
         /*background-image: linear-gradient(#2b2b2b, #262626);*/
     }
 
-    .notification:hover {
-        background-color: tomato;
-        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, tomato), color-stop(100%, #e02200));
-        background-image: -webkit-linear-gradient(tomato, #e02200);
-        background-image: linear-gradient(tomato, #e02200);
-    }
-@if(isset(Auth::user()->organize))
+
+    @if(isset(Auth::user()->organize))
     @if(Auth::user()->role == 'supplier' )
         @if( Auth::user()->organize->unread>0)
-            .notification.notify:after {
-                content:' {{Auth::user()->organize->unread}}';
-                display: block;
-                position: absolute;
-                top: -11px;
-                right: 0.1em;
-                /*right: 1.3333em;*/
-                width: 2em;
-                margin: 1.0833em 0;
-                border-radius: 50%;
-                font-size: 0.75em;
-                line-height: 2;
-                text-align: center;
-                background: #f53d3d;
-                box-shadow: 0 0 0 0.25em #c20a0a;
-                animation: pulse 0.75s infinite;
-            }
-        @endif
+         .notification.notify:after {
+          content:' {{Auth::user()->organize->unread}}';
+         }
+    @endif
     @else
 
         @if(Auth::user()->unread>0)
-            .notification.notify:after {
-                content:' {{Auth::user()->unread}}';
-                display: block;
-                position: absolute;
-                top: -11px;
-                right: 0.1em;
-                /*right: 1.3333em;*/
-                width: 2em;
-                margin: 1.0833em 0;
-                border-radius: 50%;
-                font-size: 0.75em;
-                line-height: 2;
-                text-align: center;
-                background: #f53d3d;
-                box-shadow: 0 0 0 0.25em #c20a0a;
-                animation: pulse 0.75s infinite;
-            }
-        @endif
+         .notification.notify:after {
+           content:' {{Auth::user()->unread}}';
+         }
+    @endif
 
     @endif
 @else
      @if(Auth::user()->unread>0)
-         .notification.notify:after {
-                content:' {{Auth::user()->unread}}';
-                display: block;
-                position: absolute;
-                top: -11px;
-                right: 0.1em;
-                /*right: 1.3333em;*/
-                width: 2em;
-                margin: 1.0833em 0;
-                border-radius: 50%;
-                font-size: 0.75em;
-                line-height: 2;
-                text-align: center;
-                background: #f53d3d;
-                box-shadow: 0 0 0 0.25em #c20a0a;
-                animation: pulse 0.75s infinite;
-            }
-        @endif
+      .notification.notify:after {
+        content:' {{Auth::user()->unread}}';
+       }
     @endif
+@endif
 
 
-    @-webkit-keyframes pulse {
+@-webkit-keyframes pulse {
         0% {
             box-shadow: 0 0 0 0.2em #c20a0a;
         }

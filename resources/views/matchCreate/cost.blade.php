@@ -1,25 +1,21 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | اطلاعات ثبت نام
+@endsection
+
 @section('content')
     <ul class="nav nav-tabs" id="app">
         <li class="active"><a href=""> اطلاعات ثبت نام </a></li>
-
         <li class="disabled"><a href=""> قوانین </a></li>
         <li class="disabled"><a href=""> اطلاعات مسابقه </a></li>
         <li class="disabled"><a href="">اطلاعات پایه</a></li>
     </ul>
-    <div class="container" style="direction: rtl;width: 80%;" id="app">
-
-
-        <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('cost')}}">
+    <div class="formDiv">
+        <form method="post" action="{{route('cost')}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
-
-            <!-- ٍٍError message -->
-            {{--<div class="alert alert-danger" role="alert">--}}
-            {{--<strong>ایمیل</strong> خود را اشتباه وارد کرده اید .--}}
-            {{--</div>--}}
             <p>اگر مسابقه هزینه ثبت نام ندارد ، کلید رایگان را انتخاب کنید . </p>
             <p> اگر مسابقه هزینه ثبت نام دارد مبلغ آن را به ازای هرفرد در پایین وارد کنید. </p>
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="Name-input" class="col-2 col-form-label"> رایگان  </label>
                 <div class="col-5">
                     <label class="switch">
@@ -28,11 +24,9 @@
                     </label>
                 </div>
             </div>
-            <div class="form-group row" id="costInput">
-                <label for="Name-input" class="col-2 col-form-label">هزینه ثبت نام(تومان) : </label>
-                <div class="col-5">
-                    <input name="cost" v-model="cost"  @input="check"  class="form-control" type="number" min="1000" step="1000" :value="cost" placeholder="به تومان" id="example-text-input">
-                </div>
+            <div class="form-group" id="costInput">
+                <label for="Name-input">">هزینه ثبت نام(تومان) : </label>
+                <input name="cost" v-model="cost"  @input="check"  class="form-control" type="number" min="1000" step="1000" :value="cost" placeholder="به تومان" id="example-text-input">
             </div>
             <h4> اطلاعات اضافه ای را که نیاز دارید تا شرکت کنندگان وارد کنند، در این قسمت مطرح کنید </h4>
             <button type="button" onclick="removeInput()" class="btn btn-danger" style="margin: 10PX;">-</button>
@@ -60,7 +54,7 @@
             {{--</div>--}}
             {{--</div>--}}
 
-            <div class="form-group row" id="buttons">
+            <div class="form-group" id="buttons">
                 <a href="{{route("returnPlanInfo")}}" class="btn btn-danger" style="margin-left: 20px;">بازگشت</a>
                 <button  type="submit" class="btn btn-primary">ادامه</button>
             </div>
@@ -147,7 +141,18 @@
             -ms-transform: translateX(26px);
             transform: translateX(26px);
         }
-
+        .formDiv {
+            width: 80%;
+            margin: 0 auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            direction: rtl;
+            background-color: white;
+            margin-top: 2%;
+        }
+        .formDiv form {
+            padding: 1%;
+        }
     </style>
 
     <script>
@@ -159,30 +164,20 @@
             } else {
                 $('#costInput').css({"display":"flex"});
             }
-
-
-
         });
-
         var count = 1 ;
         var maxTeamMember = 5 ;
         var minTeamMember = 1 ;
-
-
         function addInput() {
             if(count < maxTeamMember)
             {
-
                 count++
                 // document.getElementById('hidden').value = count;
                 $( '<div id="in'+ count +'" class="form-group"><label for="Name-input"> '+ count +' </label><input name="column'+ count +'" class="form-control" type="text" value="" id="example-text-input"></div>' ).insertBefore( "#buttons" );
             } else {
                 alert('حداکثر تعداد فیلدها ' + maxTeamMember +' می باشد.');
             }
-
         }
-
-
         function removeInput() {
             if (minTeamMember < count) {
                 $('#in' + count).remove();
@@ -193,11 +188,7 @@
             }
 
         }
-
-
-
         vm = new Vue({
-
             el:'#app',
             data:{
                 cost:1000,
@@ -205,7 +196,6 @@
                 number: 1000,
                 animatedNumber: 1000,
             },
-
             watch: {
                 number: function(newValue, oldValue) {
                     var vm = this
@@ -228,30 +218,17 @@
                 }
             },
             methods:{
-
                 check:function () {
-
-
                     if(this.cost>= 1000){
-
                         this.btn = false
-
                     }else{
                         this.btn = true
-
                     }
-
                 }
-
             },
-
             created:function () {
                 this.check()
-
             }
-
         })
-
     </script>
-    </div>
 @endsection

@@ -1,9 +1,3 @@
-
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 <br>
 <div class="footer">
@@ -16,10 +10,10 @@
     </div>
     <div class="footerCol" style="margin-top: 30px;">
         <a href="{{route('contact')}}">ارتباط با ما</a>
-        <a href="{{route('chareshRule')}}">قوانین</a>
         <a href="{{route('about')}}">درباره ما</a>
-        <a href="">راهنمای سایت</a>
+        <a href="#">راهنمای سایت</a>
         <a href="{{route('matchCreate')}}">ایجاد مسابقه جدید</a>
+        <a href="{{route('chareshRule')}}">قوانین</a>
     </div>
     <br>
     <br>
@@ -27,7 +21,7 @@
     <br>
     <br>
     <br>
-    <p style="font-size: 20px;color: white;">تمام حقوق مادی و معنوی این سایت متعلق به سایت    <span style="color:#61892F; "></span> می باشد.</p>
+    <p class="footerText">تمام حقوق مادی و معنوی این سایت متعلق به سایت    <span style="color:#61892F; "><a href=""> چارش </a> </span> می باشد.</p>
 </div>
 <style type="text/css">
     * {
@@ -41,11 +35,11 @@
         padding: 1rem;
         background-color: #1D2731;
         text-align: center;
-        height: 150px;
+        height: 175px;
     }
 
     .footer:after {
-        height: 150px;
+        height: 175px;
     }
     .footerCol {
         width: 50%;
@@ -62,6 +56,20 @@
     }
     .footerCol a:hover {
         color: #328CC1;
+    }
+    .footerText {
+        font-size: 125%;
+        color: white;
+    }
+    @media screen and (max-width: 600px) {
+        .footerCol a {
+            font-weight: 100;
+            font-size: 75%;
+        }
+        .footerText {
+            font-size: 75%;
+            color: white;
+        }
     }
 </style>
 <br>

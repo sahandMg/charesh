@@ -19,6 +19,7 @@
         "morilog/jalali": "^2.3",
         "niklasravnsborg/laravel-pdf": "^1.5",
         "phpmailer/phpmailer": "^6.0",
+        "rephlux/pagetitle": "^1.0",
         "simplesoftwareio/simple-qrcode": "~2",
         "spatie/browsershot": "^3.10",
         "tymon/jwt-auth": "^0.5.12"

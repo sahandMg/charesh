@@ -38,7 +38,7 @@ class CreateTournametsTable extends Migration
             $table->mediumText('rules',1200);
 //            $table->mediumText('plan',1200);
             $table->integer('cost');
-            $table->string('free')->nullable();
+            $table->string('city')->nullable();
             $table->mediumText('moreInfo',1200)->nullable();
 
             $table->text('address',900)->nullable();

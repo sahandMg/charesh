@@ -1,4 +1,12 @@
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
+@section('matchName')
+    مسابقه {{$tournament->matchName}}
+@endsection
+
+@section('title')
+    چارش | مسابقه  {{$tournament->matchName}}
+@endsection
+
 @section('content')
     <div class="container" style="width: 100%;padding: 0px;" id="app">
 

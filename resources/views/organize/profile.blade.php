@@ -1,14 +1,17 @@
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
+@section('title')
+    چارش | پروفایل  {{$org->name}}
+@endsection
 @section('content')
 
 
     <div class="WallDiv">
         <div class="banner">
-            <img src="{{URL::asset('storage/images/'.$org->background_path)}}">
+            <img src="{{URL::asset('storage/images/'.$org->background_path)}}" alt="{{$org->background_path}}">
         </div>
         <div class="supllierogo">
             <a href="#">
-                <img src="{{URL::asset('storage/images/'.$org->logo_path)}}">
+                <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" alt="{{$org->logo_path}}">
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
@@ -32,7 +35,7 @@
                 @endif
                                 <div class="tournomentSmallHeader">
                                     <a href="{{route('organizeProfile',['id'=>$org->name])}}">
-                                        <img src="{{URL::asset('storage/images/'.$org->logo_path)}}">
+                                        <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" alt="{{$org->logo_path}}">
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
                                         <span class="fa fa-star checked"></span>
@@ -47,9 +50,9 @@
 
 
                                     @if($org->tournaments[$i]->canceled == 1)
-                                        <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;">
+                                        <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="{{$matches[$i]->path}}" style="width: 100%;">
                                     @else
-                                        <a href="{{route('matchRegistered',['id'=>$org->tournaments[$i]->id,'matchName'=>$org->tournaments[$i]->matchName])}}"><img src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}"></a>
+                                        <a href="{{route('matchRegistered',['id'=>$org->tournaments[$i]->id,'matchName'=>$org->tournaments[$i]->matchName])}}"><img src="{{URL::asset('storage/images/'.$org->tournaments[$i]->path)}}" alt="{{$org->tournaments[$i]->path}}"></a>
                                     @endif
 
 

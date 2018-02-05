@@ -8,7 +8,7 @@ class Junk extends Model
 {
     protected $fillable =['mode','matchType','maxAttenders','attendType','prize','rules','plan','cost','moreInfo','email','telegram',
 
-        'matchName','url','startTime','endTime','comment','endRemain','maxTeam','subst','maxMember','lat','lng','address'
+        'city','matchName','url','startTime','endTime','comment','endRemain','maxTeam','subst','maxMember','lat','lng','address'
 
     ];
 }

@@ -1,4 +1,8 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | خانه
+@endsection
+
 @section('content')
 
     <section class="tournoments" id="mainApp">
@@ -11,25 +15,25 @@
                             @endif
                             <div class="tournomentSmallHeader">
                                 <a href="{{route('organizeProfile',['id'=>$matches[$i]->organize->slug])}}">
-                                    <img src="{{URL::asset('storage/images/'.$matches[$i]->organize->logo_path)}}">
+                                    <img src="{{URL::asset('storage/images/'.$matches[$i]->organize->logo_path)}}" alt="{{$matches[$i]->organize->logo_path}}">
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star checked"></span>
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                 </a>
-                                <h6>مسابقه  {{$matches[$i]->matchName}}</h6>
+                                <h2>مسابقه  {{$matches[$i]->matchName}}</h2>
                             </div>
 
                             <div class="bannerSM">
                                 @if($matches[$i]->canceled == 1)
-                                    <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;">
+                                    <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="{{$matches[$i]->path}}" style="width: 100%;">
                                 @else
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id,'matchName'=>$matches[$i]->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id,'matchName'=>$matches[$i]->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="{{$matches[$i]->path}}" style="width: 100%;"></a>
                                 @endif
 
                                 <div class="top-right">  {{$matches[$i]->endTimeDays}}   روز مانده</div>
-                                <button class="top-left" style="color: white;" onclick="showModal({{$matches[$i]->id}})"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></button>
+                                {{--<button class="top-left" style="color: white;" onclick="showModal({{$matches[$i]->id}})"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></button>--}}
                             </div>
                             <div style="text-align: center">
                                 @if($matches[$i]->cost == 0)
@@ -80,110 +84,6 @@
                         </div>
                 @endfor
     </section>
-    {{--@if($match->endTime == 0 && $match->canceled == 0)--}}
-
-    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger" style="text-align: center;margin: auto;">زمان ثبت نام به پایان رسید</a>--}}
-
-    {{--@elseif($match->tickets == $match->sold && $match->canceled == 0)--}}
-    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" style="background:salmon;color:white;margin: auto;text-align: center;" class="btn">بلیط های مسابقه تمام شد!</a>--}}
-
-
-    {{--@elseif($match->canceled == 0)--}}
-    {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName  ])}}" class="regButton">ثبت نام</a>--}}
-
-    {{--@else--}}
-    {{--@endif--}}
-    {{--<div class="col-md-6 col-lg-4" style="padding-top: 10px;">--}}
-    {{--@if($matches[$i]->canceled == 1)--}}
-
-    {{--<div class="box sample">--}}
-
-    {{--@else--}}
-    {{--<div>--}}
-
-    {{--@endif--}}
-
-
-    {{--<div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">--}}
-    {{--<div>--}}
-    {{--<h4 class="card-title" style="padding-top: 10px;padding-right: 10px;padding-left: 10px;float: right;">مسابقه {{$matches[$i]->matchName}}</h4>--}}
-    {{--<a href="{{route('organizeProfile',['id'=>$matches[$i]->organize->slug])}}"> <img src="{{URL::asset('storage/images/'.$matches[$i]->organize->logo_path)}}" class="rounded" height="35px" style="margin-top: 7px;margin-left: 5px; float: left;" > </a>--}}
-    {{--<div class="star-rating" title="{{$matches[$i]->organize->rating*10}}%" style="padding-top: 13px;float: left;">--}}
-    {{--<div class="back-stars">--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{----}}
-    {{--<div class="front-stars" style="width: {{$matches[$i]->organize->rating*10}}%">--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--<i class="fa fa-star" aria-hidden="true"></i>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div> --}}
-    {{--</div>--}}
-
-    {{--@if($matches[$i]->canceled == 1)--}}
-    {{--<img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;">--}}
-    {{--@else--}}
-    {{--<a href="{{route('matchRegistered',['id'=>$matches[$i]->id,'matchName'=>$matches[$i]->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="Responsive image" style="width: 100%;"></a>--}}
-    {{--@endif--}}
-
-
-    {{--<div class="bg-primary rounded" style="position: absolute;top:55px;right: 10px;color: white;padding: 2px;">--}}
-    {{--<p style="padding: 0px;margin: 0px;">{{$matches[$i]->endTimeDays}} روز مانده </p>--}}
-    {{--</div>--}}
-    {{--<div class="card-block">--}}
-    {{--<div class="row" >--}}
-    {{--<span class="badge badge-default">{{$matches[$i]->cost}} تومان</span>--}}
-    {{--<span class="badge badge-default">{{$matches[$i]->mode}}</span>--}}
-    {{--<span class="badge badge-default">{{$matches[$i]->matchType}}</span>--}}
-    {{--<span class="badge badge-default">{{$matches[$i]->attendType}}</span>--}}
-    {{--<span class="badge badge-default"> تعداد بلیط های باقی مانده {{$match->tickets - $match->sold}}</span>--}}
-
-    {{--</div>--}}
-
-    {{--<p hidden>{{$t = 0}}</p>--}}
-    {{--@foreach($registereds as $registered)--}}
-
-    {{--@if($registered->id == $matches[$i]->id && $matches[$i]->canceled == 0)--}}
-    {{--<p hidden>{{$t++}}</p>--}}
-    {{--<a style="background: orange;color: #1d1e1f" href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug])}}" class="btn">جزییات مسابقه</a>--}}
-
-    {{--@endif--}}
-
-    {{--@endforeach--}}
-
-    {{--@if($t==0)--}}
-
-
-    {{--@if($matches[$i]->endTime == 0 && $matches[$i]->canceled == 0 )--}}
-
-    {{--<a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید </a>--}}
-
-    {{--@elseif($matches[$i]->tickets == $matches[$i]->sold && $matches[$i]->canceled == 0)--}}
-    {{--<a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>--}}
-
-
-    {{--@elseif($matches[$i]->canceled == 0)--}}
-    {{--<a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="btn btn-success">ثبت نام</a>--}}
-    {{--@else--}}
-
-
-    {{--@endif--}}
-    {{--@endif--}}
-
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-    {{--</div>--}}
-
-
-
 
     <!-- The Modal -->
     <div id="myModal" class="modal">

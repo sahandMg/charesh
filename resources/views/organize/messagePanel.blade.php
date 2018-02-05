@@ -1,4 +1,7 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | پنل پیام رسانی مسابقه  {{$tournament->matchName}}
+@endsection
 @section('content')
     @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
  <div class="container" id="message">

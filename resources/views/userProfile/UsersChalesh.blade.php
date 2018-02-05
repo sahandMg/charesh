@@ -1,4 +1,7 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | چالش های  {{Auth::user()->username}}
+@endsection
 @section('content')
     <br>
     <br>

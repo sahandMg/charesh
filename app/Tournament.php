@@ -9,7 +9,7 @@ class Tournament extends Model
     use Sluggable;
     protected $fillable =['mode','matchType','maxAttenders','attendType','prize','rules','plan','cost','moreInfo','email','telegram',
 
-        'free','matchName','path','url','startTime','endTimeDays','endTime','tickets','canceled','comment','endRemain','maxTeam','subst','maxMember','sold','address'
+        'city','matchName','path','url','startTime','endTimeDays','endTime','tickets','canceled','comment','endRemain','maxTeam','subst','maxMember','sold','address'
 
         ];
     public function organize(){

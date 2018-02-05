@@ -34,7 +34,7 @@ class CreateJunksTable extends Migration
             $table->mediumText('rules',1000)->nullable();
             $table->mediumText('plan',1000)->nullable();
             $table->integer('cost')->nullable();
-            $table->string('free')->nullable();
+            $table->string('city')->nullable();
             $table->mediumText('moreInfo',1200)->nullable();
             $table->text('address')->nullable();
             $table->text('lat')->nullable();

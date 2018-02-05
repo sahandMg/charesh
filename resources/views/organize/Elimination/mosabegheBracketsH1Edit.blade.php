@@ -1,4 +1,8 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | جدول حذفی  {{$tournament->matchName}}
+@endsection
+
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/bracket.css')}}">
     @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])

@@ -1,4 +1,8 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | جدول گروهی-حذفی  {{$tournament->matchName}}
+@endsection
+
 @section('content')
     @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
         <!-- content -->

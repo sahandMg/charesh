@@ -1,4 +1,7 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | اعتبار  {{$org->name}}
+@endsection
 @section('content')
 
     <div class="formDiv" id="account">

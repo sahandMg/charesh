@@ -1,4 +1,8 @@
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
+@section('title')
+    چارش | قوانین
+@endsection
+
 @section('content')
 
     <div class="container" style="direction: rtl;margin-top: 100px;">

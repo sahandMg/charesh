@@ -29,7 +29,7 @@ class Guest
                     $record->ip = request()->ip();
                     $record->save();
                 }
-                return redirect()->route('login');
+                return redirect()->route('register');
 
         }
 

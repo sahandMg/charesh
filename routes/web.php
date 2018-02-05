@@ -29,7 +29,8 @@ Route::get('list',function (){
 
 Route::get('test',function (){
 
-   return view('email.matchData',compact('name'));
+    return str_random(4);
+
 
 });
 

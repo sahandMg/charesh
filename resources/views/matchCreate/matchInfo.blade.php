@@ -1,20 +1,14 @@
 @extends('masterUserHeader.body')
 @section('content')
     <ul class="nav nav-tabs">
-        {{--<li class="disabled"><a href=""> راه های ارتباطی </a></li>--}}
         <li class="disabled"><a href=""> اطلاعات ثبت نام </a></li>
-
         <li class="disabled"><a href=""> قوانین </a></li>
         <li class="active"><a href=""> اطلاعات مسابقه </a></li>
         <li class="disabled"><a href="">اطلاعات پایه</a></li>
     </ul>
- <div class="container" style="direction: rtl;width: 80%;" id="app">
-
-
-   <form style="padding-top: 20px;font-size: 20px;" method="post" action="{{route('matchInfo')}}">
-
+  <div class="formDiv">
+   <form  method="post" action="{{route('matchInfo')}}">
        <input type="hidden" name="_token" value="{{csrf_token()}}">
-
       <!-- ٍٍError message -->
        @if(count($errors->all()))
        <div class="alert alert-danger" role="alert">
@@ -48,8 +42,7 @@
     </div>
 
    <div class="form-group" id="Timi3" style="display: none;">
-      <label>  تعداد تیم ها  </label>
-
+      <label> حداکثر تعداد تیم ها  </label>
       <input name="maxTeam" @input="check"  v-model="maxTeam"  class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
     </div>
 
@@ -57,12 +50,10 @@
       <label>  تعداد اعضای تیم  </label>
       <input name="maxMember" @input="check"  v-model="maxMember" class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
    </div>
-
        <div class="form-group" id="Timi2" style="display: none;">
            <label>  تعداد افراد ذخیره تیم  </label>
-           <input name="subst" @input="check"  v-model="subst" class="form-control" type="number" min="0" max="100" placeholder="به عدد" id="example-text-input">
+           <input name="subst" @input="check"  v-model="subst" class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
        </div>
-
 
     <div class="form-group">
       <label for="Name-input"> نوع برگزاری </label>
@@ -80,12 +71,44 @@
    </div>
     <h4 id="guide" style="display: none">در صورت معلوم نبودن محتوای نقشه، روی علامت [ ] در بالای نقشه کلیک کنید</h4>
     <div class="form-group" id="address" style="display: none;">
-       <label> آدرس </label>
-       <input name="address" class="form-control" type="text" placeholder="آدرس" >
+        <label> آدرس </label>
+        <br>
+        <select name="city"  style="float: right;margin-left: 1%;width: 30%;" class="form-control" id="sel1">
+            <option value="East Azerbaijan">آذربایجان شرقی</option>
+            <option value="West Azerbaijan">آذربایجان غربی</option>
+            <option value="ardabil">اردبیل </option>
+            <option value="Esfehan">اصفهان </option>
+            <option value="ardabil">البرز </option>
+            <option value="Ilam">ایلام </option>
+            <option value="Bushehr">بوشهر </option>
+            <option value="Tehran">تهران </option>
+            <option value="Chahar Mahaal and Bakhtiari">چهارمحال و بختیاری</option>
+            <option value="Khorasan">خراسان </option>
+            <option value="Khuzestan">خوزستان </option>
+            <option value="Zanjan">زنجان  </option>
+            <option value="Semnan">سمنان  </option>
+            <option value="Sistan and Baluchistan">سیستان و بلوچستان </option>
+            <option value="Fars">فارس  </option>
+            <option value="Qazvin">قزوین  </option>
+            <option value="Qom">قم  </option>
+            <option value="Kurdistan">کردستان  </option>
+            <option value="Kerman">کرمان  </option>
+            <option value="Kermanshah">کرمانشاه  </option>
+            <option value="Kohkiluyeh and Buyer Ahmad">کهگیلویه و بویراحمد </option>
+            <option value="Golestan">گلستان  </option>
+            <option value="Gilan">گیلان   </option>
+            <option value="Lorestan">لرستان  </option>
+            <option value="Mazandaran">مازندران   </option>
+            <option value="Markazi">مرکزی   </option>
+            <option value="Hormozgan">هرمزگان   </option>
+            <option value="Hamadan">همدان   </option>
+            <option value="Yazd">یزد   </option>
+        </select>
+       <input name="address" class="form-control" type="text" placeholder="آدرس" style="width: 60%;" >
     </div>
    <div id="map" style="width:80%;height: 250px; background:whitesmoke;position: relative;display: none"></div>
    <br>
-    <div class="form-group row">
+    <div class="form-group">
      <a href="{{route('returnBaseInfo')}}" class="btn btn-danger" style="margin-left: 20px;">بازگشت</a>
      <button :disabled="btn" type="submit" class="btn btn-primary">ادامه</button>
    </div>
@@ -93,10 +116,6 @@
        <input type="hidden" name="lat" id="lat" value="">
        <input type="hidden" name="lng" id="lng" >
   </form>
-
-
-
-
 </div>
     <style>
         .nav-tabs li {
@@ -116,13 +135,23 @@
                 font-weight: 400;
             }
         }
+        .formDiv {
+            width: 80%;
+            margin: 0 auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            direction: rtl;
+            background-color: white;
+            margin-top: 2%;
+        }
+        .formDiv form {
+            padding: 1%;
+        }
     </style>
  <script>
-
      vm = new Vue({
          el:'#app',
          data:{
-
              mode:'',
              matchType:'',
              maxAttenders:'',
@@ -132,19 +161,12 @@
              maxTeam:'',
              prize:'',
              btn:true,
-//             style1:{borderColor:'#d9d9d9',borderStyle:'solid',fontSize:'16',height:'35',padding:0,paddingRight:5},
-//             style2:{borderColor:'#d9d9d9',borderStyle:'solid'},
-//             style3:{borderColor:'#d9d9d9',borderStyle:'solid'},
-//             style4:{borderColor:'#d9d9d9',borderStyle:'solid'},
-//             style5:{borderColor:'#d9d9d9',borderStyle:'solid'},
          },
 
          methods:{
              check:function () {
 
-
                    if(this.matchType == "انفرادی") {
-
 
                        if (this.mode.length > 0 && this.matchType.length > 0 && this.maxAttenders.length > 0 && this.attendType.length > 0 ) {
 
@@ -152,51 +174,21 @@
                        } else {
 
                            this.btn = true
-
                        }
                    }
                    else{
-
-
                        if (this.mode.length > 0 && this.matchType.length > 0 && this.subst.length > 0 && this.maxMember.length > 0  && this.maxTeam.length > 0  && this.attendType.length > 0 ) {
 
                            this.btn = false
                        } else {
 
                            this.btn = true
-
                        }
-
                    }
-
-
-
              }
          }
      })
-
  </script>
-
-
-<script type="text/javascript" src="../../public/js/bootstrap.js"></script>
-<script type="text/javascript">
-    // function myFunction() {
-    //     var x = document.getElementById("mySelect").value ;
-    //
-    //     if( x == "انفرادی" ) {
-    //         document.getElementById("fardi").style.display = "block"
-    //         document.getElementById("Timi").style.display = "none" ;
-    //     }
-    //     if ( x == "غیرحضوری" ) {
-    //         document.getElementById("fardi").style.display = "none" ;
-    //         document.getElementById("Timi").style.display = "block  "
-    //     }
-    // }
-</script>
-</div>
-
- {{--<script type="text/javascript" src="js/jquery-3.2.1.js"></script>--}}
- <script type="text/javascript" src="../../public/js/bootstrap.js"></script>
  <script async defer
          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>

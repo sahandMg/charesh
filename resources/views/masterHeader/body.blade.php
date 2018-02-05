@@ -2,10 +2,11 @@
 <html lang="fa">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="چارش – راهی برای اطلاع رسانی ، مدیریت و ثبت نام مسابقات حضوری و آنلاین ">
+<meta name="keywords" content=",برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,برگزاری مسابقات بازی های رایانه ای@yield('matchName'),برگزاری مسابقه های آنلاین,بازی های رایانه ای,">
 
-<meta name="keywords" content="برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,بازی های رایانه ای">
 <head>
-    <title>چارش</title>
+    <title>@yield('title')</title>
 
 
 
@@ -76,7 +77,7 @@
 
 <header>
 
-    <h2>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h2>
+    <h1>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>
     <nav class="topnav" id="myTopnav">
         <a href="{{route('login')}}" class="leftNav"> ورود <i class="fa fa-sign-in fa-lg"></i></a>
@@ -86,8 +87,8 @@
         <a href="{{route('matchCreate')}}" class="rightNav">ایجاد مسابقه جدید</a>
         <a href="{{route('faq')}}" class="rightNav">سوالات متداول</a>
         <a href="#" class="rightNav">راهنمای سایت</a>
-        <a href="{{route('about')}}" class="rightNav"> درباره ما </a>
-        <a href="{{route('contact')}}" class="rightNav"> ارتباط با ما </a>
+        {{--<a href="{{route('about')}}" class="rightNav"> درباره ما </a>--}}
+        {{--<a href="{{route('contact')}}" class="rightNav"> ارتباط با ما </a>--}}
 
         <a href="javascript:void(0);" style="font-size:15px;" class="icon"  onclick="navResponsive()">&#9776;</a>
     </nav>

@@ -1,4 +1,7 @@
 @extends('masterUserHeader.body')
+@section('title')
+    چارش | شرکت کنندگان مسابقه  {{$tournament->matchName}}
+@endsection
 @section('content')
 
     @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])

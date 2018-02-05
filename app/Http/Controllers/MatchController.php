@@ -102,7 +102,7 @@ class MatchController extends Controller
 
         $tournament = new Junk();
         $time = time();
-
+        $rand = str_random('4');
         $tournament->matchName = $request->matchName;
 //        $tournament->url = $time.$request->url;
         $tournament->startTime = serialize([$request->startDay,$request->startMonth,$request->startYear]);
@@ -120,13 +120,13 @@ class MatchController extends Controller
 
         if($request->file('path')){
 
-            $tournament->path = $time.$request->file('path')->getClientOriginalName();
+            $tournament->path = $tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
 //            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
-            $request->file('path')->move('storage/images',$time.$request->file('path')->getClientOriginalName());
+            $request->file('path')->move('storage/images',$tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension());
 
-            $imgName = $time.$request->file('path')->getClientOriginalName();
+            $imgName = $tournament->matchName.'-'.$rand;
             $imgEx = $request->file('path')->getClientOriginalExtension();
-            $imgNameNoEx = basename($time . $request->file('path')->getClientOriginalName(),'.'.$request->file('path')->getClientOriginalExtension());
+            $imgNameNoEx = basename($tournament->matchName.'-'.$rand,'.'.$request->file('path')->getClientOriginalExtension());
             exec("convert /var/www/html/chaleshjoo/public/storage/images/$imgName  /var/www/html/chaleshjoo/public/storage/images/$imgNameNoEx.jpg ");
             $tournament->path = $imgNameNoEx.'.jpg';
 
@@ -185,7 +185,8 @@ class MatchController extends Controller
             'maxMember'=>$request->maxMember,
             'lat'=> $request->lat,
             'lng' => $request->lng,
-            'address' => $request->address
+            'address' => $request->address,
+            'city'=>$request->city
         ]);
 
 //        $tournament->mode = $request->mode;
@@ -311,7 +312,7 @@ class MatchController extends Controller
         $tournamentItems->attendType = $tournament->attendType;
         $tournamentItems->prize = $tournament->prize;
         $tournamentItems->rules = $tournament->rules;
-//        $tournamentItems->plan = $tournament->plan;
+        $tournamentItems->city = $tournament->city;
         $tournamentItems->cost = $tournament->cost;
         $tournamentItems->moreInfo = $tournament->moreInfo;
         $tournamentItems->user_id = Auth::id();
@@ -874,6 +875,14 @@ class MatchController extends Controller
 
 //        dd($match->subst + $match->maxMember);
             $sub = 0;
+            $subst = 0;
+            for($s=1;$s<= $match->subst;$s++){
+
+                if($request->subst.$s != null){
+
+                    $subst++;
+                }
+            }
             for($s=0;$s<count(unserialize($match->moreInfo));$s++){
 
                 if(unserialize($match->moreInfo)[$s]==null){
@@ -882,7 +891,7 @@ class MatchController extends Controller
             }
 
 
-            for($i = 1; $i <= ($match->subst + $match->maxMember); $i++) {
+            for($i = 1; $i <= ($match->maxMember); $i++) {
 
                 if(null == $request->input("teammate$i")){
 
@@ -926,7 +935,7 @@ class MatchController extends Controller
 
 
 
-            if ($match->cost * ($match->subst +$match->maxMember) <= User::where('username', Auth::user()->username)->first()->credit) {
+            if ($match->cost * ($subst +$match->maxMember) <= User::where('username', Auth::user()->username)->first()->credit) {
 
                     if ($match->tickets - $match->sold - 1 >= 0) {
 
@@ -969,7 +978,7 @@ class MatchController extends Controller
 
 
 
-                        for ($i = 1; $i <= ($match->maxMember + $match->subst); $i++) {
+                        for ($i = 1; $i <= ($match->maxMember + $subst); $i++) {
 
                             $info = [];
                             $group = new Group();
@@ -993,7 +1002,7 @@ class MatchController extends Controller
 //                dd(count($_POST)-4);
 //                dd(Match::where([['user_id',$userId],['tournament_id',$request->matchId]])->first());
                         $match->organize->totalTickets = $match->organize->totalTickets + 1;
-                        $match->organize->update(['credit' => $match->organize->credit + $match->cost * ($match->maxMember + $match->subst)]);
+                        $match->organize->update(['credit' => $match->organize->credit + $match->cost * ($match->maxMember + $subst)]);
 //                    dd($match->organize->totalTickets);
                         $match->organize->update(['totalTickets' => $match->organize->totalTickets]);
 
@@ -1001,7 +1010,7 @@ class MatchController extends Controller
 
                         $match->update(['sold' => $match->sold]);
 
-                        User::where('username', Auth::user()->username)->first()->update(['credit' => User::where('username', Auth::user()->username)->first()->credit - $match->cost * ($match->maxMember + $match->subst)]);
+                        User::where('username', Auth::user()->username)->first()->update(['credit' => User::where('username', Auth::user()->username)->first()->credit - $match->cost * ($match->maxMember + $subst)]);
 
 
 //                }
@@ -1041,7 +1050,7 @@ class MatchController extends Controller
 
                 $transaction = new Transaction();
                 $transaction->type = "شرکت در مسابقه " . $match->matchName;
-                $transaction->money = $match->cost * ($match->subst + $match->maxMember);
+                $transaction->money = $match->cost * ($subst + $match->maxMember);
                 $transaction->user_id = Auth::id();
                 $transaction->tournament_id = $match->id;
                 $transaction->save();

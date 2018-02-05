@@ -1,6 +1,14 @@
 {{-- Elimination bracket --}}
 
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body' )
+@section('matchName')
+    مسابقه {{$tournament->matchName}}
+@endsection
+
+@section('title')
+    چارش | مسابقه  {{$tournament->matchName}}
+@endsection
+
 @section('content')
 
 <div class="container" style="direction: rtl;padding-top: 30px;">

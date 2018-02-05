@@ -1,4 +1,12 @@
 @extends('masterUserHeader.body')
+@section('matchName')
+    مسابقه {{$tournament->matchName}}
+@endsection
+
+@section('title')
+    چارش | مسابقه  {{$tournament->matchName}}
+@endsection
+
 @section('content')
 <div class="wallDiv" id="edit">
     @if(count($errors->all()))
