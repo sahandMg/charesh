@@ -23,4 +23,3 @@
     <h6 style="direction: rtl">تومان {{$org->credit}}</h6>
 </center>
 </body>
-</html>
