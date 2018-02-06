@@ -1,12 +1,15 @@
 @extends('masterUserHeader.body')
 @section('content')
+@section('title')
+    چارش | اطلاعات مسابقه
+@endsection
     <ul class="nav nav-tabs">
         <li class="disabled"><a href=""> اطلاعات ثبت نام </a></li>
         <li class="disabled"><a href=""> قوانین </a></li>
         <li class="active"><a href=""> اطلاعات مسابقه </a></li>
         <li class="disabled"><a href="">اطلاعات پایه</a></li>
     </ul>
-  <div class="formDiv">
+  <div class="formDiv" id="matchInfo">
    <form  method="post" action="{{route('matchInfo')}}">
        <input type="hidden" name="_token" value="{{csrf_token()}}">
       <!-- ٍٍError message -->
@@ -150,7 +153,7 @@
     </style>
  <script>
      vm = new Vue({
-         el:'#app',
+         el:'#matchInfo',
          data:{
              mode:'',
              matchType:'',
@@ -167,6 +170,11 @@
              check:function () {
 
                    if(this.matchType == "انفرادی") {
+                       this.btn = true;
+                       this.subst = '';
+                       this.maxMember = '';
+                       this.maxTeam = '';
+
 
                        if (this.mode.length > 0 && this.matchType.length > 0 && this.maxAttenders.length > 0 && this.attendType.length > 0 ) {
 
@@ -177,6 +185,9 @@
                        }
                    }
                    else{
+
+                       this.maxAttenders = ''
+                       this.btn = true
                        if (this.mode.length > 0 && this.matchType.length > 0 && this.subst.length > 0 && this.maxMember.length > 0  && this.maxTeam.length > 0  && this.attendType.length > 0 ) {
 
                            this.btn = false

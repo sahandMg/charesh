@@ -43,8 +43,8 @@ class MatchController extends Controller
         $name = Auth::user();
         if(Url::where('ip',request()->ip())->first() != null){
 
-          $url =  Url::where('ip',request()->ip())->first();
-            $url->delete();
+         Url::where('ip',request()->ip())->delete();
+
 
         }
         $record = new Url();
@@ -122,11 +122,11 @@ class MatchController extends Controller
 
             $tournament->path = $tournament->slug.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
 //            Storage::disk('local')->put($time.$request->file('path')->getClientOriginalName(), 'images');
-            $request->file('path')->move('storage/images',$tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension());
+            $request->file('path')->move('storage/images',$tournament->slug.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension());
 
-            $imgName = $tournament->matchName.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
+            $imgName = $tournament->slug.'-'.$rand.'.'.$request->file('path')->getClientOriginalExtension();
             $imgEx = $request->file('path')->getClientOriginalExtension();
-            $imgNameNoEx = basename($tournament->matchName.'-'.$rand,'.'.$request->file('path')->getClientOriginalExtension());
+            $imgNameNoEx = basename($tournament->slug.'-'.$rand,'.'.$request->file('path')->getClientOriginalExtension());
             exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
             $tournament->path = $imgNameNoEx.'.jpg';
 
@@ -271,21 +271,22 @@ class MatchController extends Controller
         $tournament->moreInfo = serialize([$request->column,$request->column2,$request->column3,$request->column4,$request->column5]);
         $tournament->save();
 
-        $junks  = Junk::all();
-
-        for ($i=0 ; $i < count($junks); $i++) {
+        Junk::where('user_id',Auth::id())->delete();
+//        $junks  = Junk::all();
 //
-            $current = Carbon::now();
-            $create = Carbon::parse($junks[$i]->created_at);
-
-            if ($current->diffInHours($create) > 1) {
-
-
-                Junk::where('created_at', '=', $junks[$i]->created_at)->first()->delete();
-
-            }
-        }
-
+//        for ($i=0 ; $i < count($junks); $i++) {
+////
+//            $current = Carbon::now();
+//            $create = Carbon::parse($junks[$i]->created_at);
+//
+//            if ($current->diffInHours($create) > 1) {
+//
+//
+//                Junk::where('created_at', '=', $junks[$i]->created_at)->first()->delete();
+//
+//            }
+//        }
+//
 
 
 
@@ -326,7 +327,7 @@ class MatchController extends Controller
         }
 
         $tournamentItems -> save();
-        Url::where('ip',request()->ip())->first()->delete();
+        Url::where('ip',request()->ip())->delete();
         $tournament = Junk::where([['user_id',Auth::id()],['organize_id',Auth::user()->organize->id]])->orderBy('created_at','decs')->first();
         $matchDays = Tournament::all()->pluck('endRemain');
 
@@ -1258,9 +1259,13 @@ class MatchController extends Controller
         $msg = new Message();
         if($request->input('name')){
             $msg->name = $request->name;
+        }else{
+            $msg->name = Auth::user()->username;
         }
         if($request->input('email')){
             $msg->email = $request->email;
+        }else{
+            $msg->email = Auth::user()->email;
         }
         $msg->message = $request->message;
         $msg->sender = 'user';

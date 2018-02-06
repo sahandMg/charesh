@@ -25,6 +25,10 @@
 
              </div>
          @endif
+         <div class="form-group">
+             <label for="exampleInputEmail1">نام و نام خانوادگی</label>
+             <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{Request::old('name')}}"  placeholder="نام و نام خانوادگی">
+         </div>
       <div class="form-group">
         <label for="exampleInputEmail1">ایمیل</label>
         <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{Request::old('email')}}"  placeholder="ایمیل خود را وارد کنید">

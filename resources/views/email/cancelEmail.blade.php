@@ -13,7 +13,8 @@
             <table style="font-weight: normal;border-collapse: collapse;border: 0;margin: 0;padding: 0;font-family: Arial, sans-serif;">
                 <tr>
                     <td colspan="4" valign="top" class="image-section" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 26px;background-color: #fff;border-bottom: 4px solid #00a5b5">
-                        <a href="http://charesh.ir"><img class="top-image" src="{{URL::asset('images/charesh.jpg')}}" style="line-height: 1;width: 100px;" alt="Tenable Network Security"></a>
+                        <a href="http://charesh.ir"><img class="top-image" src="{{URL::asset('images/charesh.jpg')}}" style="line-height: 1;width: 100px;" alt="Charesh.ir"></a>
+
                     </td>
                 </tr>
                 <tr>
@@ -21,7 +22,7 @@
                         <table style="font-weight: normal;border-collapse: collapse;border: 0;margin: 0;padding: 0;font-family: Arial, sans-serif;">
                             <tr>
                                 <td class="head-title" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 28px;line-height: 34px;font-weight: bold; text-align: center;">
-                                    <div class="mktEditable" id="main_title" style="color: red; direction: rtl">مسابقه{{$organize->name}} توسط {{$name}} لغو شد
+                                    <div class="mktEditable" id="main_title" style="color: red; direction: rtl"> مسابقه{{$name}} توسط{{$organize->name}}  لغو شد
                                     </div>
                                 </td>
                             </tr>

@@ -42,7 +42,7 @@
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
                                     </a>
-                                    <h6>مسابقه  {{$org->tournaments[$i]->matchName}}</h6>
+                                    <h6>  {{$org->tournaments[$i]->matchName}}</h6>
                                 </div>
                                 <!--<a href="supplier/supplierName">d</a>-->
                                 <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->

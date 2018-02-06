@@ -10,7 +10,7 @@
         <li class="disabled"><a href=""> اطلاعات مسابقه </a></li>
         <li class="disabled"><a href="">اطلاعات پایه</a></li>
     </ul>
-    <div class="formDiv">
+    <div class="formDiv" id="cost">
         <form method="post" action="{{route('cost')}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <p>اگر مسابقه هزینه ثبت نام ندارد ، کلید رایگان را انتخاب کنید در غیر این صورت مبلغ ثبت نام را به ازای هرفرد در بخش زیر وارد کنید. </p>
@@ -188,7 +188,7 @@
 
         }
         vm = new Vue({
-            el:'#app',
+            el:'#cost',
             data:{
                 cost:1000,
                 btn:true,
@@ -214,6 +214,8 @@
                             })
                             .start()
                     animationFrame = requestAnimationFrame(animate)
+
+
                 }
             },
             methods:{

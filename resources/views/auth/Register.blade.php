@@ -71,7 +71,7 @@
            </label>
          </div>
          <button @click="hidden" v-show="!hide" :disabled="rule" type="submit" class="btn btn-primary" id="btnReg">ثبت نام</button>
-         <button v-show="hide" class="btn btn-warning" :disabled="true"><i class="fa fa-spinner fa-spin"></i>در حال ارسال فرم ثبت نام</button>
+         <button v-show="hide" class="btn btn-warning" :disabled="true"><i class="fa fa-spinner fa-spin"></i> در حال ارسال فرم ثبت نام </button>
          <a href="{{route('login')}}" class="btn btn-link">قبلا ثبت نام کرده ام</a>
       </form>
     </div>

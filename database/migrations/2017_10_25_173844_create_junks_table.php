@@ -16,6 +16,7 @@ class CreateJunksTable extends Migration
         Schema::create('junks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('matchName')->nullable();
+            $table->text('slug')->nullable();
             $table->string('url')->nullable();
             $table->string('startTime')->nullable();
             $table->string('endTime')->nullable();

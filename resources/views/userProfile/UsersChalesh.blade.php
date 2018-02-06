@@ -27,7 +27,7 @@
                                             <span class="fa fa-star"></span>
                                             <span class="fa fa-star"></span>
                                         </a>
-                                        <h6>مسابقه  {{$match->matchName}}</h6>
+                                        <h6>  {{$match->matchName}}</h6>
                                     </div>
                                     <!--<a href="supplier/supplierName">d</a>-->
                                     <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->

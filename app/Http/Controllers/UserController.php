@@ -350,6 +350,11 @@ class UserController extends Controller
 
         $name = Auth::user();
 
+        if(count(Url::where('ip',request()->ip())->get())) {
+
+            Url::where('ip', request()->ip())->delete();
+
+        }
         $url = new Url();
         $url->token = csrf_token();
         $url->ip = request()->ip();

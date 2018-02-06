@@ -9,7 +9,7 @@
         <li class="disabled"><a href=""> اطلاعات مسابقه </a></li>
         <li class="active"><a href="">اطلاعات پایه</a></li>
     </ul>
-  <div class="formDiv">
+  <div class="formDiv" id="baseInfo">
    <form method="POST" action="{{route('baseInfo')}}" enctype="multipart/form-data">
        <input type="hidden" name="_token" value="{{csrf_token()}}">
      @if(count($errors->all()))
@@ -72,6 +72,7 @@
        </div>
        <a href="{{url(\App\Url::where('token',csrf_token())->first()->pageUrl)}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
+
   </form>
   </div>
     <style>
@@ -325,7 +326,7 @@
     </style>
  <script>
  vm = new Vue({
- el:'#app',
+ el:'#baseInfo',
  data:{
  matchName:'',
  url:'',

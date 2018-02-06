@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ContactUsRequest extends FormRequest
 {
@@ -23,10 +24,21 @@ class ContactUsRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|min:3|max:20|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/',
-            'email'=>'required',
-            'message'=>'required'
-        ];
+        if(!Auth::check()){
+
+            return [
+                'name' => 'required|min:3|max:20|regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/',
+                'email'=>'required',
+                'message'=>'required'
+            ];
+
+        }else{
+
+            return [
+
+                'message'=>'required'
+            ];
+        }
+
     }
 }

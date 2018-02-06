@@ -41,7 +41,7 @@
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>
             </a>
-            <h2> مسابقه {{$tournament->matchName}} </h2>
+            <h2>  {{$tournament->matchName}} </h2>
         </div>
         <div class="banner">
           <img src="{{URL::asset('storage/images/'.$tournament->path)}}" alt="{{$tournament->path}}" >
@@ -103,11 +103,12 @@
         <br>
         <div class="tournomentRegister">
             <hr>
-            @if($tournament->endTime > 0 || $tournament->sold != $tournament->tickets )
+
+
+            @if($tournament->endTime > 0 && $tournament->sold != $tournament->tickets )
                 @if(Auth::check())
                     @if(count($users) > 0)
                         <a style="text-decoration: none"  href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}"> <button class="regButton"> دریافت نسخه pdf بلیط مسابقه </button></a>
-                    @elseif($tournament->endTime == 0)
                     @else
                         <a style="text-decoration: none" href="{{route('overView',['id'=>$tournament,'matchName'=>$tournament->matchName])}}"> <button class="regButton">ثبت نام </button></a>
                     @endif
@@ -126,12 +127,12 @@
                                 }
                             }
                         </style>
-                    @elseif($tournament->endTime == 0)
-                    @else
-                        <a style="text-decoration: none" href="{{route('overView',['id'=>$tournament,'matchName'=>$tournament->matchName])}}"> <button class="regButton">ثبت نام </button></a>
+
                     @endif
                 @endif
             @endif
+
+
         </div>
         <br>
         <br>
@@ -149,10 +150,12 @@
         </div>
         <br>
         <div class="container1" style="direction: rtl;">
-            {{--<label><b>نام</b></label>--}}
-            {{--<input type="text" placeholder="نام خود را وارد کنید" name="name" required>--}}
-            {{--<label><b>ایمیل</b></label>--}}
-            {{--<input  type="text" placeholder="ایمیل خود را وارد کنید" name="email" required>--}}
+           @if(!Auth::check())
+            <label><b>نام</b></label>
+            <input type="text" placeholder="نام خود را وارد کنید" name="name" required>
+            <label><b>ایمیل</b></label>
+            <input  type="text" placeholder="ایمیل خود را وارد کنید" name="email" required>
+            @endif
             <div class="form-group ">
                 <label> متن پیام </label>
                 <textarea class="form-control"  id="summernote" name="message" rows="3"></textarea>

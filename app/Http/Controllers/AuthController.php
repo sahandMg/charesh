@@ -236,6 +236,11 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
         if(!Auth::check()){
 
+            if(count(Url::where('ip',request()->ip())->get())) {
+
+                Url::where('ip', request()->ip())->delete();
+
+            }
             if(isset($_SERVER['HTTP_REFERER'])){
                 $record = new Url();
                 $record->token = csrf_token();
@@ -277,10 +282,11 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 //
 //	}
 //dd(json_decode($result)->success);
-
+//            dd($request);
             if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
                 $page = Url::where('ip',request()->ip())->first()->pageUrl;
-                Url::where('ip',request()->ip())->first()->delete();
+                Url::where('ip',request()->ip())->delete();
+//                dd($page);
                 return redirect($page);
             }else{
                 return redirect()->route('home');

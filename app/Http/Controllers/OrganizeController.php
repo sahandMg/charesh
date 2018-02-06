@@ -1304,7 +1304,7 @@ class OrganizeController extends Controller
             $bank = $request->bank;
             $accountNumber = $request->accountNumber;
             $owner = $request->owner;
-            $email = Organize::where('id', $request->id)->first()->email;
+            $email = $org->user->email;
             $data = ['bank' => $bank, 'accountNumber' => $accountNumber, 'owner' => $owner, 'email' => $email,'org'=>$org];
 
             Mail::send('email.paymentReq', $data, function ($message) use ($data) {

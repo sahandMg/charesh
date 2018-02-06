@@ -103,7 +103,7 @@ Route::post('message',['as'=>'userMessage','uses'=>'MatchController@userMessage'
 Route::get('register',['middleware'=> ['auth'],'as'=>'register','uses'=>'AuthController@getRegister']);
 Route::post('register',['as'=>'register','uses'=>'AuthController@postRegister'])->middleware('throttle:10,10');
 Route::get('FAQ',['as'=>'faq','uses'=>'PageController@faq']);
-Route::get('login',['middleware'=> ['auth'],'as'=>'login','uses'=>'AuthController@getLogin']);
+Route::get('login',['middleware'=> 'auth','as'=>'login','uses'=>'AuthController@getLogin']);
 Route::post('login',['as'=>'login','uses'=>'AuthController@postLogin'])->middleware('throttle:10,10');
 Route::get('charesh-rules',['as'=>'chareshRule','uses'=>'PageController@rules']);
 Route::get('redirect',function (){

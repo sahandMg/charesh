@@ -29,7 +29,7 @@
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                 </a>
-                                <h6>مسابقه {{$match->matchName}}</h6>
+                                <h6> {{$match->matchName}}</h6>
                             </div>
                             <div class="bannerSM">
                                 @if($match->canceled == 1)

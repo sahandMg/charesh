@@ -22,7 +22,7 @@
                                     <span class="fa fa-star"></span>
                                     <span class="fa fa-star"></span>
                                 </a>
-                                <h2>مسابقه  {{$matches[$i]->matchName}}</h2>
+                                <h2>  {{$matches[$i]->matchName}}</h2>
                             </div>
 
                             <div class="bannerSM">
