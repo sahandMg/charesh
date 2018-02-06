@@ -1,7 +1,10 @@
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
 
-@section('content')
+@section('title')
+    چارش | ارتباط با ما
+@endsection
 
+@section('content')
 
 
     <div id="app" class="container" style="direction: rtl;margin-top: 100px;">
@@ -43,7 +46,10 @@
 
 
          <input v-show="!hide" @click="hidden" type="submit" class="btn btn-primary" value="ارسال پیام">
-         <button v-show="hide" class="btn btn-primary "><i class="fa fa-spinner fa-spin"></i> درحال ارسال</button>
+         <button v-show="hide" class="btn btn-primary " :disabled="true"><i class="fa fa-spinner fa-spin"></i> درحال ارسال</button>
+
+
+
 
       </form>
     </div>

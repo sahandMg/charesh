@@ -51,7 +51,7 @@
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <br>
 
-        @if($tournament->free == 'on')
+        @if($tournament->cost == 0)
             <h5>هزینه ثبت نام به ازای هر نفر : <b></b> رایگان</h5>
         @else
         <h5>هزینه ثبت نام به ازای هر نفر : <b>{{$tournament->cost}}</b> تومان</h5>

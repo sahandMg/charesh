@@ -40,8 +40,12 @@
                                 <div class="top-right">{{$match->endTimeDays}} روز مانده </div>
                             </div>
                             <div style="text-align: center">
+                                @if($match->cost == 0)
+                                    <small>رایگان</small>
+                                @else
                                 <small> {{$match->cost}} تومان </small>
-                                <small><i class="fa fa-calendar"></i> {{unserialize($match->startTime)[0]}} {{unserialize($match->startTime)[1]}} {{unserialize($match->startTime)[2]}} </small>
+                                @endif
+                                    <small><i class="fa fa-calendar"></i> {{unserialize($match->startTime)[0]}} {{unserialize($match->startTime)[1]}} {{unserialize($match->startTime)[2]}} </small>
                                 <small><i class="fa fa-address-card-o"></i> {{$match->mode}} </small>
                                 @if($match->matchType == 'تیمی')
                                     <small><i class="fa fa-users"></i> {{$match->matchType}} </small>

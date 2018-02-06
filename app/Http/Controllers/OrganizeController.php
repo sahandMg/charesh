@@ -1533,6 +1533,7 @@ class OrganizeController extends Controller
 //
 
         $rand = str_random('4');
+        $rand2 = str_random('4');
         $org = Organize::where('id',$request->id)->first();
         if( null != $request->file('logo_path')){
 
@@ -1578,18 +1579,18 @@ class OrganizeController extends Controller
 
             $this->validate($request,['background_path'=>'image|max:1000']);
 
-            if($org->background_path != 'Blank100_100.png'){
+            if($org->background_path != 'Blank.png'){
 
                 unlink(public_path('storage/images/'.$org->background_path));
             }
 
 
-            $org->update(['background_path'=> $org->slug.'-'.$rand.'.'.$request->file('background_path')->getClientOriginalExtension()]);
-            $request->file('background_path')->move('storage/images', $org->slug.'-'.$rand.'.' . $request->file('background_path')->getClientOriginalExtension());
+            $org->update(['background_path'=> $org->slug.'-'.$rand2.'.'.$request->file('background_path')->getClientOriginalExtension()]);
+            $request->file('background_path')->move('storage/images', $org->slug.'-'.$rand2.'.' . $request->file('background_path')->getClientOriginalExtension());
 
-            $imgName = $org->slug.'-'.$rand.'.'.$request->file('background_path')->getClientOriginalExtension();
+            $imgName = $org->slug.'-'.$rand2.'.'.$request->file('background_path')->getClientOriginalExtension();
             $imgEx = $request->file('background_path')->getClientOriginalExtension();
-            $imgNameNoEx = basename($org->slug.'-'.$rand,'.'.$request->file('background_path')->getClientOriginalExtension());
+            $imgNameNoEx = basename($org->slug.'-'.$rand2,'.'.$request->file('background_path')->getClientOriginalExtension());
 
         exec("convert /var/www/html/charesh/public/storage/images/$imgName  /var/www/html/charesh/public/storage/images/$imgNameNoEx.jpg ");
         $org->update(['background_path'=> $imgNameNoEx.'.jpg']);

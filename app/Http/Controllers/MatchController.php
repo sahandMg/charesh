@@ -148,9 +148,6 @@ class MatchController extends Controller
 
 
 
-        $tournament->user_id = Auth::id();
-        $tournament->organize_id = Auth::user()->organize->id;
-
         $tournament->save();
 
         return redirect()-> route('matchInfo');

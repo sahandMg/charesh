@@ -171,10 +171,10 @@ class PageController extends Controller
 
         if(Auth::check()){
 
-            $name = Auth::user();
+            $name = Auth::user()->username;
 
         }else{
-            $name = 'Guest';
+            $name = $request->name;
 
         }
         $data = ['email' => $request->email,
@@ -193,7 +193,7 @@ class PageController extends Controller
 
         Mail::send('email.contactAdmin',$data,function ($message) use($data){
 
-            $message->to('sahand.mg.ne@gnail.com');
+            $message->to('sahand.mg.ne@gmail.com');
             $message->from('admin@charesh.ir');
             $message->subject('تماس کاربر');
 

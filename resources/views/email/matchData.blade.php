@@ -23,14 +23,14 @@
                             <tr>
                                 <td class="head-title" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 28px;line-height: 34px;font-weight: bold; text-align: center;">
                                     <div class="mktEditable" id="main_title">
-                                        شما با موفقیعت در مسابقه فوتبال ثبت نام کردید
+                                        شما با موفقیت در مسابقه فوتبال ثبت نام کردید
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="sub-title" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;padding-top:5px;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 18px;line-height: 29px;font-weight: bold;text-align: center;">
                                     <div class="mktEditable" id="intro_title">
-                                        برای مشاهد بلیت بر روی لینک زیر کلیک کیند
+                                        برای مشاهد بلیت بر روی لینک زیر کلیک کنید
                                     </div></td>
                             </tr>
                             <tr>
