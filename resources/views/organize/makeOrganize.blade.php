@@ -30,7 +30,7 @@
          @endif
          <div class="form-group ">
              <label for="Name-input">نام </label>
-             <input  class="form-control" @input="check" name="OrgName" v-model="name" type="text" value="{{Request::old('OrgName')}}" id="example-text-input">
+             <input  class="form-control" @input="check" name="name" v-model="name" type="text" value="{{Request::old('OrgName')}}" id="example-text-input">
          </div>
          {{--<div class="form-group">--}}
              {{--<label for="InputFile">عکس لوگو (100px * 100px حداکثر ۱ مگابایت)  </label>--}}

@@ -33,7 +33,7 @@
     @endif
     <div class="tournoment">
         <div class="tournomentHeader">
-            <a href="{{route('organizeProfile',['id'=>$org->name])}}">
+            <a href="{{route('organizeProfile',['id'=>$org->slug])}}">
                 <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" alt="{{$org->logo_path}}">
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>

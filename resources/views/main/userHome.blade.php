@@ -51,6 +51,7 @@
                                 @endif
                             </div>
                             <p hidden>{{$t = 0}}</p>
+
                             @foreach($registereds as $registered)
 
                                 @if($registered->id == $matches[$i]->id && $matches[$i]->canceled == 0)
@@ -60,6 +61,7 @@
                                 @endif
 
                             @endforeach
+
 
                             @if($t==0)
 

@@ -33,7 +33,7 @@
 
             <div class="form-group" id="in1">
                 <label for="Name-input">1 </label>
-                <input name="column" class="form-control" type="text" placeholder="مثلا کد ملی، عکس و ..." id="example-text-input">
+                <input name="column" class="form-control" type="text" placeholder="مثلا کد ملی، استیم ای دی و ..." id="example-text-input">
             </div>
 
             {{--<div class="form-group" id="in2">--}}

@@ -109,6 +109,9 @@ class MatchController extends Controller
         $tournament->endTime = $request->endTime;
         $tournament->comment = $request->comment;
 
+        $tournament->user_id = Auth::id();
+        $tournament->organize_id = Auth::user()->organize->id;
+
 
 
         $today = Carbon::now();
@@ -116,7 +119,7 @@ class MatchController extends Controller
 
 
         $tournament->endRemain = $endDate;
-
+        $tournament->save();
 
         if($request->file('path')){
 

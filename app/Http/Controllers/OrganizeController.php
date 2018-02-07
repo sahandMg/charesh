@@ -67,8 +67,10 @@ class OrganizeController extends Controller
 
     public function postMakeOrganize(Request $request)
     {
+
+
         $rand = str_random('4');
-        $this->validate($request,['OrgName'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/|unique:organizes','comment'=>'required|between:10,1500']);
+        $this->validate($request,['name'=>'regex:/^[a-zA-Z-0-9-آ ا ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل م ن و ه ی]+$/|unique:organizes','comment'=>'required|between:10,1500']);
 
 
         if (Auth::user()->organize) {
@@ -79,8 +81,8 @@ class OrganizeController extends Controller
 
         $time = time();
         $org = new Organize();
-        $org->name = $request->OrgName;
-        session(['organizeName' => $request->OrgName]);
+        $org->name = $request->name;
+        session(['organizeName' => $request->name]);
         $org->comment = $request->comment;
         if ($request->file('logo_path')) {
             $rand2 = str_random('4');
