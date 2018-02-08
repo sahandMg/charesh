@@ -332,16 +332,18 @@ header h1 {
     width: 45px;
     height: 45px;
     float: left;
+    padding: 0;
+    margin: 0px;
+    margin-top: 1%;
     margin-left: 1%;
 }
 .tournomentHeader h2{
     /*float: right;*/
     margin: 0;
-    padding: 0px;
+    padding: 0;
     padding: 10px;
     font-size: 200%;
     font-weight: 500;
-    margin-top: 10px;
 }
 .tournoment img {
     width: 100%;
@@ -350,7 +352,7 @@ header h1 {
     border-radius: 5px;
     margin: 0;
     padding: 0;
-    margin-top: 2%;
+    margin-top: 1%;
 }
 .tournomentTag {
     text-align: center;
@@ -407,7 +409,9 @@ header h1 {
     color: orange;
 }
 .tournomentHeader a span {
-    margin-top: 35px;
+    padding: 0;
+    margin: 0;
+    margin-top: 28px;
     float: left;
 }
 

@@ -4,7 +4,7 @@
 @endsection
 @section('content')
  <div class="container" style="direction: rtl; margin-top: 2%;" id="Edit">
-   <div class="card" style="background-color: white;">
+     <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;margin-top: 2%;background-color: white;">
       <h2 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">تنظیمات پروفایل</h2>
      @if(count(session('message')))
          <div class="alert alert-success ">
@@ -25,19 +25,23 @@
      @endif
    <form style="padding: 1%;"  method="post" action="{{route('setting',['username'=>Auth::user()->slug])}}" enctype="multipart/form-data">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
-       <div class="wrapperImageUpload">
-           <div class="boxImageUpload">
-               <div class="js--image-preview"></div>
-               <div class="upload-options">
-                   <label>
-                       <input name="imageFile" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
-                   </label>
-               </div>
-           </div>
+       {{--<div class="wrapperImageUpload">--}}
+           {{--<div class="boxImageUpload">--}}
+               {{--<div class="js--image-preview"></div>--}}
+               {{--<div class="upload-options">--}}
+                   {{--<label>--}}
+                       {{--<input name="imageFile" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
+                   {{--</label>--}}
+               {{--</div>--}}
+           {{--</div>--}}
+       {{--</div>--}}
+       <div class="form-group">
+           <label for="InputFile">عکس  </label>
+           <input type="file" name="imageFile" class="form-control-file" value="{{Auth::user()->username}}" aria-describedby="fileHelp">
        </div>
    <div class="form-group">
       <label for="email-input">ایمیل  </label>
-      <input class="form-control" name="email" type="text" placeholder="me@example.com" id="example-email-input">
+      <input class="form-control" name="email" type="text" placeholder="{{Auth::user()->email}}" id="example-email-input">
    </div>
    <div class="form-group">
       <label for="oldpass">رمز قبلی  </label>

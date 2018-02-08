@@ -41,18 +41,22 @@ class MatchController extends Controller
 
     public function create(){
         $name = Auth::user();
-        if(Url::where('ip',request()->ip())->first() != null){
-
-         Url::where('ip',request()->ip())->delete();
 
 
+        if(isset($_SERVER['HTTP_REFERER']) &&  $_SERVER['HTTP_REFERER'] != route('matchCreate')){
+
+            if(Url::where('ip',request()->ip())->first() != null){
+
+                Url::where('ip',request()->ip())->delete();
+
+
+            }
+            $record = new Url();
+            $record->token = csrf_token();
+            $record->pageUrl = $_SERVER['HTTP_REFERER'];
+            $record->ip = request()->ip();
+            $record->save();
         }
-        $record = new Url();
-        $record->token = csrf_token();
-        $record->pageUrl = $_SERVER['HTTP_REFERER'];
-        $record->ip = request()->ip();
-        $record->save();
-
 
         if(Junk::where('user_id',Auth::id())->first()){
             Junk::where('user_id',Auth::id())->truncate();
@@ -983,7 +987,7 @@ class MatchController extends Controller
                             $info = [];
                             $group = new Group();
 
-                            $group->name = $request["teammate$i"];
+                            $group->name = $request->teamName;
 
                             $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
                             $group->tournament_id = $request->matchId;

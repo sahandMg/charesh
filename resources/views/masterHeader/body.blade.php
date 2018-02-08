@@ -2,7 +2,7 @@
 <html lang="fa">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="چارش – راهی برای اطلاع رسانی ، مدیریت و ثبت نام مسابقات حضوری و آنلاین ">
+<meta name="description" content="چارش – ابزاری برای اطلاع رسانی ، مدیریت و ثبت نام مسابقات حضوری و آنلاین ">
 <meta name="keywords" content=",برگزاری مسابقه,مسابقه,برگزاری مسابقه آنلاین,برگزاری مسابقات حضوری,مسبقه ها ورزشی,مسابقات بازی های رایانه ای,برگزاری مسابقات بازی های رایانه ای@yield('matchName'),برگزاری مسابقه های آنلاین,بازی های رایانه ای,">
 
 <head>
@@ -38,7 +38,7 @@
         })
     </script>
 
-
+    <link rel="alternate" href="http://charesh.ir" hreflang="fa-ir" />
     <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/flipclock.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet"   type="text/css"   href="{{URL::asset('CSS/newMain.css')}}">
@@ -79,7 +79,7 @@
 <header>
     <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh.jpg')}}"></a>
 
-    <h1>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
+    <h1>ابزاری<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>
     <nav class="topnav" id="myTopnav">
         <a href="{{route('login')}}" class="leftNav"> ورود <i class="fa fa-sign-in fa-lg"></i></a>

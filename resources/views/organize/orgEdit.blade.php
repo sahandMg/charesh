@@ -27,39 +27,39 @@
                     {{session('settingError')}}
                 </div>
             @endif
-       {{--<div class="form-group">--}}
-        {{--<label for="InputFile">لوگو (100px * 100px) : </label>--}}
-        {{--<input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">--}}
-       {{--</div>--}}
-            <div class="wrapperImageUpload">
-                <div class="boxImageUpload">
-                    <div class="js--image-preview"></div>
-                    <div class="upload-options">
-                        <label>
-                            <input name="logo_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
-                        </label>
-                    </div>
-                </div>
-            </div>
+       <div class="form-group">
+        <label for="InputFile">لوگو (100px * 100px) : </label>
+        <input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+       </div>
+            {{--<div class="wrapperImageUpload">--}}
+                {{--<div class="boxImageUpload">--}}
+                    {{--<div class="js--image-preview"></div>--}}
+                    {{--<div class="upload-options">--}}
+                        {{--<label>--}}
+                            {{--<input name="logo_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
+                        {{--</label>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
       <div class="form-group">
         <label for="InputFile">توضیحات : </label>
-        <textarea class="form-control" name="comment" id="summernote" rows="3"></textarea>
+        <textarea class="form-control" name="comment" id="summernote" rows="3" placeholder="{{$org->comment}}"></textarea>
        </div>
-       {{--<div class="form-group">--}}
-        {{--<label for="InputFile">عکس پشت زمینه (1150px * 380px) : </label>--}}
-        {{--<input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">--}}
-       {{--</div>--}}
+       <div class="form-group">
+        <label for="InputFile">عکس پشت زمینه (1150px * 380px) : </label>
+        <input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">
+       </div>
             {{----}}
-            <div class="wrapperImageUpload">
-                <div class="boxImageUpload">
-                    <div class="js--image-preview"></div>
-                    <div class="upload-options">
-                        <label>
-                            <input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
-                        </label>
-                    </div>
-                </div>
-            </div>
+            {{--<div class="wrapperImageUpload">--}}
+                {{--<div class="boxImageUpload">--}}
+                    {{--<div class="js--image-preview"></div>--}}
+                    {{--<div class="upload-options">--}}
+                        {{--<label>--}}
+                            {{--<input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
+                        {{--</label>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
             @if(Auth::user()->role == 'supplier')
                 <div class="form-group" style="font-weight: 400;font-size: 125%;">
                     <label class="container" style="color:darkgreen"> برگزار کننده مسابقه
@@ -87,7 +87,7 @@
         <br>
         <div class="form-group">
           <label for="Telegram-input">آدرس : </label>
-          <input class="form-control" type="name" name="address" placeholder="خیابان" id="Telegram-input">
+          <input class="form-control" type="name" name="address" placeholder="{{$org->address}}" id="Telegram-input">
         </div>
         <div class="form-group">
          <div id="map" style="width:80%;height: 250px; background:whitesmoke;"></div>
@@ -332,73 +332,96 @@
               }
           }
       })
-      var map = null;
-      var marker = null;
-      var default_lat =  {!! json_encode($org->lat) !!};
-      var default_lng = {!! json_encode($org->lng) !!};
-      var default_zoom = 15;
-      var map_div = "map";
-      var infowindow = new google.maps.InfoWindow();
-      var geocoder = new google.maps.Geocoder();
-      $(document).ready(function() {
-          $("#frm_show_address").submit(function() {
-              var street_address = $("#street_address").val();
-              if(street_address.length > 0 ){
-                  showAddress(street_address);
-              }
-              return false;
+      {{--var map = null;--}}
+      {{--var marker = null;--}}
+      {{--var default_lat =  {!! json_encode($org->lat) !!};--}}
+      {{--var default_lng = {!! json_encode($org->lng) !!};--}}
+      {{--var default_zoom = 15;--}}
+      {{--var map_div = "map";--}}
+      {{--var infowindow = new google.maps.InfoWindow();--}}
+      {{--var geocoder = new google.maps.Geocoder();--}}
+      {{--$(document).ready(function() {--}}
+          {{--$("#frm_show_address").submit(function() {--}}
+              {{--var street_address = $("#street_address").val();--}}
+              {{--if(street_address.length > 0 ){--}}
+                  {{--showAddress(street_address);--}}
+              {{--}--}}
+              {{--return false;--}}
+          {{--});--}}
+      {{--});--}}
+      {{--function myMap() {--}}
+          {{--var latlng = new google.maps.LatLng(default_lat,default_lng);--}}
+          {{--var mapOptions = {--}}
+              {{--scaleControl: true,--}}
+              {{--zoom: default_zoom,--}}
+              {{--zoomControl: true,--}}
+              {{--center: latlng,--}}
+              {{--mapTypeId: google.maps.MapTypeId.ROADMAP,--}}
+              {{--draggableCursor: 'crosshair'--}}
+          {{--};--}}
+          {{--map = new google.maps.Map(document.getElementById(map_div), mapOptions);--}}
+          {{--showMarker();--}}
+      {{--}--}}
+      {{--function showMarker(){--}}
+          {{--remove_all_markers();--}}
+          {{--marker = new google.maps.Marker({--}}
+              {{--position: map.getCenter(),--}}
+              {{--map: map,--}}
+              {{--draggable: true--}}
+          {{--});--}}
+          {{--build_info_window();--}}
+          {{--google.maps.event.addListener(marker, 'click', function(event) {--}}
+              {{--build_info_window();--}}
+          {{--});--}}
+          {{--google.maps.event.addListener(marker, "dragend", function() {--}}
+              {{--build_info_window();--}}
+          {{--});--}}
+      {{--}--}}
+      {{--function remove_all_markers(){--}}
+          {{--if(this.marker != null){--}}
+              {{--this.marker.setMap(null);--}}
+          {{--}--}}
+      {{--}--}}
+      {{--function build_info_window() {--}}
+          {{--var sea_level;--}}
+          {{--axios.post('{{route('orgLocation')}}',{'id':{!! json_encode($org->id) !!} , 'lat': marker.getPosition().lat(),'lng':marker.getPosition().lng()}).then(function (response) {--}}
+          {{--})--}}
+      {{--}--}}
+      {{--function showPosition(position) {--}}
+          {{--var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);--}}
+          {{--var mapOptions = {--}}
+              {{--scaleControl: true,--}}
+              {{--zoom: default_zoom,--}}
+              {{--zoomControl: true,--}}
+              {{--center: latlng,--}}
+              {{--mapTypeId: google.maps.MapTypeId.ROADMAP,--}}
+              {{--draggableCursor: 'crosshair'--}}
+          {{--};--}}
+          {{--map = new google.maps.Map(document.getElementById(map_div), mapOptions);--}}
+          {{--showMarker();--}}
+      {{--}--}}
+      function initialize() {
+          var my_position = new google.maps.LatLng(50.5, 4.5);
+          var map = new google.maps.Map(document.getElementById('map'), {
+              center: my_position,
+              zoom: 15
           });
-      });
-      function myMap() {
-          var latlng = new google.maps.LatLng(default_lat,default_lng);
-          var mapOptions = {
-              scaleControl: true,
-              zoom: default_zoom,
-              zoomControl: true,
-              center: latlng,
-              mapTypeId: google.maps.MapTypeId.ROADMAP,
-              draggableCursor: 'crosshair'
-          };
-          map = new google.maps.Map(document.getElementById(map_div), mapOptions);
-          showMarker();
-      }
-      function showMarker(){
-          remove_all_markers();
-          marker = new google.maps.Marker({
-              position: map.getCenter(),
-              map: map,
-              draggable: true
+          var marker = new google.maps.Marker({
+              position: my_position,
+              map: map
+
           });
-          build_info_window();
-          google.maps.event.addListener(marker, 'click', function(event) {
-              build_info_window();
-          });
-          google.maps.event.addListener(marker, "dragend", function() {
-              build_info_window();
+
+
+          // double click event
+          google.maps.event.addListener(map, 'dblclick', function(e) {
+              var positionDoubleclick = e.latLng;
+              marker.setPosition(positionDoubleclick);
+              // if you don't do this, the map will zoom in
+//              e.stopPropagation();
+              console.log(marker.position)
           });
       }
-      function remove_all_markers(){
-          if(this.marker != null){
-              this.marker.setMap(null);
-          }
-      }
-      function build_info_window() {
-          var sea_level;
-          axios.post('{{route('orgLocation')}}',{'id':{!! json_encode($org->id) !!} , 'lat': marker.getPosition().lat(),'lng':marker.getPosition().lng()}).then(function (response) {
-          })
-      }
-      function showPosition(position) {
-          var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          var mapOptions = {
-              scaleControl: true,
-              zoom: default_zoom,
-              zoomControl: true,
-              center: latlng,
-              mapTypeId: google.maps.MapTypeId.ROADMAP,
-              draggableCursor: 'crosshair'
-          };
-          map = new google.maps.Map(document.getElementById(map_div), mapOptions);
-          showMarker();
-      }
+      google.maps.event.addDomListener(window, 'load', initialize);
   </script>
 @endsection

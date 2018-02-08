@@ -95,7 +95,9 @@ Route::group(['prefix'=>'app'],function (){
 
 // ------------- contact ----------------
 //Route::group(['prefix'=>'chlbz'],function (){
-
+Route::get('sitemap',function (){
+    return view('sitemap');
+});
 Route::get('contact',['as'=>'contact','uses'=>'PageController@contact']);
 Route::post('contact',['as'=>'contact','uses'=>'PageController@postContact'])->middleware('throttle:10,1');
 Route::get('about',['as'=>'about','uses'=>'PageController@about']);

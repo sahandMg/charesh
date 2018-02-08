@@ -25,6 +25,28 @@
     </div>
     <div class="form-group" >
       <label for="Name-input">زمان پایان ثبت نام  </label>
+        {{--<div class="endTimeReg">--}}
+            {{--<input style="float: right;margin-left: 1%;width: 18%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="ساعت مثلا 22" name="startDay" type="text">--}}
+            {{--<input style="float: right;margin-left: 1%;width: 18%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="روز" name="startDay" type="text">--}}
+            {{--<select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 40%;" class="form-control" id="sel1">--}}
+                {{--<option>فروردین</option>--}}
+                {{--<option>اردیبهشت</option>--}}
+                {{--<option>خرداد</option>--}}
+                {{--<option>تیر</option>--}}
+                {{--<option>مرداد</option>--}}
+                {{--<option>شهریور</option>--}}
+                {{--<option>مهر</option>--}}
+                {{--<option>آبان</option>--}}
+                {{--<option>آذر</option>--}}
+                {{--<option>دی</option>--}}
+                {{--<option>بهمن</option>--}}
+                {{--<option>اسفند</option>--}}
+            {{--</select>--}}
+            {{--<select name="startYear" v-model="startYear" style="float: right;margin-left: 1%;width: 20%;" class="form-control" id="sel2">--}}
+                {{--<option>1396</option>--}}
+                {{--<option>1397</option>--}}
+            {{--</select>--}}
+        {{--</div>--}}
       <input class="form-control" @input="check" :style="style4" v-model="endTime" name="endTime" type="number" min="1" value="{{Request::old('matchName')}}" placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
     </div>
     <div class="form-group">
@@ -56,20 +78,20 @@
     <label for="InputFile">توضیحات ضروری (تکمیل شود)  </label>
     <textarea class="form-control"  name="comment" id="summernote" rows="3"></textarea>
    </div>
-   {{--<div class="form-group">--}}
-    {{--<label for="InputFile" style="font-size: 18px">عکس بنر مسابقه<p style="font-size: 16px">(1290px * 600px)</p></label>--}}
-    {{--<input type="file" class="form-control-file" name="path" style="font-size:15px" id="exampleInputFile" aria-describedby="fileHelp">--}}
-   {{--</div>--}}
-       <div class="wrapperImageUpload">
-           <div class="boxImageUpload">
-               <div class="js--image-preview"></div>
-               <div class="upload-options">
-                   <label>
-                       <input name="path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
-                   </label>
-               </div>
-           </div>
-       </div>
+   <div class="form-group">
+    <label for="InputFile" style="font-size: 18px">عکس بنر مسابقه<p style="font-size: 16px">(1290px * 600px)</p></label>
+    <input type="file" class="form-control-file" name="path" style="font-size:15px" id="exampleInputFile" aria-describedby="fileHelp">
+   </div>
+       {{--<div class="wrapperImageUpload">--}}
+           {{--<div class="boxImageUpload">--}}
+               {{--<div class="js--image-preview"></div>--}}
+               {{--<div class="upload-options">--}}
+                   {{--<label>--}}
+                       {{--<input name="path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
+                   {{--</label>--}}
+               {{--</div>--}}
+           {{--</div>--}}
+       {{--</div>--}}
        <a href="{{url(\App\Url::where('token',csrf_token())->first()->pageUrl)}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
 
@@ -79,6 +101,7 @@
 
         @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
         @import url("https://fonts.googleapis.com/css?family=Raleway");
+
 
         .wrapperImageUpload {
             display: flex;
@@ -296,21 +319,6 @@
             font-size: 100%;
             font-weight: 400;
         }
-        @media screen and (max-width: 800px) {
-            .nav-tabs li {
-                font-size: 80%;
-                font-weight: 400;
-            }
-        }
-        @media screen and (max-width: 600px) {
-            .nav-tabs li {
-                font-size: 50%;
-                font-weight: 400;
-            }
-            option {
-                font-size: 60%;
-            }
-        }
         .formDiv {
             width: 80%;
             margin: 0 auto;
@@ -323,6 +331,34 @@
         .formDiv form {
             padding: 1%;
         }
+        @media screen and (max-width: 800px) {
+            .nav-tabs li {
+                font-size: 80%;
+                font-weight: 400;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .nav-tabs li {
+                font-size: 50%;
+                font-weight: 400;
+            }
+            .formDiv {
+                width: 95%;
+            }
+            option {
+                font-size: 60%;
+            }
+            .formDiv {
+                width: 95%;
+            }
+            .endTimeReg input{
+                width: 40%;
+            }
+            .endTimeReg select{
+                width: 40%;
+            }
+        }
+
     </style>
  <script>
  vm = new Vue({

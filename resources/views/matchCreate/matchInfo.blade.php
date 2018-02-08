@@ -137,6 +137,9 @@
                 font-size: 50%;
                 font-weight: 400;
             }
+            .formDiv {
+                width: 95%;
+            }
         }
         .formDiv {
             width: 80%;

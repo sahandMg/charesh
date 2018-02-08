@@ -18,7 +18,7 @@
                 <span class="fa fa-star"></span>
                 <span class="fa fa-star"></span>
             </a>
-            <h6>{{$org->name}}</h6>
+            <h2>{{$org->name}}</h2>
         </div>
         <hr>
         <div class="description">
@@ -42,7 +42,7 @@
                                         <span class="fa fa-star"></span>
                                         <span class="fa fa-star"></span>
                                     </a>
-                                    <h6>  {{$org->tournaments[$i]->matchName}}</h6>
+                                    <h2>  {{$org->tournaments[$i]->matchName}}</h2>
                                 </div>
                                 <!--<a href="supplier/supplierName">d</a>-->
                                 <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->
@@ -81,7 +81,10 @@
                             </div>
                             @endfor
                     </div>
+                    <br>
+                    <br>
         </div>
+
         <br>
         <br>
     </div>
@@ -194,7 +197,7 @@
             float: left;
             margin-left: 1%;
         }
-        .supllierogo h6{
+        .supllierogo h2{
             float: right;
             margin: 0;
             padding: 10px;
@@ -210,7 +213,7 @@
             text-align: center;
             /*margin-top: 5%;*/
         }
-        .tournoments h3 {
+        .tournoments h2 {
             font-size: 200%;
         }
         /*---------- star rating ----------*/

@@ -27,7 +27,7 @@
                 <label for="Name-input">هزینه ثبت نام(تومان)  </label>
                 <input name="cost" v-model="cost"  @input="check"  class="form-control" type="number" min="1000" step="1000" :value="cost" placeholder="به تومان" id="example-text-input">
             </div>
-            <h4> اطلاعات اضافه ای را که نیاز دارید تا شرکت کنندگان وارد کنند، در این قسمت مطرح کنید </h4>
+            <h2> اطلاعات اضافه ای را که نیاز دارید تا شرکت کنندگان وارد کنند، در این قسمت مطرح کنید </h2>
             <button type="button" onclick="removeInput()" class="btn btn-danger" style="margin: 10PX;">-</button>
             <button type="button" onclick="addInput()" class="btn btn-info" style="margin: 10PX;">+</button>
 
@@ -83,6 +83,9 @@
                 font-size: 50%;
                 font-weight: 400;
             }
+            .formDiv {
+                width: 95%;
+            }
             p {
                 font-size: 50%;
             }
@@ -90,6 +93,9 @@
                 font-size: 75%;
             }
             input {
+                font-size: 75%;
+            }
+            h2 {
                 font-size: 75%;
             }
         }
@@ -161,7 +167,7 @@
             {
                 $('#costInput').css({"display":"none"});
             } else {
-                $('#costInput').css({"display":"flex"});
+                $('#costInput').css({"display":"block"});
             }
         });
         var count = 1 ;

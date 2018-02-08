@@ -40,8 +40,8 @@
             $('#summernote').summernote('code',null);
         })
     </script>
-
-
+    <link rel="alternate" href="http://charesh.ir" hreflang="fa-ir" />
+    <link rel="stylesheet" type="text/css" href="{{URL::asset('CSS/flipclock.css')}}">
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">

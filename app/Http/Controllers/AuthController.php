@@ -236,12 +236,16 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 
         if(!Auth::check()){
 
-            if(count(Url::where('ip',request()->ip())->get())) {
 
-                Url::where('ip', request()->ip())->delete();
 
-            }
-            if(isset($_SERVER['HTTP_REFERER'])){
+
+            if(isset($_SERVER['HTTP_REFERER']) &&  $_SERVER['HTTP_REFERER'] != route('login')){
+
+                if(count(Url::where('ip',request()->ip())->get())) {
+
+                    Url::where('ip', request()->ip())->delete();
+
+                }
                 $record = new Url();
                 $record->token = csrf_token();
                 $record->pageUrl = $_SERVER['HTTP_REFERER'];
@@ -281,8 +285,7 @@ $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response'
 //	return redirect()->route('login')->with(['LoginError'=>'reCAPTCHA  را تایید کنید' ])->withInput();
 //
 //	}
-//dd(json_decode($result)->success);
-//            dd($request);
+
             if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
                 $page = Url::where('ip',request()->ip())->first()->pageUrl;
                 Url::where('ip',request()->ip())->delete();

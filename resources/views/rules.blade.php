@@ -5,8 +5,8 @@
 
 @section('content')
 
-    <div class="container" style="direction: rtl;margin-top: 100px;">
-        <div class="card" style="box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0;">
+    <div class="container" style="direction: rtl;margin-top: 1%;">
+        <div class="card" style="box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0;background-color: white;">
             <h3 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">قوانین</h3>
             <br>
             <p style="padding-right: 20px;padding-left: 20px;">۱. با پذیرفتن قوانین سایت در هنگام ثبت نام ، متعهد شده اید که قوانین را بطور کامل مطالعه کرده و به تمامی بندهای آن پایبند خواهید بود.</p>

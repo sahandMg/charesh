@@ -69,7 +69,7 @@
                 <label>لوگو تیم (100px * 100px) : </label>
                 <!--<div  style="float: right">-->
                 <input name="logo" type="file" class="form-control-file"  aria-describedby="fileHelp">
-                <!--</div>-->
+                {{--<!--</div>-->--}}
             </div>
             <div class="form-group">
                 <label> نام تیم</label>
@@ -102,7 +102,7 @@
 
             <div class="form-group">
                 <label> نفر {{$t+$i}} (ذخیره) </label>
-                <input name="teammate{{$t+$i}}" class="form-control" type="text" value="{{Request::old("teammate$t+$i")}}">
+                <input name="subst[{{$t}}]" class="form-control" type="text" value="{{Request::old("subst[$t]")}}">
                 <br>
                 @if(count($tournament->moreInfo)>0)
 

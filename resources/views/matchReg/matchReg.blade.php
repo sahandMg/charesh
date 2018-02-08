@@ -11,11 +11,9 @@
 @section('matchName')
     مسابقه {{$tournament->matchName}}
 @endsection
-
 @section('title')
     چارش | مسابقه  {{$tournament->matchName}}
 @endsection
-
 @section('content')
     @include('masterMatch.body',['tournament'=> $tournament,'route'=>$route])
 <div class="container" style="direction: rtl;margin-top: 1%; overflow-x: hidden;" id="app" >
@@ -33,7 +31,7 @@
     @endif
     <div class="tournoment">
         <div class="tournomentHeader">
-            <a href="{{route('organizeProfile',['id'=>$org->slug])}}">
+            <a href="{{route('organizeProfile',['id'=>$org->name])}}">
                 <img src="{{URL::asset('storage/images/'.$org->logo_path)}}" alt="{{$org->logo_path}}">
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
@@ -77,9 +75,11 @@
                         <h6> قوانین </h6>
                         <a class="pdfFile" href="{{URL::asset('storage/pdfs/'.$tournament->rules)}}"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></a>
                     </div>
+                    @if(Auth::check())
                     <div  class="column">
                         <button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'" style="margin-top: 20px;"> ارتباط با برگزار کننده <i style="font-size: 125%;" class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
+                        @endif
                 </div>
                 <br>
             </div>
@@ -144,10 +144,13 @@
 <div id="id01" class="modal">
     <form class="modal-content animate" method="POST" action="{{route('userMessage',['id'=>$tournament->id])}}">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
+
         <div class="imgcontainer">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
             <h4>ارتباط با برگزار کننده</h4>
         </div>
+
+
         <br>
         <div class="container1" style="direction: rtl;">
            @if(!Auth::check())
@@ -228,11 +231,11 @@
         cursor: pointer;
     }
     .top-right {
-        top: 10px;
+        top: 30px;
     }
     .top-left {
         position: absolute;
-        top: 10px;
+        top: 30px;
         left: 10px;
         background-color: darkorange;
         padding: 4px;

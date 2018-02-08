@@ -7,8 +7,8 @@
 @section('content')
 
 
-    <div id="app" class="container" style="direction: rtl;margin-top: 100px;">
-        <div class="card" style="box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;">
+    <div id="app" class="container" style="direction: rtl;margin-top: 1%;">
+        <div class="card" style="box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;background-color: white;">
      <h3 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">ارتباط با ما</h3>
      <form style="padding: 20px;" method="POST" action="{{route('contact')}}">
          <input type="hidden" name="_token" value="{{csrf_token()}}">

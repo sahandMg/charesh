@@ -21,12 +21,11 @@
           @endforeach
        </div>
       @endif
-     <div class="form-group row">
-        <label for="InputFile" class="col-4 col-form-label">قوانین (فایل PDF) :</label>
-        <div class="col-6">
-          <input name="rulesPath" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-        </div>
-      </div>
+
+       <div class="form-group">
+           <label for="InputFile">قوانین (فایل PDF) </label>
+           <input name="rulesPath" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+       </div>
    <div class="form-group">
      <a href="{{route("returnMatchInfo")}}" class="btn btn-danger" style="margin-left: 20px;">بازگشت</a>
      <button :disabled="btn" type="submit" class="btn btn-primary">ادامه</button>
@@ -49,6 +48,9 @@
             .nav-tabs li {
                 font-size: 50%;
                 font-weight: 400;
+            }
+            .formDiv {
+                width: 95%;
             }
         }
         .formDiv {
