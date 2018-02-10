@@ -234,29 +234,30 @@
          showMarker();
      }
 
-     function showMarker() {
-         // remove all markers
-         remove_all_markers();
 
+     function showMarker(){
+         remove_all_markers();
          marker = new google.maps.Marker({
              position: map.getCenter(),
              map: map,
-//            title: arr_markers[marker_index]["name"],
              draggable: true
          });
-
          build_info_window();
-
-         google.maps.event.addListener(marker, 'click', function (event) {
+         google.maps.event.addListener(marker, 'click', function(event) {
              build_info_window();
          });
-
-         google.maps.event.addListener(marker, "dragend", function () {
+         google.maps.event.addListener(marker, "dragend", function() {
              build_info_window();
          });
+         // double click event
+         google.maps.event.addListener(map, 'dblclick', function(e) {
+             var positionDoubleclick = e.latLng;
+             marker.setPosition(positionDoubleclick);
+             // if you don't do this, the map will zoom in
 
+             e.stopPropagation();
+         });
      }
-
 
      function remove_all_markers() {
          if (this.marker != null) {

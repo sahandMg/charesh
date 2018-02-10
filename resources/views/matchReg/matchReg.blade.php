@@ -75,11 +75,9 @@
                         <h6> قوانین </h6>
                         <a class="pdfFile" href="{{URL::asset('storage/pdfs/'.$tournament->rules)}}"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></a>
                     </div>
-                    @if(Auth::check())
                     <div  class="column">
                         <button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'" style="margin-top: 20px;"> ارتباط با برگزار کننده <i style="font-size: 125%;" class="fa fa-paper-plane" aria-hidden="true"></i></button>
                     </div>
-                        @endif
                 </div>
                 <br>
             </div>
@@ -108,26 +106,17 @@
             @if($tournament->endTime > 0 && $tournament->sold != $tournament->tickets )
                 @if(Auth::check())
                     @if(count($users) > 0)
-                        <a style="text-decoration: none"  href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}"> <button class="regButton"> دریافت نسخه pdf بلیط مسابقه </button></a>
+                        <a style="text-decoration: none"  href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}"> <button class="regButton responsiveClass"> دریافت نسخه pdf بلیط مسابقه </button></a>
                     @else
                         <a style="text-decoration: none" href="{{route('overView',['id'=>$tournament,'matchName'=>$tournament->matchName])}}"> <button class="regButton">ثبت نام </button></a>
                     @endif
                 @else
-                    <a style="text-decoration: none" href="{{route('login')}}"><button class="regButton"> برای شرکت در مسابقه ابتدا وارد شوید</button></a>
+                    <a style="text-decoration: none" href="{{route('login')}}"><button class="regButton responsiveClass"> برای شرکت در مسابقه ابتدا وارد شوید</button></a>
                 @endif
             @else
                 @if(Auth::check())
                     @if(count($users) > 0)
-                        <a style="text-decoration: none"  href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}"> <button class="regButton" id="pdfRecieve"> دریافت نسخه pdf بلیط مسابقه </button></a>
-                        <style>
-                            @media screen and (max-width: 800px) {
-                                .regButton {
-                                    font-size: 55%;
-                                    width: 80%;
-                                }
-                            }
-                        </style>
-
+                        <a style="text-decoration: none"  href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}"> <button class="regButton responsiveClass"> دریافت نسخه pdf بلیط مسابقه </button></a>
                     @endif
                 @endif
             @endif
@@ -144,13 +133,10 @@
 <div id="id01" class="modal">
     <form class="modal-content animate" method="POST" action="{{route('userMessage',['id'=>$tournament->id])}}">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
-
         <div class="imgcontainer">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
             <h4>ارتباط با برگزار کننده</h4>
         </div>
-
-
         <br>
         <div class="container1" style="direction: rtl;">
            @if(!Auth::check())
@@ -384,6 +370,9 @@
         .modal {
             padding-top: 40px;
         }
+        .responsiveClass {
+            width: 60%;
+        }
     }
     @media screen and (max-width: 600px) {
         .close {
@@ -399,6 +388,10 @@
         }
         .modal {
             padding-top: 20px;
+        }
+        .responsiveClass {
+            width: 75%;
+            font-size: 75%;
         }
     }
     @media screen and (max-width: 300px) {

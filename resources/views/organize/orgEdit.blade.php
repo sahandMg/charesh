@@ -43,7 +43,7 @@
             {{--</div>--}}
       <div class="form-group">
         <label for="InputFile">توضیحات : </label>
-        <textarea class="form-control" name="comment" id="summernote" rows="3" placeholder="{{$org->comment}}"></textarea>
+        <textarea class="form-control" name="comment" id="summernote" rows="3""></textarea>
        </div>
        <div class="form-group">
         <label for="InputFile">عکس پشت زمینه (1150px * 380px) : </label>
@@ -320,6 +320,8 @@
 
    </script>
   <script>
+
+      $('#summernote').summernote('editor.pasteHTML', {!! json_encode($org->comment) !!});
       new Vue({
           el:'#Edit',
           data:{
@@ -332,96 +334,121 @@
               }
           }
       })
-      {{--var map = null;--}}
-      {{--var marker = null;--}}
-      {{--var default_lat =  {!! json_encode($org->lat) !!};--}}
-      {{--var default_lng = {!! json_encode($org->lng) !!};--}}
-      {{--var default_zoom = 15;--}}
-      {{--var map_div = "map";--}}
-      {{--var infowindow = new google.maps.InfoWindow();--}}
-      {{--var geocoder = new google.maps.Geocoder();--}}
-      {{--$(document).ready(function() {--}}
-          {{--$("#frm_show_address").submit(function() {--}}
-              {{--var street_address = $("#street_address").val();--}}
-              {{--if(street_address.length > 0 ){--}}
-                  {{--showAddress(street_address);--}}
-              {{--}--}}
-              {{--return false;--}}
-          {{--});--}}
-      {{--});--}}
-      {{--function myMap() {--}}
-          {{--var latlng = new google.maps.LatLng(default_lat,default_lng);--}}
-          {{--var mapOptions = {--}}
-              {{--scaleControl: true,--}}
-              {{--zoom: default_zoom,--}}
-              {{--zoomControl: true,--}}
-              {{--center: latlng,--}}
-              {{--mapTypeId: google.maps.MapTypeId.ROADMAP,--}}
-              {{--draggableCursor: 'crosshair'--}}
-          {{--};--}}
-          {{--map = new google.maps.Map(document.getElementById(map_div), mapOptions);--}}
-          {{--showMarker();--}}
-      {{--}--}}
-      {{--function showMarker(){--}}
-          {{--remove_all_markers();--}}
-          {{--marker = new google.maps.Marker({--}}
-              {{--position: map.getCenter(),--}}
-              {{--map: map,--}}
-              {{--draggable: true--}}
-          {{--});--}}
-          {{--build_info_window();--}}
-          {{--google.maps.event.addListener(marker, 'click', function(event) {--}}
-              {{--build_info_window();--}}
-          {{--});--}}
-          {{--google.maps.event.addListener(marker, "dragend", function() {--}}
-              {{--build_info_window();--}}
-          {{--});--}}
-      {{--}--}}
-      {{--function remove_all_markers(){--}}
-          {{--if(this.marker != null){--}}
-              {{--this.marker.setMap(null);--}}
-          {{--}--}}
-      {{--}--}}
-      {{--function build_info_window() {--}}
-          {{--var sea_level;--}}
-          {{--axios.post('{{route('orgLocation')}}',{'id':{!! json_encode($org->id) !!} , 'lat': marker.getPosition().lat(),'lng':marker.getPosition().lng()}).then(function (response) {--}}
-          {{--})--}}
-      {{--}--}}
-      {{--function showPosition(position) {--}}
-          {{--var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);--}}
-          {{--var mapOptions = {--}}
-              {{--scaleControl: true,--}}
-              {{--zoom: default_zoom,--}}
-              {{--zoomControl: true,--}}
-              {{--center: latlng,--}}
-              {{--mapTypeId: google.maps.MapTypeId.ROADMAP,--}}
-              {{--draggableCursor: 'crosshair'--}}
-          {{--};--}}
-          {{--map = new google.maps.Map(document.getElementById(map_div), mapOptions);--}}
-          {{--showMarker();--}}
-      {{--}--}}
-      function initialize() {
-          var my_position = new google.maps.LatLng(50.5, 4.5);
-          var map = new google.maps.Map(document.getElementById('map'), {
-              center: my_position,
-              zoom: 15
-          });
-          var marker = new google.maps.Marker({
-              position: my_position,
-              map: map
 
+      var map = null;
+      var marker = null;
+      var default_lat =  {!! json_encode($org->lat) !!};
+      var default_lng = {!! json_encode($org->lng) !!};
+      var default_zoom = 15;
+      var map_div = "map";
+      // some google objects
+      var infowindow = new google.maps.InfoWindow();
+      var geocoder = new google.maps.Geocoder();
+
+      $(document).ready(function() {
+          $("#frm_show_address").submit(function() {
+              var street_address = $("#street_address").val();
+              if(street_address.length > 0 ){
+                  // display code address
+                  showAddress(street_address);
+              }
+
+              return false;
           });
 
+      });
 
+      function myMap() {
+
+          var latlng = new google.maps.LatLng(default_lat,default_lng);
+
+          var mapOptions = {
+              scaleControl: true,
+              zoom: default_zoom,
+              zoomControl: true,
+              center: latlng,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              draggableCursor: 'crosshair'
+          };
+
+          map = new google.maps.Map(document.getElementById(map_div), mapOptions);
+
+          showMarker();
+      }
+
+      function showMarker(){
+          remove_all_markers();
+          marker = new google.maps.Marker({
+              position: map.getCenter(),
+              map: map,
+              draggable: true
+          });
+          build_info_window();
+          google.maps.event.addListener(marker, 'click', function(event) {
+              build_info_window();
+          });
+          google.maps.event.addListener(marker, "dragend", function() {
+              build_info_window();
+          });
           // double click event
           google.maps.event.addListener(map, 'dblclick', function(e) {
               var positionDoubleclick = e.latLng;
               marker.setPosition(positionDoubleclick);
               // if you don't do this, the map will zoom in
-//              e.stopPropagation();
-              console.log(marker.position)
+
+              e.stopPropagation();
           });
       }
-      google.maps.event.addDomListener(window, 'load', initialize);
+
+
+      function remove_all_markers(){
+          if(this.marker != null){
+              this.marker.setMap(null);
+          }
+      }
+
+      function build_info_window() {
+
+          var sea_level;
+//    alert(marker.getPosition().lat())
+
+          {{--$.ajax({--}}
+              {{--url: "coordinate",--}}
+              {{--type: "POST",--}}
+              {{--dataType: 'html',--}}
+              {{--data: {--}}
+                  {{--lat: marker.getPosition().lat(),--}}
+                  {{--lng: marker.getPosition().lng(),--}}
+                  {{--id:{!! json_encode($tournament->id) !!}--}}
+              {{--},--}}
+              {{--success: function(respText) {--}}
+
+                  {{--console.log(respText)--}}
+              {{--}--}}
+
+
+          {{--})--}}
+
+          axios.post('{{route('orgLocation')}}',{'id':{!! json_encode($org->id) !!} , 'lat': marker.getPosition().lat(),'lng':marker.getPosition().lng()}).then(function (response) {
+
+//        alert(response.data)
+          })
+      }
+      function showPosition(position) {
+          var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+          var mapOptions = {
+              scaleControl: true,
+              zoom: default_zoom,
+              zoomControl: true,
+              center: latlng,
+              mapTypeId: google.maps.MapTypeId.ROADMAP,
+              draggableCursor: 'crosshair'
+          };
+
+          map = new google.maps.Map(document.getElementById(map_div), mapOptions);
+
+          showMarker();
+      }
   </script>
 @endsection

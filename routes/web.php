@@ -11,9 +11,12 @@
 |
 */
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Morilog\Jalali\jDate;
+use Morilog\Jalali\jDateTime;
 use Spatie\Browsershot\Browsershot;
 
 // ------------- home ---------------
@@ -29,9 +32,14 @@ Route::get('list',function (){
 
 Route::get('test',function (){
 
-    return str_random(4);
+    $jdate = '1394/11/25';
+
+// get instance of \DateTime
+
+    $date = jDate::forge('now')->reforge('+ 3 days')->format('date');
 
 
+    dd(jDate::forge('now')->format('date'));
 });
 
 
@@ -434,3 +442,19 @@ Route::get('/get-time','MatchController@time');
 Route::get('get/tournament','MatchController@getTournament');
 
 Route::post('coordinate','OrganizeController@coordinate')->name('matchLocation');
+
+Route::get('convert/date',function (Request $request){
+
+    if($request->day > 0){
+
+        $date = \Morilog\Jalali\jDate::forge('now')->reforge("+ $request->day days")->format('date');
+        return $date;
+    }else{
+
+        return 0;
+    }
+
+
+
+
+})->name('convertDate');

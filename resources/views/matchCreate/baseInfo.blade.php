@@ -23,11 +23,11 @@
       <label for="Name-input">نام مسابقه  </label>
       <input name="matchName" @input="check"   :style="style1" v-model="matchName" class="form-control" type="text" value="{{Request::old('matchName')}}" id="example-text-input">
     </div>
-    <div class="form-group" >
-      <label for="Name-input">زمان پایان ثبت نام  </label>
+    <div class="form-group" id="endTimeDivId">
+      <label for="Name-input" style="width: 100%;">زمان پایان ثبت نام  </label>
         {{--<div class="endTimeReg">--}}
-            {{--<input style="float: right;margin-left: 1%;width: 18%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="ساعت مثلا 22" name="startDay" type="text">--}}
-            {{--<input style="float: right;margin-left: 1%;width: 18%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="روز" name="startDay" type="text">--}}
+        <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="1"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
+        <span @input="convertDate" class="form-control"   v-model="date">@{{date}}</span>
             {{--<select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 40%;" class="form-control" id="sel1">--}}
                 {{--<option>فروردین</option>--}}
                 {{--<option>اردیبهشت</option>--}}
@@ -47,8 +47,10 @@
                 {{--<option>1397</option>--}}
             {{--</select>--}}
         {{--</div>--}}
-      <input class="form-control" @input="check" :style="style4" v-model="endTime" name="endTime" type="number" min="1" value="{{Request::old('matchName')}}" placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
+
     </div>
+       <br>
+       <br>
     <div class="form-group">
            <label for="Name-input">تاریخ شروع مسابقه  </label>
            <div>
@@ -74,6 +76,7 @@
            </div>
        </div>
        <br>
+       <br>
    <div class="form-group">
     <label for="InputFile">توضیحات ضروری (تکمیل شود)  </label>
     <textarea class="form-control"  name="comment" id="summernote" rows="3"></textarea>
@@ -94,7 +97,6 @@
        {{--</div>--}}
        <a href="{{url(\App\Url::where('token',csrf_token())->first()->pageUrl)}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
-
   </form>
   </div>
     <style>
@@ -254,7 +256,6 @@
             }
 
         }
-
         // initialize box-scope
         var boxes = document.querySelectorAll('.boxImageUpload');
 
@@ -263,13 +264,9 @@
             initDropEffect(box);
             initImageUpload(box);
         }
-
-
-
         /// drop-effect
         function initDropEffect(box){
             let area, drop, areaWidth, areaHeight, maxDistance, dropWidth, dropHeight, x, y;
-
             // get clickable area for drop effect
             area = box.querySelector('.js--image-preview');
             area.addEventListener('click', fireRipple);
@@ -337,6 +334,16 @@
                 font-weight: 400;
             }
         }
+        #endTimeDivId input {
+            width: 20%;
+            margin-left: 1%;
+            float: right;
+        }
+        #endTimeDivId span {
+            float: right;
+            margin-left: 1%;
+            width: 25%;
+        }
         @media screen and (max-width: 600px) {
             .nav-tabs li {
                 font-size: 50%;
@@ -357,8 +364,10 @@
             .endTimeReg select{
                 width: 40%;
             }
+            #endTimeDivId span {
+                width: 40%;
+            }
         }
-
     </style>
  <script>
  vm = new Vue({
@@ -367,20 +376,26 @@
  matchName:'',
  url:'',
  startTime:'',
- endTime:'',
+ endTime:'1',
  comment:'',
      startDay:'',
      startMonth:'فروردین',
      startYear:'1396',
- style1:{borderColor:'#d9d9d9',borderStyle:'solid'},
- style2:{borderColor:'#d9d9d9',borderStyle:'solid'},
- style3:{borderColor:'#d9d9d9',borderStyle:'solid'},
- style4:{borderColor:'#d9d9d9',borderStyle:'solid'},
- style5:{borderColor:'#d9d9d9',borderStyle:'solid'},
+date:{!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!},
  next:true,
  },
  methods:{
- check:function () {
+
+
+     check:function () {
+
+        vm = this
+         axios.get({!! json_encode(route('convertDate')) !!}+'?day='+this.endTime).then(function (response) {
+
+             vm.date = response.data
+         })
+
+
  if(this.endTime.length > 0 && this.startDay.length > 0 && this.startMonth.length > 0 && this.startYear.length > 0 &&  this.matchName.length > 0){
  this.next = false
  }else{

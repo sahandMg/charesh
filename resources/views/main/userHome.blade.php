@@ -2,11 +2,8 @@
 @section('title')
     چارش | خانه
 @endsection
-
 @section('content')
-
     <section class="tournoments" id="mainApp">
-
         @for($i=0;$i<count($matches);$i++)
             @if($matches[$i]->canceled == 1)
                 <div class="tournomentSmall box sample">
@@ -24,16 +21,13 @@
                                 </a>
                                 <h2>  {{$matches[$i]->matchName}}</h2>
                             </div>
-
                             <div class="bannerSM">
                                 @if($matches[$i]->canceled == 1)
                                     <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="{{$matches[$i]->path}}" style="width: 100%;">
                                 @else
                                     <a href="{{route('matchRegistered',['id'=>$matches[$i]->id,'matchName'=>$matches[$i]->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$matches[$i]->path)}}" alt="{{$matches[$i]->path}}" style="width: 100%;"></a>
                                 @endif
-
                                 <div class="top-right">  {{$matches[$i]->endTimeDays}}   روز مانده</div>
-                                {{--<button class="top-left" style="color: white;" onclick="showModal({{$matches[$i]->id}})"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></button>--}}
                             </div>
                             <div style="text-align: center">
                                 @if($matches[$i]->cost == 0)
@@ -41,7 +35,6 @@
                                 @else
                                     <small></i> {{$matches[$i]->cost}}  تومان </small>
                                 @endif
-
                                 <small><i class="fa fa-calendar"></i> {{unserialize($matches[$i]->startTime)[0]}} {{unserialize($matches[$i]->startTime)[1]}} {{unserialize($matches[$i]->startTime)[2]}} </small>
                                 <small><i class="fa fa-address-card-o"></i> {{$matches[$i]->mode}} </small>
                                 @if($matches[$i]->matchType == 'تیمی')
@@ -51,29 +44,17 @@
                                 @endif
                             </div>
                             <p hidden>{{$t = 0}}</p>
-
                             @foreach($registereds as $registered)
-
                                 @if($registered->id == $matches[$i]->id && $matches[$i]->canceled == 0)
                                     <p hidden>{{$t++}}</p>
-                                    <a style="background: orange;color: #1d1e1f;display: block;margin: auto;margin-bottom: 5px;width: 40%;" href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="btn">جزییات مسابقه</a>
-
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton" style="background: orange;color: white;">جزییات مسابقه</a>
                                 @endif
-
                             @endforeach
-
-
                             @if($t==0)
-
-
                                 @if($matches[$i]->endTime == 0 && $matches[$i]->canceled == 0 )
-
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="btn btn-danger">زمان ثبت نام به پایان رسید </a>
-
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton" style="background-color: red;width: 80%;">زمان ثبت نام به پایان رسید </a>
                                 @elseif($matches[$i]->tickets == $matches[$i]->sold && $matches[$i]->canceled == 0)
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" style="background:salmon;color:white;" class="btn">بلیط های مسابقه تمام شد!</a>
-
-
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton" style="background-color: salmon;width: 80%;">بلیط های مسابقه تمام شد!</a>
                                 @elseif($matches[$i]->canceled == 0)
                                     <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton">ثبت نام</a>
                                 @else

@@ -43,12 +43,41 @@
         </div>
         <div class="form-group">
               <label>زمان پایان ثبت نام : </label>
-              <input class="form-control"  :style="style4"  name="endTime" type="number" min="1" value="{{Request::old('matchName')}}" placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
+              <input class="form-control"  :style="style4" v-model="endTime"  name="endTime" type="number" min="1"   id="example-text-input">
         </div>
-        <div class="form-group">
-              <label>تاریخ شروع مسابقه : </label>
-              <input class="form-control"  :style="style3"  name="startTime" type="text" placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">
-        </div>
+        {{--<div class="form-group">--}}
+              {{--<label>تاریخ شروع مسابقه : </label>--}}
+
+              {{--<input class="form-control"  :style="style3"  name="startTime" type="text"  placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">--}}
+        {{--</div>--}}
+
+           <div class="form-group">
+               <label for="Name-input">تاریخ شروع مسابقه  </label>
+               <div>
+                   <input style="float: right;margin-left: 1%;width: 25%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="روز" name="startDay" type="text"  id="example-text-input">
+                   <select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 40%;" class="form-control" id="sel1">
+                       <option>فروردین</option>
+                       <option>اردیبهشت</option>
+                       <option>خرداد</option>
+                       <option>تیر</option>
+                       <option>مرداد</option>
+                       <option>شهریور</option>
+                       <option>مهر</option>
+                       <option>آبان</option>
+                       <option>آذر</option>
+                       <option>دی</option>
+                       <option>بهمن</option>
+                       <option>اسفند</option>
+                   </select>
+                   <select name="startYear" v-model="startYear" style="float: right;margin-left: 1%;width: 32%;" class="form-control" id="sel2">
+                       <option>1396</option>
+                       <option>1397</option>
+                   </select>
+               </div>
+           </div>
+
+
+           <br>
             @if($tournament->matchType == 'تیمی')
                <div class="form-group" id="fardi">
                    <label> تعداد شرکت تیم ها : </label>
@@ -57,6 +86,7 @@
             @elseif($tournament->matchType == 'فردی')
 
              @endif
+           <br>
           <div class="form-group">
               <label>توضیحات : </label>
               <textarea class="form-control"  :style="style5"  name="comment" id="summernote" rows="3"></textarea>
@@ -111,12 +141,19 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>
  <script>
+     $('#summernote').summernote('editor.pasteHTML', {!! json_encode($tournament->comment) !!});
+
+
      new Vue({
 
     el:'#edit',
 
          data:{
-             hide:false
+             hide:false,
+             startMonth:{!! json_encode(unserialize($tournament->startTime)[1]) !!},
+             startYear:{!! json_encode(unserialize($tournament->startTime)[2]) !!},
+             startDay:{!! json_encode(unserialize($tournament->startTime)[0]) !!},
+             endTime:{!! json_encode($tournament->endTimeDays) !!}
          },
 
     methods:{
@@ -189,6 +226,13 @@ function showMarker(){
     });
     google.maps.event.addListener(marker, "dragend", function() {
         build_info_window();
+    });
+    google.maps.event.addListener(map, 'dblclick', function(e) {
+        var positionDoubleclick = e.latLng;
+        marker.setPosition(positionDoubleclick);
+        // if you don't do this, the map will zoom in
+
+        e.stopPropagation();
     });
 }
 function remove_all_markers(){

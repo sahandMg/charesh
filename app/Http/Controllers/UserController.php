@@ -425,7 +425,7 @@ class UserController extends Controller
 //            }
 //        }
         $transaction = Transaction::where('user_id',Auth::id())->orderBy('created_at','decs')->first();
-        $data = array('MerchantID' => '955f0452-ef04-11e7-9ab3-005056a205be', 'Authority' => $Authority, 'Amount'=>$transaction->money);
+        $data = array('MerchantID' => 'c06c8e74-0e3c-11e8-a51b-000c295eb8fc', 'Authority' => $Authority, 'Amount'=>$transaction->money);
 
         $jsonData = json_encode($data);
         $ch = curl_init('https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json');

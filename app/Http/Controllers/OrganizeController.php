@@ -285,10 +285,10 @@ class OrganizeController extends Controller
             $tournament->update(['endTime' => $today->diffInSeconds($endDate)]);
 
         }
-        if($request->input('startTime')){
+        if($request->input('startDay') || $request->input('startMonth') || $request->input('startYear') ){
 
             $tournament = Tournament::where('id',$request->id)->first();
-            $tournament->update(['startTime' => $request->startTime]);
+            $tournament->update(['startTime'=>serialize([$request->startDay,$request->startMonth,$request->startYear])]);
 
         }
         if($request->input('comment')){

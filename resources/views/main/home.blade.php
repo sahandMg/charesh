@@ -2,11 +2,8 @@
 @section('title')
     چارش | خانه
 @endsection
-
 @section('content')
-
     <section class="tournoments" id="app">
-
         @foreach($matches as $match)
             @if($match->canceled == 1)
                 <div class="tournomentSmall box sample">
@@ -24,23 +21,19 @@
                                 </a>
                                 <h2>  {{$match->matchName}}</h2>
                             </div>
-                            <!--<a href="supplier/supplierName">d</a>-->
-                            <!--<a href="tournoments/tournomentPage"> asdfsadfsdfa</a>-->
                             <div class="bannerSM">
                                 @if($match->canceled == 1)
                                     <img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="{{$match->path}}" style="width: 100%;">
                                 @else
                                     <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug])}}"><img class="card-img-top rounded mx-auto" src="{{URL::asset('storage/images/'.$match->path)}}" alt="{{$match->path}}" style="width: 100%;"></a>
                                 @endif
-
                                 <div class="top-right">  {{$match->endTimeDays}}   روز مانده</div>
-                                {{--<button class="top-left" style="color: white;" onclick="showModal({{$match->id}})"><i class="fa fa-share-alt fa-4" aria-hidden="true"></i></button>--}}
                             </div>
                             <div style="text-align: center">
                                @if($match->cost == 0)
                                     <small><i class="fa fa-usd"></i>رایگان</small>
                                 @else
-                                <small></i> {{$match->cost}}  تومان </small>
+                                    <small></i> {{$match->cost}}  تومان </small>
                                 @endif
                                 <small><i class="fa fa-calendar"></i> {{unserialize($match->startTime)[0]}} {{unserialize($match->startTime)[1]}} {{unserialize($match->startTime)[2]}} </small>
                                 <small><i class="fa fa-address-card-o"></i> {{$match->mode}} </small>
@@ -51,29 +44,20 @@
                                 @endif
                             </div>
                             @if($match->endTime == 0 && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger" style="text-align: center;margin: auto;display: block;width: 60%;margin-bottom: 1%;">زمان ثبت نام به پایان رسید</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="regButton" style="background-color: red;width: 80%;">زمان ثبت نام به پایان رسید</a>
+                                {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger" style="text-align: center;margin: auto;display: block;margin-bottom: 1%;">زمان ثبت نام به پایان رسید</a>--}}
                             @elseif($match->tickets == $match->sold && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" style="background:salmon;color:white;margin: auto;text-align: center;display: block;width: 60%;margin-bottom: 1%;" class="btn">بلیط های مسابقه تمام شد!</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="regButton" style="background-color: salmon;width: 80%;">بلیط های مسابقه تمام شد!</a>
                             @elseif($match->canceled == 0)
                                 <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName  ])}}" class="regButton">ثبت نام</a>
                             @else
                                 <br>
                             @endif
-                            {{--@if($match->canceled == 1)--}}
-                            {{--</div>--}}
-                            {{--@endif--}}
                         </div>
                 @endforeach
     </section>
-
-
-
-
-
     <br>
     <br>
-    {{--<button @click = "view"  class="btn btn-primary">مشاهده موارد بیشتر</button>--}}
-
     <!-- The Modal -->
     <div id="myModal" class="modal">
         <!-- Modal content -->
@@ -113,9 +97,6 @@
             }
         }
     </script>
-
-
-
     <style>
         /* The Modal (background) */
         .modal {
@@ -264,8 +245,6 @@
             }
         }
     </style>
-    <script type="text/javascript" src="{{URL::asset('js/main.js')}}"></script>
-
     {{--<script>--}}
 
     {{--new Vue({--}}

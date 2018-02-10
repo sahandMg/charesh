@@ -208,6 +208,7 @@
      }
  </style>
  <script>
+
      function initImageUpload(box) {
          let uploadField = box.querySelector('.image-upload');
 
