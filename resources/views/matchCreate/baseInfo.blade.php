@@ -81,20 +81,20 @@
     <label for="InputFile">توضیحات ضروری (تکمیل شود)  </label>
     <textarea class="form-control"  name="comment" id="summernote" rows="3"></textarea>
    </div>
-   <div class="form-group">
-    <label for="InputFile" style="font-size: 18px">عکس بنر مسابقه<p style="font-size: 16px">(1290px * 600px)</p></label>
-    <input type="file" class="form-control-file" name="path" style="font-size:15px" id="exampleInputFile" aria-describedby="fileHelp">
-   </div>
-       {{--<div class="wrapperImageUpload">--}}
-           {{--<div class="boxImageUpload">--}}
-               {{--<div class="js--image-preview"></div>--}}
-               {{--<div class="upload-options">--}}
-                   {{--<label>--}}
-                       {{--<input name="path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
-                   {{--</label>--}}
-               {{--</div>--}}
-           {{--</div>--}}
-       {{--</div>--}}
+   {{--<div class="form-group">--}}
+    {{--<label for="InputFile" style="font-size: 18px">عکس بنر مسابقه<p style="font-size: 16px">(1290px * 600px)</p></label>--}}
+    {{--<input type="file" class="form-control-file" name="path" style="font-size:15px" id="exampleInputFile" aria-describedby="fileHelp">--}}
+   {{--</div>--}}
+       <div class="wrapperImageUpload">
+           <div class="boxImageUpload">
+               <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/1200_800.jpg')}}'); "></div>
+               <div class="upload-options">
+                   <label>
+                       <input name="path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
+                   </label>
+               </div>
+           </div>
+       </div>
        <a href="{{url(\App\Url::where('token',csrf_token())->first()->pageUrl)}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
   </form>

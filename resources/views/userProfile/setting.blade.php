@@ -25,20 +25,20 @@
      @endif
    <form style="padding: 1%;"  method="post" action="{{route('setting',['username'=>Auth::user()->slug])}}" enctype="multipart/form-data">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
-       {{--<div class="wrapperImageUpload">--}}
-           {{--<div class="boxImageUpload">--}}
-               {{--<div class="js--image-preview"></div>--}}
-               {{--<div class="upload-options">--}}
-                   {{--<label>--}}
-                       {{--<input name="imageFile" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
-                   {{--</label>--}}
-               {{--</div>--}}
-           {{--</div>--}}
-       {{--</div>--}}
-       <div class="form-group">
-           <label for="InputFile">عکس  </label>
-           <input type="file" name="imageFile" class="form-control-file" value="{{Auth::user()->username}}" aria-describedby="fileHelp">
+       <div class="wrapperImageUpload">
+           <div class="boxImageUpload">
+               <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/100_100.jpg')}}'); "></div>
+               <div class="upload-options">
+                   <label>
+                       <input name="imageFile" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
+                   </label>
+               </div>
+           </div>
        </div>
+       {{--<div class="form-group">--}}
+           {{--<label for="InputFile">عکس  </label>--}}
+           {{--<input type="file" name="imageFile" class="form-control-file" value="{{Auth::user()->username}}" aria-describedby="fileHelp">--}}
+       {{--</div>--}}
    <div class="form-group">
       <label for="email-input">ایمیل  </label>
       <input class="form-control" name="email" type="text" placeholder="{{Auth::user()->email}}" id="example-email-input">
@@ -170,7 +170,7 @@
          width: 100%;
          position: relative;
          overflow: hidden;
-         background-image: url("../100_100.jpg");
+         /*background-image: url("../100_100.jpg");*/
          background-color: white;
          background-position: center center;
          background-repeat: no-repeat;

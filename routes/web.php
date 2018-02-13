@@ -32,14 +32,19 @@ Route::get('list',function (){
 
 Route::get('test',function (){
 
-    $jdate = '1394/11/25';
+//    $jdate = '1394/11/25';
+//
+//// get instance of \DateTime
+//
+//    $date = jDate::forge('now')->reforge('+ 3 days')->format('date');
+//
+//
+//    dd(jDate::forge('now')->format('date'));
 
-// get instance of \DateTime
 
-    $date = jDate::forge('now')->reforge('+ 3 days')->format('date');
-
-
-    dd(jDate::forge('now')->format('date'));
+    $today = Carbon::now();
+    $endDate = $today->addDays(3);
+    dd(Carbon::now()->diffInSeconds(Carbon::tomorrow()));
 });
 
 
@@ -442,6 +447,8 @@ Route::get('/get-time','MatchController@time');
 Route::get('get/tournament','MatchController@getTournament');
 
 Route::post('coordinate','OrganizeController@coordinate')->name('matchLocation');
+
+Route::get('get/messages','OrganizeController@GetMsg')->name('GetMsg');
 
 Route::get('convert/date',function (Request $request){
 

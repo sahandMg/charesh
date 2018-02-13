@@ -41,20 +41,25 @@
             <label for="InputFile">فایل قوانین</label>
             <input type="file" name="rulesPath" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" style="margin-top: 15px;">
         </div>
-        <div class="form-group">
-              <label>زمان پایان ثبت نام : </label>
-              <input class="form-control"  :style="style4" v-model="endTime"  name="endTime" type="number" min="1"   id="example-text-input">
-        </div>
+           <div class="form-group" id="endTimeDivId">
+               <label for="Name-input" style="width: 100%;">زمان پایان ثبت نام  </label>
+               {{--<div class="endTimeReg">--}}
+               <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="1"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
+               <span @input="convertDate" class="form-control"   v-model="date">@{{date}}</span>
+
+
+           </div>
         {{--<div class="form-group">--}}
               {{--<label>تاریخ شروع مسابقه : </label>--}}
 
               {{--<input class="form-control"  :style="style3"  name="startTime" type="text"  placeholder="yyyy/mm/dd" value="{{Request::old('startTime')}}" id="example-text-input">--}}
         {{--</div>--}}
-
+<br>
            <div class="form-group">
                <label for="Name-input">تاریخ شروع مسابقه  </label>
                <div>
                    <input style="float: right;margin-left: 1%;width: 25%;" type="number" min="1" max="31" class="form-control" @input="check"  :style="style3" v-model="startDay" placeholder="روز" name="startDay" type="text"  id="example-text-input">
+
                    <select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 40%;" class="form-control" id="sel1">
                        <option>فروردین</option>
                        <option>اردیبهشت</option>
@@ -75,7 +80,6 @@
                    </select>
                </div>
            </div>
-
 
            <br>
             @if($tournament->matchType == 'تیمی')
@@ -135,6 +139,27 @@
               font-size: 100%;
           }
       }
+      #endTimeDivId input {
+          width: 20%;
+          margin-left: 1%;
+          float: right;
+      }
+      #endTimeDivId span {
+          float: right;
+          margin-left: 1%;
+          width: 25%;
+      }
+      @media screen and (max-width: 600px) {
+          .endTimeReg input{
+              width: 40%;
+          }
+          .endTimeReg select{
+              width: 40%;
+          }
+          #endTimeDivId span {
+              width: 40%;
+          }
+      }
   </style>
  <script type="text/javascript" src="{{URL::asset('js/bootstrap.js')}}"></script>
  <script async defer
@@ -153,7 +178,8 @@
              startMonth:{!! json_encode(unserialize($tournament->startTime)[1]) !!},
              startYear:{!! json_encode(unserialize($tournament->startTime)[2]) !!},
              startDay:{!! json_encode(unserialize($tournament->startTime)[0]) !!},
-             endTime:{!! json_encode($tournament->endTimeDays) !!}
+             endTime:{!! json_encode($tournament->endTimeDays) !!},
+           date:{!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!}
          },
 
     methods:{
@@ -172,6 +198,14 @@
 
                 })
             }
+        },
+        check:function () {
+
+            vm = this
+            axios.get({!! json_encode(route('convertDate')) !!}+'?day=' + this.endTime).then(function (response) {
+
+                vm.date = response.data
+            })
         },
         hidden:function () {
             this.hide = true

@@ -65,12 +65,23 @@
 
             <h4>  مشخصات تیم را وارد کنید </h4>
 
-            <div class="form-group">
-                <label>لوگو تیم (100px * 100px) : </label>
-                <!--<div  style="float: right">-->
-                <input name="logo" type="file" class="form-control-file"  aria-describedby="fileHelp">
+            {{--<div class="form-group">--}}
+                {{--<label>لوگو تیم (100px * 100px) : </label>--}}
+                {{--<!--<div  style="float: right">-->--}}
+                {{--<input name="logo" type="file" class="form-control-file"  aria-describedby="fileHelp">--}}
                 {{--<!--</div>-->--}}
+            {{--</div>--}}
+            <div class="wrapperImageUpload">
+                <div class="boxImageUpload">
+                    <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/100_100.jpg')}}'); "></div>
+                    <div class="upload-options">
+                        <label>
+                            <input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
+                        </label>
+                    </div>
+                </div>
             </div>
+
             <div class="form-group">
                 <label> نام تیم</label>
                 <input name="teamName" class="form-control" type="text" value="{{Request::old('teamName')}}">

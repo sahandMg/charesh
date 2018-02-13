@@ -85,17 +85,17 @@
 <header>
     <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh.jpg')}}"></a>
 
-    <h1>راهی<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
+    <h1>ابزاری <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>
     <nav class="topnav" id="myTopnav">
         <div class="dropdown1 leftNav" id="dropdownBtn">
             @if(isset(Auth::user()->organize))
                 @if(Auth::user()->role == 'supplier')
                     {{--{{ Auth::user()->organize->unread }}--}}
-                    <button class="dropbtn">{{Auth::user()->organize->name}}<span class="notification notify"></span></button>
+                    <button class="dropbtn">{{Auth::user()->organize->name}} <span class="notification notify"></span></button>
                 @else
                     {{--{{ $name->unread }}--}}
-                    <button class="dropbtn">{{Auth::user()->username}}<span class="notification notify"></span></button>
+                    <button class="dropbtn">{{Auth::user()->username}} <span class="notification notify"></span></button>
                 @endif
 
             @else
@@ -172,23 +172,22 @@
 </script>
 <style type="text/css">
     .notification.notify:after {
-        display: block;
-        position: absolute;
-        top: 0px;
-        left: 9em;
-        /*right: -0.1em;*/
-        /*top: -30px;*/
-        /*right: 1.3333em;*/
-        width: 2em;
-        /*margin: 1.0833em 0;*/
         margin:  0;
         border-radius: 50%;
         font-size: 0.75em;
-        line-height: 2;
         text-align: center;
         background: #f53d3d;
         box-shadow: 0 0 0 0.25em #c20a0a;
         animation: pulse 0.75s infinite;
+        padding: 1%;
+    }
+    .notification {
+        position: relative;
+        width: 100%;
+        padding: 0 ;
+        font-size: 100%;
+        color: white;
+        cursor: pointer;
     }
     @import url(https://fonts.googleapis.com/css?family=Lato:300|Oswald);
 

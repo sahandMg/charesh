@@ -118,7 +118,8 @@ class MatchController extends Controller
 
 
 
-        $today = Carbon::now();
+        $today = Carbon::now()->addSeconds(Carbon::now()->diffInSeconds(Carbon::tomorrow()) -1);
+
         $endDate = $today->addDays($tournament->endTime);
 
 
@@ -302,7 +303,7 @@ class MatchController extends Controller
         $tournamentItems->startTime = $tournament->startTime;
         $tournamentItems->endTime = $tournament->endTime;
         $tournamentItems->endRemain = $tournament->endRemain;
-        $tournamentItems->endRemain = $tournament->endRemain;
+//        $tournamentItems->endRemain = $tournament->endRemain;
         $tournamentItems->comment = $tournament->comment;
         $tournamentItems->address = $tournament->address;
         $tournamentItems->lat = $tournament->lat;
@@ -500,14 +501,16 @@ class MatchController extends Controller
 	$id = $request->id;
        $matchDays = Tournament::all()->pluck('endRemain');
         $i = 0;
+//        dd(Carbon::now()->diffInSeconds(Carbon::tomorrow()));
         foreach ($matchDays as $matchDay) {
             $today = Carbon::now();
+
             if(Carbon::parse($matchDay) >= Carbon::now()) {
-                $seconds[$i] = $today->diffInSeconds(Carbon::parse($matchDay));
+                $seconds[$i] = Carbon::now()->diffInSeconds(Carbon::parse($matchDay));
                 $today = Carbon::now();
                 $days[$i] = $today->diffInDays(Carbon::parse($matchDay));
                 Tournament::where('endRemain', '=', $matchDay)->update(['endTimeDays' => $days[$i]]);
-                Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i]]);
+                Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i] ]);
                 $i++;
 
             }
@@ -517,7 +520,7 @@ class MatchController extends Controller
                 $days[$i] = 0;
 
                 Tournament::where('endRemain', '=', $matchDay)->update(['endTimeDays' => $days[$i]]);
-                Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i]]);
+                Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i] ]);
 
             }
 

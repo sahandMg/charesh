@@ -438,7 +438,12 @@ header h1 {
 .line {
     display: none;
 }
-
+@media screen and (max-width: 900px) {
+    .tournoment {
+        width: 98%;
+        margin-left: 1%;
+    }
+}
 @media screen and (max-width: 800px) {
     .tournomentHeader a span {
         margin-top: 25px;
@@ -461,9 +466,14 @@ header h1 {
         font-size: 150%;
         font-weight: 400;
     }
+
 }
 
 @media screen and (max-width: 600px) {
+    .tournoment {
+        width: 97%;
+        margin-left: 1.5%;
+    }
     .nav-tabs li {
         font-size: 60%;
         font-weight: 400;

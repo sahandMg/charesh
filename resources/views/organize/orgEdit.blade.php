@@ -6,9 +6,9 @@
 
    <div class="container" style=" direction: rtl;" id="Edit">
 
-    <div class="card row" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;padding: 1%;margin-top: 2%;background-color: white;">
+    <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;margin-top: 2%;background-color: white;">
         <h2 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">تنظیمات پروفایل</h2>
-        <form style="padding: 20px;" method="POST" action="{{route('orgEdit',['id'=>$org->id,'orgName'=>$name->organize->slug])}} " enctype="multipart/form-data">
+        <form style="padding: 1%;" method="POST" action="{{route('orgEdit',['id'=>$org->id,'orgName'=>$name->organize->slug])}} " enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             @if(count(session('message')) )
                 <div class="alert alert-success ">
@@ -27,39 +27,39 @@
                     {{session('settingError')}}
                 </div>
             @endif
-       <div class="form-group">
-        <label for="InputFile">لوگو (100px * 100px) : </label>
-        <input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-       </div>
-            {{--<div class="wrapperImageUpload">--}}
-                {{--<div class="boxImageUpload">--}}
-                    {{--<div class="js--image-preview"></div>--}}
-                    {{--<div class="upload-options">--}}
-                        {{--<label>--}}
-                            {{--<input name="logo_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
-                        {{--</label>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
+       {{--<div class="form-group">--}}
+        {{--<label for="InputFile">لوگو (100px * 100px) : </label>--}}
+        {{--<input type="file" name="logo_path" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">--}}
+       {{--</div>--}}
+            <div class="wrapperImageUpload">
+                <div class="boxImageUpload">
+                    <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/100_100.jpg')}}'); "></div>
+                    <div class="upload-options">
+                        <label>
+                            <input name="logo_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
+                        </label>
+                    </div>
+                </div>
+            </div>
       <div class="form-group">
         <label for="InputFile">توضیحات : </label>
-        <textarea class="form-control" name="comment" id="summernote" rows="3""></textarea>
+        <textarea class="form-control" name="comment" id="summernote" rows="3"></textarea>
        </div>
-       <div class="form-group">
-        <label for="InputFile">عکس پشت زمینه (1150px * 380px) : </label>
-        <input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">
-       </div>
+       {{--<div class="form-group">--}}
+        {{--<label for="InputFile">عکس پشت زمینه (1150px * 380px) : </label>--}}
+        {{--<input type="file" class="form-control-file" name="background_path" id="exampleInputFile" aria-describedby="fileHelp">--}}
+       {{--</div>--}}
             {{----}}
-            {{--<div class="wrapperImageUpload">--}}
-                {{--<div class="boxImageUpload">--}}
-                    {{--<div class="js--image-preview"></div>--}}
-                    {{--<div class="upload-options">--}}
-                        {{--<label>--}}
-                            {{--<input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />--}}
-                        {{--</label>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
+            <div class="wrapperImageUpload">
+                <div class="boxImageUpload">
+                    <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/1150_380.jpg')}}'); "></div>
+                    <div class="upload-options">
+                        <label>
+                            <input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
+                        </label>
+                    </div>
+                </div>
+            </div>
             @if(Auth::user()->role == 'supplier')
                 <div class="form-group" style="font-weight: 400;font-size: 125%;">
                     <label class="container" style="color:darkgreen"> برگزار کننده مسابقه

@@ -79,7 +79,7 @@
 <header>
     <a href="{{route('home')}}" class="logo"><img src="{{URL::asset('images/charesh.jpg')}}"></a>
 
-    <h1>ابزاری<b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
+    <h1>ابزاری <b>برای اطلاع رسانی </b> ، <b>مدیریت</b> و <b>ثبت نام</b>  مسابقات  </h1>
     <br>
     <nav class="topnav" id="myTopnav">
         <a href="{{route('login')}}" class="leftNav"> ورود <i class="fa fa-sign-in fa-lg"></i></a>

@@ -206,10 +206,53 @@ class OrganizeController extends Controller
             $i++;
         }
         Auth::user()->organize->update(['unread'=>0]);
+
         return view('organize.messages',compact('messages','name','remain'));
 
     }
 
+
+    public function GetMsg(){
+
+
+
+
+            for($i=1 ; $i <= count(User::all()) ; $i++){
+               if(isset(User::all()[$i])){
+                    if(  User::all()[$i] != null){
+
+                        $user_ids[$i] = User::all()[$i]['id'];
+                    }
+
+               }
+
+            }
+            $i=0;
+            for($t=1 ; $t<= count(User::all()); $t++){
+
+                if(isset(User::all()[$t])) {
+
+                    if(Message::where('user_id',$user_ids[$t])->first() != null){
+
+                        $messages[$i] = Message::where([['user_id', $user_ids[$t]], ['organize_id', Auth::user()->organize->id]])->orderBy('created_at', 'decs')->get();
+                        $i++;
+                    }
+
+
+                }
+            }
+//        foreach ($messages as $message) {
+//
+//            $today = Carbon::now();
+//            $messageDay = Carbon::parse($message->created_at);
+//            $remain[$i] = ($today->diffInDays(Carbon::parse($messageDay)));
+//            $i++;
+//        }
+
+
+        return  $messages;
+
+    }
 
 
 

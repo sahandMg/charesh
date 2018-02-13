@@ -41,6 +41,7 @@
             </a>
             <h2>  {{$tournament->matchName}} </h2>
         </div>
+
         <div class="banner">
           <img src="{{URL::asset('storage/images/'.$tournament->path)}}" alt="{{$tournament->path}}" >
             <div class="top-right" style="direction: rtl"> {{$tournament->endTimeDays}} روز مانده </div>
@@ -60,6 +61,10 @@
                <small><i class="fa fa-user"></i> {{$tournament->matchType}} </small>
              @endif
         </div>
+        <div class="clockTimer">
+            <br>
+          <div class="clock"></div>
+        </div>
         <hr>
         <div class="tournomentDescription">
             <p>{!!$tournament->comment!!}</p>
@@ -75,9 +80,11 @@
                         <h6> قوانین </h6>
                         <a class="pdfFile" href="{{URL::asset('storage/pdfs/'.$tournament->rules)}}"><i class="fa fa-file-pdf-o fa-lg" aria-hidden="true"></i></a>
                     </div>
-                    <div  class="column">
-                        <button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'" style="margin-top: 20px;"> ارتباط با برگزار کننده <i style="font-size: 125%;" class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                    </div>
+                    @if(Auth::check())
+                        <div  class="column">
+                            <button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'" style="margin-top: 20px;"> ارتباط با برگزار کننده <i style="font-size: 125%;" class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        </div>
+                     @endif
                 </div>
                 <br>
             </div>
@@ -101,8 +108,6 @@
         <br>
         <div class="tournomentRegister">
             <hr>
-
-
             @if($tournament->endTime > 0 && $tournament->sold != $tournament->tickets )
                 @if(Auth::check())
                     @if(count($users) > 0)
@@ -120,13 +125,10 @@
                     @endif
                 @endif
             @endif
-
-
         </div>
         <br>
         <br>
     </div>
-
 </div>
 <br>
 <br>
@@ -188,7 +190,7 @@
     .modal2 {
         display: none;
         position: fixed;
-        z-index: 1;
+        z-index: 1000;
         left: 0;
         top: 0;
         width: 100%;
@@ -234,7 +236,21 @@
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
         background-color:  #b36b00;
     }
+    .clockTimer {
+        display: block;
+        margin: auto;
+        text-align: center;
+        margin-left: 18%;
+    }
+    @media screen and (max-width: 1100px) {
+        .clockTimer {
+            margin-left: 14%;
+        }
+    }
     @media screen and (max-width: 1000px) {
+        .clockTimer {
+            margin-left: 7%;
+        }
         .top-right {
             top: 10px;
         }
@@ -243,6 +259,7 @@
         }
     }
     @media screen and (max-width: 800px) {
+
         .top-right {
             top: 10px;
         }
@@ -259,6 +276,9 @@
         }
     }
     @media screen and (max-width: 600px) {
+        .clockTimer {
+            margin-left: 20%;
+        }
         .top-right {
             top: 5px;
         }
@@ -277,6 +297,11 @@
         }
         .tournomentHeader h3 {
             font-size: 100%;
+        }
+    }
+    @media screen and (max-width: 500px) {
+        .clockTimer {
+            margin-left: 11%;
         }
     }
     input[type=text], input[type=password] {
@@ -314,7 +339,7 @@
     .modal {
         display: none;
         position: fixed;
-        z-index: 1;
+        z-index: 1000;
         left: 0;
         top: 0;
         width: 100%;
@@ -471,11 +496,10 @@
         }
     })
 </script>
-
- <script async defer
+<script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
- </script>
- <script>
+</script>
+<script>
  var g = {!! $tournament->minMember !!}
  function addInput() {
   if(g < {!! json_encode($tournament->maxMember) !!})

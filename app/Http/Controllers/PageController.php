@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Ip;
 use App\Url;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Requests\ContactUsRequest;
@@ -44,6 +45,20 @@ class PageController extends Controller
 
     public function home($num=null){
 
+
+
+                if(Ip::where('ip',request()->ip())->first() == null){
+                    $ips = new Ip();
+                    $ips->ip = request()->ip();
+                    $ips->save();
+                }
+
+
+
+
+
+
+
 //        $matches = Tournament::paginate(18);
         if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
             $page = Url::where('ip',request()->ip())->first()->pageUrl;
@@ -62,7 +77,7 @@ class PageController extends Controller
                 $today = Carbon::now();
                 $days[$i] = $today->diffInDays(Carbon::parse($matchDay));
                 Tournament::where('endRemain', '=', $matchDay)->update(['endTimeDays' => $days[$i]]);
-                Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i]]);
+                Tournament::where('endRemain', '=', $matchDay)->update(['endTime' => $seconds[$i] ]);
                 $i++;
 
             }

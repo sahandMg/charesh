@@ -88,6 +88,10 @@ class UserController extends Controller
 
         $user->update(['role'=>$request->radio]);
 
+        if($request->input('oldPass') && !$request->input('password') || !$request->input('repeat')){
+            return redirect()->back()->with(['settingError'=>'قسمت های کلمه عبور و تکرار کلمه عبور را تکمیل کنید']);
+        }
+
         if ($request->input('password') || $request->input('repeat')) {
             if(!$request->input('oldPass')){
                 return redirect()->back()->with(['settingError'=>'کلمه عبور قبلی را وارد کنید']);
@@ -355,11 +359,11 @@ class UserController extends Controller
             Url::where('ip', request()->ip())->delete();
 
         }
-        $url = new Url();
-        $url->token = csrf_token();
-        $url->ip = request()->ip();
-        $url->pageUrl = $_SERVER['HTTP_REFERER'];
-        $url->save();
+//        $url = new Url();
+//        $url->token = csrf_token();
+//        $url->ip = request()->ip();
+//        $url->pageUrl = $_SERVER['HTTP_REFERER'];
+//        $url->save();
 
         $transactions = Transaction::where('user_id',Auth::id())->orderBy('created_at','dcs')->get();
         return view('userProfile.credit', compact('name','lastPage','transactions'));
@@ -371,8 +375,8 @@ class UserController extends Controller
     public function postCredit(Request $request){
 
 
-        $MerchantID = '955f0452-ef04-11e7-9ab3-005056a205be'; //Required
-        $data = array('MerchantID' => '955f0452-ef04-11e7-9ab3-005056a205be',
+        $MerchantID = 'c06c8e74-0e3c-11e8-a51b-000c295eb8fc'; //Required
+        $data = array('MerchantID' => 'c06c8e74-0e3c-11e8-a51b-000c295eb8fc',
             'Amount' => $request->credit,
             'Email' => Auth::user()->email,
             'CallbackURL' => "http://charesh.ir/$request->username/credit/verify",
@@ -409,7 +413,7 @@ class UserController extends Controller
 
 
     }
-
+// تراکنش رو اول توو جانک ذخیره کن بعدش توو متد verify ببرش تووو transaction
 
 
     public function verify(Request $request){
