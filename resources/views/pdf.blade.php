@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<h1 style="text-align: center;direction: rtl">Challeng Bazaar ticket</h1>
+<h1 style="text-align: center;direction: rtl">Charesh ticket</h1>
 
 <div>
     <img height="50" class="img-rounded img-responsive" src="{{URL::asset('images/Logo.png')}}" alt="">

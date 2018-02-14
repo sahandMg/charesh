@@ -217,38 +217,31 @@ class OrganizeController extends Controller
 
 
 
-            for($i=1 ; $i <= count(User::all()) ; $i++){
-               if(isset(User::all()[$i])){
-                    if(  User::all()[$i] != null){
+        for($i=0 ; $i < count(User::all()) ; $i++){
+            if(isset(User::all()[$i])){
+                if(  User::all()[$i] != null){
 
-                        $user_ids[$i] = User::all()[$i]['id'];
-                    }
-
-               }
-
-            }
-            $i=0;
-            for($t=1 ; $t<= count(User::all()); $t++){
-
-                if(isset(User::all()[$t])) {
-
-                    if(Message::where('user_id',$user_ids[$t])->first() != null){
-
-                        $messages[$i] = Message::where([['user_id', $user_ids[$t]], ['organize_id', Auth::user()->organize->id]])->orderBy('created_at', 'decs')->get();
-                        $i++;
-                    }
-
-
+                    $user_ids[$i] = User::all()[$i]['id'];
                 }
-            }
-//        foreach ($messages as $message) {
-//
-//            $today = Carbon::now();
-//            $messageDay = Carbon::parse($message->created_at);
-//            $remain[$i] = ($today->diffInDays(Carbon::parse($messageDay)));
-//            $i++;
-//        }
 
+            }
+
+        }
+        $i=0;
+        for($t=0 ; $t< count(User::all()); $t++){
+
+
+
+            if(Message::where([['user_id', $user_ids[$t]], ['organize_id', Auth::user()->organize->id]])->first() != null){
+
+                $messages[$i] = Message::where([['user_id', $user_ids[$t]], ['organize_id', Auth::user()->organize->id]])->orderBy('created_at', 'decs')->get();
+                $i++;
+            }
+
+
+
+        }
+//
 
         return  $messages;
 
@@ -1558,24 +1551,24 @@ class OrganizeController extends Controller
 
     public function post_edit(Request $request){
 
-//	 $url = 'https://www.google.com/recaptcha/api/siteverify';
-//       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//       $options = array(
-//       'http' => array(
-//       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//       'method'  => 'POST',
-//       'content' => http_build_query($data),
-//         ),
-//       );
-//       $context  = stream_context_create($options);
-//       $result = file_get_contents($url, false, $context);
-//       if(json_decode($result)->success === false){
-//
-//       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
-//
-//       }
-//
+	 $url = 'https://www.google.com/recaptcha/api/siteverify';
+       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+// use key 'http' even if you send the request to https://...
+       $options = array(
+       'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data),
+         ),
+       );
+       $context  = stream_context_create($options);
+       $result = file_get_contents($url, false, $context);
+       if(json_decode($result)->success === false){
+
+       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+
+       }
+
 
         $rand = str_random('4');
         $rand2 = str_random('4');
@@ -1798,7 +1791,7 @@ class OrganizeController extends Controller
 
     }
 
-    public function teamDetails(Request $request){
+    public function teamDetail(Request $request){
 
         $name = Auth::user();
         $id = $request->id;
@@ -1806,24 +1799,71 @@ class OrganizeController extends Controller
         $tournament = Tournament::where('id', $id)->first();
         $teams=[];
 
+
         if (count(Tournament::where('id', $id)->first()->teams)) {
 
-            $teams = Tournament::where('id', $id)->first()->teams;
+            $team = Team::where('teamName', $request->teamName)->first();
 //        dd($teams[0]->groups);
             $route = 'participants';
 //        Group::where('tournament_id',$id);
 
-            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'teams'));
+            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'team'));
         }
         else{
 
-            $matches = Match::where('tournament_id', $id)->get();
+            $match = Match::where('user_id', User::where('username',$request->teamName)->first()->id)->first();
 
 
             $route = 'participants';
-            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'matches','teams'));
+            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'match','teams'));
 
         }
+
+
+
+    }
+
+    public function sendMessage(Request $request){
+
+        $message = new Message();
+        $message->user_id = $request->id;
+        $message->message = $request->text;
+        $message->organize_id = Auth::user()->organize->id;
+        $message->tournament_id = 0;
+        $message->name = Auth::user()->organize->slug;
+        $message->sender = 'org';
+        $message->save();
+
+        $user = User::where('id',$request->id)->first();
+        $user->update(['unread'=>$user->unread + 1 ]);
+
+        for($i=0 ; $i < count(User::all()) ; $i++){
+            if(isset(User::all()[$i])){
+                if(  User::all()[$i] != null){
+
+                    $user_ids[$i] = User::all()[$i]['id'];
+                }
+
+            }
+
+        }
+        $i=0;
+        for($t=0 ; $t< count(User::all()); $t++){
+
+
+
+            if(Message::where([['user_id', $user_ids[$t]], ['organize_id', Auth::user()->organize->id]])->first() != null){
+
+                $messages[$i] = Message::where([['user_id', $user_ids[$t]], ['organize_id', Auth::user()->organize->id]])->orderBy('created_at', 'decs')->get();
+                $i++;
+            }
+
+
+
+        }
+//
+
+        return  $messages;
 
 
 

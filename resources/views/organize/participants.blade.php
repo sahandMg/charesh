@@ -12,7 +12,8 @@
         @if(count($teams)>0)
           @foreach($teams as $team)
                 <div class="team">
-                    <img src="{{URL::asset('storage/images/'.$team->path)}}">
+
+                    <a href="{{route('teamDetail',['matchName'=>$tournament->slug,'teamName'=>$team->teamName,'id'=>$tournament->id])}}"><img src="{{URL::asset('storage/images/'.$team->path)}}"></a>
                     <b>{{$team->teamName}}</b>
                 </div>
            {{--<div class="row" style="padding: 25px;float: left;direction: ltr;">--}}
@@ -37,7 +38,7 @@
 
             @foreach($matches as $match)
                 <div class="team">
-                    <img src="{{URL::asset('storage/images/'.$match->user->path)}}">
+                    <a href="{{route('teamDetail',['matchName'=>$tournament->slug,'teamName'=>$match->user->username,'id'=>$tournament->id])}}"><img src="{{URL::asset('storage/images/'.$match->user->path)}}"></a>
                     <b>{{$match->user->username}}</b>
                 </div>
                 {{--<div class="row" style="padding: 25px;float: left;direction: ltr;">--}}
@@ -66,8 +67,8 @@
     <br>
 
 
-  
-  </div> 
+
+  </div>
 
 
 

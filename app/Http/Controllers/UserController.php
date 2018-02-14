@@ -58,23 +58,23 @@ class UserController extends Controller
     public function postSetting(Request $request)
     {
 
-//	$url = 'https://www.google.com/recaptcha/api/siteverify';
-//	$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//       $options = array(
-//       'http' => array(
-//       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//       'method'  => 'POST',
-//       'content' => http_build_query($data),
-//         ),
-//       );
-//       $context  = stream_context_create($options);
-//       $result = file_get_contents($url, false, $context);
-//       if(json_decode($result)->success === false){
-//
-//       return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
-//
-//       }
+	$url = 'https://www.google.com/recaptcha/api/siteverify';
+	$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+// use key 'http' even if you send the request to https://...
+       $options = array(
+       'http' => array(
+       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+       'method'  => 'POST',
+       'content' => http_build_query($data),
+         ),
+       );
+       $context  = stream_context_create($options);
+       $result = file_get_contents($url, false, $context);
+       if(json_decode($result)->success === false){
+
+       return redirect()->route('setting',['username'=>Auth::user()->slug])->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+
+       }
 
 
         $user = Auth::user();
@@ -88,8 +88,13 @@ class UserController extends Controller
 
         $user->update(['role'=>$request->radio]);
 
-        if($request->input('oldPass') && !$request->input('password') || !$request->input('repeat')){
-            return redirect()->back()->with(['settingError'=>'قسمت های کلمه عبور و تکرار کلمه عبور را تکمیل کنید']);
+        if($request->input('oldPass')){
+
+           if(!$request->input('password') || !$request->input('repeat')){
+
+               return redirect()->back()->with(['settingError'=>'قسمت های کلمه عبور و تکرار کلمه عبور را تکمیل کنید']);
+           }
+
         }
 
         if ($request->input('password') || $request->input('repeat')) {
@@ -457,15 +462,15 @@ class UserController extends Controller
                 $credit = Auth::user()->credit;
                 Auth::user()->update(['credit' => $transaction->money + $credit]);
 
-                if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
-                    $page = Url::where('ip',request()->ip())->first()->pageUrl;
-                    Url::where('ip',request()->ip())->first()->delete();
-                    return redirect($page)->with(['message'=>'اعتبار شما با موفقیت افزایش یافت']);
-                }else{
-                    return redirect()->route('home');
-                }
+//                if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
+//                    $page = Url::where('ip',request()->ip())->first()->pageUrl;
+//                    Url::where('ip',request()->ip())->first()->delete();
+//                    return redirect($page)->with(['message'=>'اعتبار شما با موفقیت افزایش یافت']);
+//                }else{
+//                    return redirect()->route('home');
+//                }
 
-
+                return redirect()->route('credit')->with(['message'=>'اعتبار شما با موفقیت افزایش یافت']);
 
 
 
@@ -521,7 +526,42 @@ class UserController extends Controller
 
     }
 
+public function GetMsgUser(){
 
+    for($i=0 ; $i < count(User::all()) ; $i++){
+        if(isset(Organize::all()[$i])){
+            if(  Organize::all()[$i] != null){
+
+                $org_ids[$i] = Organize::all()[$i]['id'];
+            }
+
+        }
+
+    }
+    $i=0;
+    for($t=0 ; $t< count(Organize::all()); $t++){
+
+
+
+        if(Message::where([['user_id', Auth::user()->id], ['organize_id', $org_ids[$t]]])->first() != null){
+
+            $messages[$i] = Message::where([['user_id',Auth::user()->id ], ['organize_id', $org_ids[$t]]])->orderBy('created_at', 'decs')->get();
+            $i++;
+        }
+
+
+
+    }
+
+    return  $messages;
+//
+
+    
+
+
+
+
+}
 
 
 }

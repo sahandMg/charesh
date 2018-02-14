@@ -1,66 +1,46 @@
-@extends('masterUserHeader.body')
+@extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
+@section('location')
+    @if($tournament->matchType == 'حضوری')
+
+        <meta name="geo.region" content="IR-11" />
+        <meta name="geo.placename" content="{{$tournament->city}}" />
+        <meta name="geo.position" content="{{$tournament->lat}},{{$tournament->lng}}" />
+        <meta name="ICBM" content="{{$tournament->lat}},{{$tournament->lng}}" />
+    @endif
+@endsection
+@section('matchName')
+    مسابقه {{$tournament->matchName}}
+@endsection
 @section('title')
-    چارش | شرکت کنندگان مسابقه  {{$tournament->matchName}}
+    چارش | مسابقه  {{$tournament->matchName}}
 @endsection
 @section('content')
-
-    @include('masterOrganize.body',['tournament'=> $tournament,'route'=>$route])
-
-    <div class="container">
+    @include('masterMatch.body',['tournament'=> $tournament,'route'=>$route])
+     <div class="container">
         <div class="wallDiv">
-            @if(count($team)>0)
+            {{--@if(count($team)>0)--}}
                 <div class="team">
                     <img src="{{URL::asset('storage/images/'.$team->path)}}"  style="border-radius: 4px;">
                     <h1 style="float: right;"> <b>{{$team->teamName}}</b> </h1>
                 </div>
-                <h2> اعضای تیم </h2>
-                <hr>
-                <div style="float: right;padding: 0;width: 100%;margin: 0;">
-                    @for($i=0 ; $i < count($team->groups);$i++)
+            <h2> اعضای تیم </h2>
+            <hr>
+                <div style="float: left;padding: 0;width: 100%;margin: 0;">
+                   @for($i=0 ; $i < count($team->groups);$i++)
                         <div class="player">
                             <img style="border-radius: 5px;" src="{{URL::asset('images/userImage.jpg')}}">
                             <b>{{$team->groups[$i]->name}}</b>
-                            @for($t=0 ; $t<count(unserialize($team->groups[0]->moreInfo)) ; $t++)
-                                <p>{{unserialize($tournament->moreInfo)[$t]}}</p>
-                                <p> {!! unserialize($team->groups[$t]->moreInfo)[$t] !!}</p>
-                            @endfor
                         </div>
-                    @endfor
+                   @endfor
                 </div>
+            {{--@else--}}
+                {{--<div class="team">--}}
+                    {{--<img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="100px;">--}}
+                {{--</div>--}}
+            {{--@endif--}}
 
-            @else
-
-
-                    {{--<div class="team">--}}
-                        {{--<img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">--}}
-
-                    {{--</div>--}}
-                    {{--<div class="row" style="padding: 25px;float: left;direction: ltr;">--}}
-
-
-                    {{--</div>--}}
-                    {{--<div class="row" style="border: 2px solid;border-radius: 10px;">--}}
-
-                    {{--<div class="col-5">--}}
-                    {{--<p><strong> نام شرکت کننده </strong></p>--}}
-
-                    {{--<p>{{$match->user->username}}</p>--}}
-
-                    {{--</div>--}}
-                    {{--<div class="col-7">--}}
-                    {{--<p><strong>توضیحات</strong></p>--}}
-
-                        {{--@for($t=0 ; $t<count(unserialize($match->moreInfo)) ; $t++)--}}
-
-                        {{--<p>{{unserialize($tournament->moreInfo)[$t]}}</p>--}}
-                       {{--<p> {!! unserialize($match->moreInfo)[$t] !!}</p>--}}
-                        {{--@endfor--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
-
-
-            @endif
-    </div>
+        </div>
+     </div>
     <style>
         .wallDiv {
             width: 95%;
@@ -99,7 +79,7 @@
             /*margin: 0;*/
         }
         .player {
-            width: 50%;
+            width: 20%;
             direction: ltr;
             margin-bottom: 1%;
             float: left;
@@ -134,7 +114,11 @@
             .wallDiv h2 {
                 font-size: 85%;
             }
+            .player {
+                width: 25%;
+            }
         }
+
         @media screen and (max-width: 600px) {
             .team {
                 width: 50%;
@@ -149,12 +133,12 @@
             .team h1 {
                 font-size: 75%;
             }
+            .player {
+                width: 50%;
+            }
             .player img {
                 height: 40px;
                 width: 40px;
-            }
-            .player {
-                width: 100%;
             }
         }
     </style>

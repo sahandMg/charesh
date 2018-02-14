@@ -11,10 +11,14 @@
 |
 */
 
+use App\Message;
+use App\Organize;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Morilog\Jalali\jDate;
 use Morilog\Jalali\jDateTime;
 use Spatie\Browsershot\Browsershot;
@@ -30,24 +34,35 @@ Route::get('list',function (){
 });
 //
 
-Route::get('test',function (){
+Route::get('test',function () {
 
-//    $jdate = '1394/11/25';
-//
-//// get instance of \DateTime
-//
-//    $date = jDate::forge('now')->reforge('+ 3 days')->format('date');
-//
-//
-//    dd(jDate::forge('now')->format('date'));
+    for($i=0 ; $i < count(User::all()) ; $i++){
+        if(isset(Organize::all()[$i])){
+            if(  Organize::all()[$i] != null){
+
+                $org_ids[$i] = Organize::all()[$i]['id'];
+            }
+
+        }
+
+    }
+    $i=0;
+    for($t=0 ; $t< count(Organize::all()); $t++){
 
 
-    $today = Carbon::now();
-    $endDate = $today->addDays(3);
-    dd(Carbon::now()->diffInSeconds(Carbon::tomorrow()));
+
+        if(Message::where([['user_id', Auth::user()->id], ['organize_id', $org_ids[$t]]])->first() != null){
+
+            $messages[$i] = Message::where([['user_id',Auth::user()->id ], ['organize_id', $org_ids[$t]]])->orderBy('created_at', 'decs')->get();
+            $i++;
+        }
+
+
+
+    }
+
+    return  $messages;
 });
-
-
 
 // ---------------- Admin panel -----------------------
 
@@ -236,7 +251,9 @@ Route::group(['prefix'=>'organization'],function (){
 
 
 
-    Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@teamDetails']);
+    Route::get('{matchName}/participants',['middleware'=> ['guest','organize'],'as'=>'participants','uses'=>'OrganizeController@participants']);
+
+    Route::get('{matchName}/team-detail',['middleware'=> ['guest','organize'],'as'=>'teamDetail','uses'=>'OrganizeController@teamDetail']);
 
     Route::post('coordinate','OrganizeController@OrgCoordinate')->name('orgLocation');
 
@@ -367,6 +384,8 @@ Route::group(['prefix'=>'{username}'],function(){
 
     Route::get('logout',['as'=>'logout','uses'=>'AuthController@logout']);
 
+    Route::get('team-profile',['as'=>'teamProfile','uses'=>'MatchController@teamProfile']);
+
 });
 
 
@@ -448,7 +467,7 @@ Route::get('get/tournament','MatchController@getTournament');
 
 Route::post('coordinate','OrganizeController@coordinate')->name('matchLocation');
 
-Route::get('get/messages','OrganizeController@GetMsg')->name('GetMsg');
+
 
 Route::get('convert/date',function (Request $request){
 
@@ -465,3 +484,10 @@ Route::get('convert/date',function (Request $request){
 
 
 })->name('convertDate');
+
+Route::get('get/messages','OrganizeController@GetMsg')->name('GetMsg');
+Route::post('send/msg','OrganizeController@sendMessage')->name('sendMessage');
+
+Route::get('get/messages/user','UserController@GetMsgUser')->name('GetMsgUser');
+
+

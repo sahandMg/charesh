@@ -83,12 +83,15 @@
 
            <br>
             @if($tournament->matchType == 'تیمی')
-               <div class="form-group" id="fardi">
-                   <label> تعداد شرکت تیم ها : </label>
-                   <input type="number" name="maxAttenders" min="1" class="form-control" placeholder="به عدد" id="example-text-input">
+               <div class="form-group" id="timi">
+                   <label> تعداد تیم های شرکت کننده : </label>
+                   <input type="number" @input="check" v-model="timi" name="maxAttenders" min="1" class="form-control" placeholder="به عدد" id="example-text-input">
                </div>
             @elseif($tournament->matchType == 'فردی')
-
+               <div class="form-group" id="fardi">
+                   <label> تعداد شرکت کنندگان : </label>
+                   <input type="number" v-model="fardi" @input="check" name="maxAttenders" min="1" class="form-control" placeholder="به عدد" id="example-text-input">
+               </div>
              @endif
            <br>
           <div class="form-group">
@@ -101,7 +104,7 @@
           </div>
         @endif
         <div class="form-group" style="padding-right: 20px;">
-            <button  @click="hidden" type="submit" v-show="!hide" class="btn btn-primary">ذخیره تغییرات</button>
+            <button  @click="hidden" type="submit" v-show="!hide" :disabled="saveBtn" class="btn btn-primary">ذخیره تغییرات</button>
             <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ذخیره </button>
             <button type="button" @click="cancel" class="btn btn-danger">لغو مسابقه</button>
         </div>
@@ -179,7 +182,10 @@
              startYear:{!! json_encode(unserialize($tournament->startTime)[2]) !!},
              startDay:{!! json_encode(unserialize($tournament->startTime)[0]) !!},
              endTime:{!! json_encode($tournament->endTimeDays) !!},
-           date:{!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!}
+           date:{!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!},
+             saveBtn:false,
+             fardi:{!! json_encode($tournament->maxAttenders) !!},
+             timi:{!! json_encode($tournament->maxTeam) !!},
          },
 
     methods:{
@@ -200,6 +206,27 @@
             }
         },
         check:function () {
+
+            if(this.fardi != null){
+
+                if(this.endTime == null || this.endTime == 0 || this.startDay == 0 || this.startDay == null || this.fardi == 0 || this.fardi == null){
+                    this.saveBtn = true
+                }else{
+
+                    this.saveBtn = false
+                }
+            }else
+            if(this.timi != null){
+
+                if(this.endTime == null || this.endTime == 0 || this.startDay == 0 || this.startDay == null || this.timi == 0 || this.timi == null){
+                    this.saveBtn = true
+                }else{
+
+                    this.saveBtn = false
+                }
+
+            }
+
 
             vm = this
             axios.get({!! json_encode(route('convertDate')) !!}+'?day=' + this.endTime).then(function (response) {

@@ -131,7 +131,7 @@
     چارش | پیام های  {{Auth::user()->username}}
 @endsection
 @section('content')
-    <div class="container" style="direction: rtl;margin-top: 1%;" id="msg">
+    <div class="container" style="direction: rtl;margin-top: 1%;" id="msg" xmlns="http://www.w3.org/1999/html">
         {{--@if(count($userMessages) != 0)--}}
         {{--<form style="padding: 20px;" method="POST" action="{{route('deleteNotification',['username'=>Auth::user()->username])}}">--}}
         {{--<input type="hidden" name="_token" value="{{csrf_token()}}">--}}
@@ -142,41 +142,23 @@
 
         <div v-for="message in messages" id="accordion" role="tablist" aria-multiselectable="true">
             {{--@for($i = 0 ; $i< count($userMessages) ; $i++)--}}
+
             <button  class="accordion"> <span style="margin-left:40%;"> 21 روز قبل </span> </button>
             <div class="panel">
                 {{--<p>{!!$userMessages[$i]->message!!}</p>--}}
 
                 <div v-for="msg in message" class="container2">
 
-                    {{--<img src="{{URL::asset('storage/images')}}/@{{ msg.name }}.jpg" alt="Charesh.ir" style="width:100%;">--}}
+                    <img src="{{URL::asset('storage/images')}}/@{{ msg.name }}.jpg" alt="Charesh.ir" style="width:100%;">
                     <p>@{{{ msg.message }}}</p>
                     <span class="time-right">@{{ msg.created_at }}</span>
                 </div>
-
-                <div class="container2 darker">
-                    <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
-                    <p>Hey! I'm fine. Thanks for asking!</p>
-                    <span class="time-left">11:01</span>
-                </div>
-
-                <div class="container2">
-                    <img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
-                    <p>Sweet! So, what do you wanna do today?</p>
-                    <span class="time-right">11:02</span>
-                </div>
-
-                <div class="container2 darker">
-                    <img src="/w3images/avatar_g2.jpg" alt="Avatar" style="width:100%;">
-                    <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-                    <span class="time-left">11:05</span>
-                </div>
-                <form method="POST" style="margin-bottom: 1%;">
-                    <div class="form-group">
+                <div class="form-group">
                         <label>متن پیام</label>
-                        <textarea   name="message" class="form-control" rows="10"></textarea>
+                        <textarea v-model="text" @input="check"  name="message" class="form-control" rows="10"></textarea>
                     </div>
-                    <input type="submit" class="btn btn-primary" value="ارسال پیام">
-                </form>
+                    <button @click="send(message[0].user_id)" :disabled="btn" type="button" class="btn btn-primary">ارسال پیام</button>
+
             </div>
             {{--@endfor--}}
         </div>
@@ -221,20 +203,7 @@
         }
     </style>
     <script>
-        var acc = document.getElementsByClassName("accordion");
-        var i;
 
-        for (i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight){
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
-                }
-            });
-        }
     </script>
     <style>
         .container2 {
@@ -285,16 +254,62 @@
         new Vue({
             el:'#msg',
             data:{
-                messages:['']
+                messages:[''],
+                text:'',
+                btn:true
             },
             created:function () {
                 vm = this
+
                 axios.get({!! json_encode(route('GetMsg')) !!}).then(function (response) {
 
                   vm.messages = response.data
-
                     console.log(vm.messages)
+
+
                 })
+                setTimeout(this.msg,1000)
+            },
+            methods:{
+
+                check:function () {
+
+                    if(this.text.length>0){
+                        this.btn = false
+                    }else{
+                        this.btn = true
+                    }
+
+                },
+                msg:function () {
+
+                    var acc = document.getElementsByClassName("accordion");
+                    var i;
+
+                    for (i = 0; i < acc.length; i++) {
+                        acc[i].addEventListener("click", function() {
+                            this.classList.toggle("active");
+                            var panel = this.nextElementSibling;
+                            if (panel.style.maxHeight){
+                                panel.style.maxHeight = null;
+                            } else {
+                                panel.style.maxHeight = panel.scrollHeight + "px";
+                            }
+                        });
+                    }
+                },
+                send:function (id) {
+                    vm = this
+                    axios.post({!! json_encode(route('sendMessage')) !!},{'text':vm.text,'id':id}).then(function (response) {
+
+                        vm.messages = response.data
+                        vm.text = ''
+                        vm.btn = true
+                    })
+
+                    setTimeout(this.msg,1000)
+
+                }
 
             }
         })

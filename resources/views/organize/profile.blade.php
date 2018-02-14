@@ -23,6 +23,14 @@
         <hr>
         <div class="description">
             <p>{!! $org->comment !!}</p>
+
+            @if($org->lat != 0 && $org->lng != 0)
+                <div class="col-6">
+                    <div id="map" style="width:100%;height: 250px; background:whitesmoke;">
+                    </div>
+                </div>
+            @endif
+
         </div>
         <hr>
         <div class="tournoments">
@@ -88,7 +96,23 @@
         <br>
         <br>
     </div>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
+    </script>
+    <script>
 
+        function myMap() {
+            var mapCanvas = document.getElementById("map");
+            var myCenter = new google.maps.LatLng({!! json_encode($org->lat) !!},{!! json_encode($org->lng) !!});
+            var mapOptions = {center: myCenter, zoom: 15};
+            var map = new google.maps.Map(mapCanvas,mapOptions);
+            var marker = new google.maps.Marker({
+                position: myCenter,
+                animation: google.maps.Animation.BOUNCE
+            });
+            marker.setMap(map);
+        }
+    </script>
     <style>
         div.box
         {

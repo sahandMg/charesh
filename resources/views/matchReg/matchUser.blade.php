@@ -17,14 +17,16 @@
         @if($tournament->matchType == 'انفرادی')
             @for($i=0 ; $i< count($player);$i++)
                 <div class="team">
-                    <img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$player[$i]->path)}}">
+
+                    <a href="{{route('teamProfile',['matchName'=>$tournament->slug,'teamName'=>$player[$i]->username,'id'=>$tournament->id])}}">     <img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$player[$i]->path)}}"> </a>
                     <b>{{$player[$i]->username}}</b>
                 </div>
             @endfor
         @else
             @for($i=0 ; $i< count($team);$i++)
                 <div class="team">
-                    <img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$team[$i]->path)}}">
+                    <a href="{{route('teamProfile',['matchName'=>$tournament->slug,'teamName'=>$team[$i]->teamName,'id'=>$tournament->id])}}"><img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$team[$i]->path)}}"></a>
+
                     <b>{{$team[$i]->teamName}}</b>
                 </div>
             @endfor

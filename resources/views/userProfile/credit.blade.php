@@ -16,7 +16,7 @@
              @endif
          @if(count(session('Error')) >0)
              <div class="alert alert-danger" role="alert">
-                 {{session('message')}}
+                 {{session('Error')}}
              </div>
          @endif
       <div class="form-group">

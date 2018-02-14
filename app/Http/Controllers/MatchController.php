@@ -1377,6 +1377,41 @@ class MatchController extends Controller
     }
 
 
+    public function teamProfile(Request $request){
+
+        $name = Auth::user();
+        $id = $request->id;
+        $orgName = Auth::user()->organize->name;
+        $tournament = Tournament::where('id', $id)->first();
+        $teams=[];
+        if(Auth::check()){
+
+            $auth = 1;
+        }else{
+            $auth = 0 ;
+        }
+
+        if (count(Tournament::where('id', $id)->first()->teams)) {
+
+            $team = Team::where('teamName', $request->teamName)->first();
+//        dd($teams[0]->groups);
+            $route = 'participants';
+//        Group::where('tournament_id',$id);
+
+            return view('matchReg.teamProfile', compact('orgName','route', 'name', 'tournament', 'team','auth'));
+        }
+        else{
+
+            $match = Match::where('user_id', User::where('username',$request->teamName)->first()->id)->first();
+
+
+            $route = 'participants';
+            return view('matchReg.teamProfile', compact('orgName','route', 'name', 'tournament', 'match','teams','auth'));
+
+        }
+
+
+    }
 
 
 }

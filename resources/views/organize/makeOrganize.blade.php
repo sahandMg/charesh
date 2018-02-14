@@ -38,7 +38,7 @@
          {{--</div>--}}
          <div class="wrapperImageUpload">
              <div class="boxImageUpload">
-                 <div class="js--image-preview"></div>
+                 <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/100_100.jpg')}}'); "></div>
                  <div class="upload-options">
                      <label>
                          <input name="logo_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
@@ -56,7 +56,7 @@
          {{--</div>--}}
          <div class="wrapperImageUpload">
              <div class="boxImageUpload">
-                 <div class="js--image-preview"></div>
+                 <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/1150_380.jpg')}}'); "></div>
                  <div class="upload-options">
                      <label>
                          <input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />

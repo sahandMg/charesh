@@ -28,6 +28,7 @@
         {{--<div class="endTimeReg">--}}
         <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="1"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
         <span @input="convertDate" class="form-control"   v-model="date">@{{date}}</span>
+        <span @input="convertDate" class="form-control"   v-model="date">ساعت ۲۳:۵۹:۵۹</span>
             {{--<select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 40%;" class="form-control" id="sel1">--}}
                 {{--<option>فروردین</option>--}}
                 {{--<option>اردیبهشت</option>--}}
@@ -95,7 +96,7 @@
                </div>
            </div>
        </div>
-       <a href="{{url(\App\Url::where('token',csrf_token())->first()->pageUrl)}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
+       <a href="{{route('home')}}"><button   type="button" class="btn btn-danger">انصراف</button></a>
        <button :disabled="next"  type="submit" class="btn btn-primary">ادامه</button>
   </form>
   </div>

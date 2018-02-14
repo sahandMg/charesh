@@ -19,7 +19,7 @@
                                 <div class="tournomentSmall">
                                     @endif
                                     <div class="tournomentSmallHeader">
-                                        <a href="{{route('organizeProfile',['id'=>$match->organize->name])}}">
+                                        <a href="{{route('organizeProfile',['id'=>$match->organize->slug])}}">
                                             <img src="{{URL::asset('storage/images/'.$match->organize->logo_path)}}">
                                             <span class="fa fa-star checked"></span>
                                             <span class="fa fa-star checked"></span>

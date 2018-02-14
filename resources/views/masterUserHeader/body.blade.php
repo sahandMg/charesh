@@ -92,7 +92,7 @@
             @if(isset(Auth::user()->organize))
                 @if(Auth::user()->role == 'supplier')
                     {{--{{ Auth::user()->organize->unread }}--}}
-                    <button class="dropbtn">{{Auth::user()->organize->name}} <span class="notification notify"></span></button>
+                    <button class="dropbtn" style="direction: rtl">{{Auth::user()->organize->name}} <span class="notification notify"></span></button>
                 @else
                     {{--{{ $name->unread }}--}}
                     <button class="dropbtn">{{Auth::user()->username}} <span class="notification notify"></span></button>

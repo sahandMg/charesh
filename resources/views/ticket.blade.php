@@ -1,95 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
-            <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script>
-           <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.js"></script>
-            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">--}}
-
-    {{--<script type="text/javascript" src="../js/bundle.js"></script>--}}
-
-    <title>بلیط مسابقه</title>
-
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
+<div class="containar" style="direction: rtl;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div style="padding: 1%;float: left;width: 35%;">
 
-{{--<h1 style="text-align: center;direction: rtl">Challeng Bazaar ticket</h1>--}}
-<div class="container">
+                @php
+                    echo "<img src='data:image/png;base64," . $png . "'>";
 
-
-
-
-    {{--<div>--}}
-        {{--<img height="50" class="img-rounded img-responsive" src="{{URL::asset('images/Logo.png')}}" alt="">--}}
-    {{--</div>--}}
-
-
-    <img  style="position: absolute;top:20%;left:20%" width="50%" src="{{URL::asset('images/ticket.svg')}}" alt="">
-
-
+                @endphp
 
 
-    <div style="word-wrap: break-word;position: absolute;top:35%;left:60%;height: 28px;width:110px;">
-    <h6  style="position: relative;top:-20px;direction: rtl;">{{$owner}}</h6>
-    </div>
-<div style="word-wrap: break-word;position: absolute;top:44%;left:60%;height: 30px;width:110px;">
-
-    <h6  style="position:relative;top:-20px ;direction: rtl;">{{$name}}</h6>
-
-</div>
 
 
-    <h6 style="position: absolute;top:56%;left:64%;font-size: 14px;direction: rtl">{{unserialize($time)[0]}}  {{unserialize($time)[1]}} {{unserialize($time)[2]}}  </h6>
-
-    <h6  style="position: absolute;top:64%;left:63%;font-size: 14px;direction: rtl">  {{$cost}} تومان  </h6>
-
-<div style="word-wrap: break-word;position: absolute;top:80%;left:19%;height: 80px;width:49%;">
-
-    <h6 style="position: relative;top: -20px;direction: rtl">{!!  unserialize($tournament->moreInfo)[0] !!}</h6>
-
-</div>
-
-@if($tournament->mode == 'غیرحضوری')
-
-        <h6  style="position: absolute;top:47%;left:64%;">غیرحضوری</h6>
-
-@else
-        <div style="position: absolute;width: 300px;height: 40px;top:53%;left:45%">
-        <h6  style="direction: rtl;word-wrap: break-word; position: relative;top:-30px">{{$tournament->organize->address}}</h6>
+            <br>
+            <img src="{{URL::asset('images/charesh.jpg')}}" width="100" height="100" style="margin-right: 15%;">
         </div>
+        <div style="padding: 1%;float: left;width: 63%;">
 
-@endif
-
-
-        {{--<h4 style="text-align: center;">شرکت کنندگان</h4>--}}
-    <div style="position: absolute; top: 48%;left: 21%;display: inline-block;width: 20%;float:left;">
-
-    @foreach($names as $part)
-            <div  style="text-align: center;list-style: none;float: left;width: 50%;">
-                {{$part}}
-
-            </div>
-
-
-    @endforeach
-
-    </div>
-
-        <div style="position: absolute;top: 30%;left: 28%">
-       @php
-           echo "<img src='data:image/png;base64," . $png . "'>";
-
-       @endphp
+            <h1 style="text-align: center;direction: rtl"> {{$name}}</h1>
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td>نام برگزار کننده :<strong> {{$tournament->organize->name}} </strong></td>
+                    <td>نام خریدار :<strong> {{$owner}} </strong></td>
+                </tr>
+                <tr>
+                    <td>زمان :<strong> {{unserialize($time)[0]}} {{unserialize($time)[1]}} {{unserialize($time)[2]}} </strong></td>
+                    <td>هزینه ثبت نام :<strong style="direction: rtl"> {{$cost}} تومان </strong></td>
+                </tr>
+                <tr>
+                    <td  colspan="2">آدرس :<strong>{{$tournament->organize->address}} </strong></td>
+                </tr>
+                <tr>
+                    <td  colspan="2"  align="center"><strong> اعضای تیم </strong></td>
+                </tr>
 
 
+                    @for($i=0 ; $i<count($names);$i++)
+                <tr>
+
+
+
+                        <td align="center">  {{$names[$i]}}  </td>
+                    @if( ($i+1) != count($names) )
+                        <td align="center">  {{$names[$i+1]}}  </td>
+                    @endif
+
+
+                </tr>
+                @endfor
+
+                </tbody>
+            </table>
         </div>
-
+    </div>
 </div>
 </body>
 </html>

@@ -37,7 +37,7 @@
   <div style="margin: auto" id="bargraph"></div>
 
 
-
+<h4 style="direction: rtl;text-align: center" >تعداد ip های متفاوت : {{count(\App\Ip::all())}}</h4>
   <h4 style="text-align: center"><a href="{{route('moreInfo')}}">اطلاعات بیشتر</a></h4>
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='https://d3js.org/d3.v3.min.js'></script>
