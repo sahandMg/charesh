@@ -44,12 +44,12 @@
                                 @endif
                             </div>
                             @if($match->endTime == 0 && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="regButton" style="background-color: red;width: 80%;">زمان ثبت نام به پایان رسید</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" class="regButton" style="background-color: red;width: 80%;">زمان ثبت نام به پایان رسید</a>
                                 {{--<a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="btn btn-danger" style="text-align: center;margin: auto;display: block;margin-bottom: 1%;">زمان ثبت نام به پایان رسید</a>--}}
                             @elseif($match->tickets == $match->sold && $match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName ])}}" class="regButton" style="background-color: salmon;width: 80%;">بلیط های مسابقه تمام شد!</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug ])}}" class="regButton" style="background-color: salmon;width: 80%;">بلیط های مسابقه تمام شد!</a>
                             @elseif($match->canceled == 0)
-                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->matchName  ])}}" class="regButton">ثبت نام</a>
+                                <a href="{{route('matchRegistered',['id'=>$match->id,'matchName'=>$match->slug  ])}}" class="regButton">ثبت نام</a>
                             @else
                                 <br>
                             @endif

@@ -52,7 +52,7 @@
                             <tr>
                                 <td class="text" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 24px;">
                                     <div class="mktEditable" id="download_button" style="text-align: center;">
-                                        <a style="color:#ffffff; background-color: #ff8300; border: 20px solid #ff8300; border-left: 20px solid #ff8300; border-right: 20px solid #ff8300; border-top: 10px solid #ff8300; border-bottom: 10px solid #ff8300;border-radius: 3px; text-decoration:none;" href="{{route('generatePdf',['id'=>$match->id,'matchName'=>$match->matchName])}}">دریافت بلیط</a>
+                                        <a style="color:#ffffff; background-color: #ff8300; border: 20px solid #ff8300; border-left: 20px solid #ff8300; border-right: 20px solid #ff8300; border-top: 10px solid #ff8300; border-bottom: 10px solid #ff8300;border-radius: 3px; text-decoration:none;" href="{{route('generatePdf',['id'=>$match->id,'matchName'=>$match->matchName])}}">دریافت بلیت</a>
                                     </div>
                                 </td>
                             </tr>

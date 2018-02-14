@@ -2,11 +2,11 @@
 
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body' )
 @section('matchName')
-    مسابقه {{$tournament->matchName}}
+     {{$tournament->matchName}}
 @endsection
 
 @section('title')
-    چارش | مسابقه  {{$tournament->matchName}}
+    چارش |   {{$tournament->matchName}}
 @endsection
 
 @section('content')

@@ -31,32 +31,32 @@
             @else
 
 
-                    {{--<div class="team">--}}
-                        {{--<img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">--}}
+                    <div class="team">
+                        <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="50px;">
 
-                    {{--</div>--}}
-                    {{--<div class="row" style="padding: 25px;float: left;direction: ltr;">--}}
+                    </div>
+                    <div class="row" style="padding: 25px;float: left;direction: ltr;">
 
 
-                    {{--</div>--}}
-                    {{--<div class="row" style="border: 2px solid;border-radius: 10px;">--}}
+                    </div>
+                    <div class="row" style="border: 2px solid;border-radius: 10px;">
 
-                    {{--<div class="col-5">--}}
-                    {{--<p><strong> نام شرکت کننده </strong></p>--}}
+                    <div class="col-5">
+                    <p><strong> نام شرکت کننده </strong></p>
 
-                    {{--<p>{{$match->user->username}}</p>--}}
+                    <p>{{$match->user->username}}</p>
 
-                    {{--</div>--}}
-                    {{--<div class="col-7">--}}
-                    {{--<p><strong>توضیحات</strong></p>--}}
+                    </div>
+                    <div class="col-7">
+                    <p><strong>توضیحات</strong></p>
 
-                        {{--@for($t=0 ; $t<count(unserialize($match->moreInfo)) ; $t++)--}}
+                        @for($t=0 ; $t<count(unserialize($match->moreInfo)) ; $t++)
 
-                        {{--<p>{{unserialize($tournament->moreInfo)[$t]}}</p>--}}
-                       {{--<p> {!! unserialize($match->moreInfo)[$t] !!}</p>--}}
-                        {{--@endfor--}}
-                    {{--</div>--}}
-                    {{--</div>--}}
+                        <p>{{unserialize($tournament->moreInfo)[$t]}}</p>
+                       <p> {!! unserialize($match->moreInfo)[$t] !!}</p>
+                        @endfor
+                    </div>
+                    </div>
 
 
             @endif

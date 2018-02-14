@@ -9,16 +9,16 @@
     @endif
 @endsection
 @section('matchName')
-    مسابقه {{$tournament->matchName}}
+     {{$tournament->matchName}}
 @endsection
 @section('title')
-    چارش | مسابقه  {{$tournament->matchName}}
+    چارش |   {{$tournament->matchName}}
 @endsection
 @section('content')
     @include('masterMatch.body',['tournament'=> $tournament,'route'=>$route])
      <div class="container">
         <div class="wallDiv">
-            {{--@if(count($team)>0)--}}
+            @if($tournament->matchType == 'تیمی')
                 <div class="team">
                     <img src="{{URL::asset('storage/images/'.$team->path)}}"  style="border-radius: 4px;">
                     <h1 style="float: right;"> <b>{{$team->teamName}}</b> </h1>
@@ -33,11 +33,11 @@
                         </div>
                    @endfor
                 </div>
-            {{--@else--}}
-                {{--<div class="team">--}}
-                    {{--<img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="100px;">--}}
-                {{--</div>--}}
-            {{--@endif--}}
+            @else
+                <div class="team">
+                    <img class="card-img-top rounded" src="{{URL::asset('storage/images/'.$match->user->path)}}" alt="Card image cap" height="100px;">
+                </div>
+            @endif
 
         </div>
      </div>

@@ -47,16 +47,16 @@
                             @foreach($registereds as $registered)
                                 @if($registered->id == $matches[$i]->id && $matches[$i]->canceled == 0)
                                     <p hidden>{{$t++}}</p>
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton" style="background: orange;color: white;">جزییات مسابقه</a>
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="regButton" style="background: orange;color: white;">جزییات مسابقه</a>
                                 @endif
                             @endforeach
                             @if($t==0)
                                 @if($matches[$i]->endTime == 0 && $matches[$i]->canceled == 0 )
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton" style="background-color: red;width: 80%;">زمان ثبت نام به پایان رسید </a>
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="regButton" style="background-color: red;width: 80%;">زمان ثبت نام به پایان رسید </a>
                                 @elseif($matches[$i]->tickets == $matches[$i]->sold && $matches[$i]->canceled == 0)
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton" style="background-color: salmon;width: 80%;">بلیط های مسابقه تمام شد!</a>
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="regButton" style="background-color: salmon;width: 80%;">بلیط های مسابقه تمام شد!</a>
                                 @elseif($matches[$i]->canceled == 0)
-                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->matchName ])}}" class="regButton">ثبت نام</a>
+                                    <a href="{{route('matchRegistered',['id'=>$matches[$i]->id , 'matchName'=>$matches[$i]->slug ])}}" class="regButton">ثبت نام</a>
                                 @else
                                     <a class="regButton" style="visibility: hidden;">ثبت نام</a>
                                 @endif

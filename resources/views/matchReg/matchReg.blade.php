@@ -9,14 +9,14 @@
 @endif
  @endsection
 @section('matchName')
-    مسابقه {{$tournament->matchName}}
+     {{$tournament->matchName}}
 @endsection
 @section('title')
-    چارش | مسابقه  {{$tournament->matchName}}
+    چارش |   {{$tournament->matchName}}
 @endsection
 @section('content')
     @include('masterMatch.body',['tournament'=> $tournament,'route'=>$route])
-<div class="container" style="direction: rtl;margin-top: 1%; overflow-x: hidden;" id="app" >
+<div class="container" style="direction: rtl;margin-top: 1%; overflow-x: hidden;" id="Reg" >
     @if(count($errors->all()))
         <div class="alert alert-danger" role="alert">
             @foreach($errors->all() as $error)
@@ -84,7 +84,9 @@
                         <div  class="column">
                             <button class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'" style="margin-top: 20px;"> ارتباط با برگزار کننده <i style="font-size: 125%;" class="fa fa-paper-plane" aria-hidden="true"></i></button>
                         </div>
-                     @endif
+                     @else
+                        <a href="{{route('register')}}"><button @mouseover="Textin"  class="btn btn-primary"  style="margin-top: 20px;"> @{{ text }} <i style="font-size: 125%;" class="fa fa-paper-plane" aria-hidden="true"></i></button></a>
+                    @endif
                 </div>
                 <br>
             </div>
@@ -429,7 +431,7 @@
 <script src="{{URL::asset('js/flipclock.js')}}"></script>
 <script>
     vm = new Vue({
-        el:'#app',
+        el:'#Reg',
         data:{
             list:[''],
             time:"",
@@ -443,7 +445,8 @@
             count:4,
             username:'',
             copyLink:'',
-            LinkClass:'btn btn-success'
+            LinkClass:'btn btn-success',
+            text:'ارتباط با برگزار کننده'
         },
         created:function () {
                 var j = 1
@@ -473,6 +476,15 @@
             setTimeout(this.checkTime , 100)
         },
         methods:{
+            Textin:function () {
+
+                this.text = 'ابتدا وارد شوید'
+                setTimeout(this.Textout,3000)
+            },
+            Textout:function () {
+
+                this.text = 'ارتباط با برگزار کننده'
+            },
             copy:function () {
                 copyText = document.getElementById("myInput");
                 copyText.select();

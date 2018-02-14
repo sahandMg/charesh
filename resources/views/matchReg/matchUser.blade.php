@@ -1,10 +1,10 @@
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
 @section('matchName')
-    مسابقه {{$tournament->matchName}}
+     {{$tournament->matchName}}
 @endsection
 
 @section('title')
-    چارش | مسابقه  {{$tournament->matchName}}
+    چارش |   {{$tournament->matchName}}
 @endsection
 
 @section('content')
@@ -18,7 +18,8 @@
             @for($i=0 ; $i< count($player);$i++)
                 <div class="team">
 
-                    <a href="{{route('teamProfile',['matchName'=>$tournament->slug,'teamName'=>$player[$i]->username,'id'=>$tournament->id])}}">     <img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$player[$i]->path)}}"> </a>
+                    {{--<a href="{{route('teamProfile',['matchName'=>$tournament->slug,'teamName'=>$player[$i]->username,'id'=>$tournament->id])}}">     <img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$player[$i]->path)}}"> </a>--}}
+                    <img style="border-radius: 5px;" src="{{URL::asset('storage/images/'.$player[$i]->path)}}">
                     <b>{{$player[$i]->username}}</b>
                 </div>
             @endfor
