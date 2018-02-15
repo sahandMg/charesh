@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    چارش |   {{$tournament->matchName}}
+    چارش | {{$tournament->matchName}}
 @endsection
 
 @section('content')
@@ -46,7 +46,7 @@
 
     <h3 style="direction: rtl">  ثبت نام در مسابقه {{$tournament->matchName}}</h3>
 
-    <form style="width: 80%;margin: auto;" method="post"  enctype="multipart/form-data" action="{{route('matchRegister',['id'=>$tournament->id,'username'=>$name->username])}}">
+    <form style="width: 80%;margin: auto;" method="post"  enctype="multipart/form-data" action="{{route('matchRegister',['id'=>$tournament->id,'username'=>$name->slug])}}">
     <!---->
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <br>
@@ -90,15 +90,17 @@
             @for($i=1 ; $i<= $tournament->maxMember ; $i++)
             <div class="form-group ">
                 <label>  نفر {{$i}}  </label>
-                <input name="teammate{{$i}}" class="form-control" type="text" value="{{Request::old("teammate$i")}}">
+
+                <input name="teammate[{{$i}}]" class="form-control" type="text" value="{{Request::old("teammate.$i")}}">
                 <br>
                 @if(count($tournament->moreInfo)>0)
 
-                    @for($p=0 ; $p<count(unserialize($tournament->moreInfo));$p++)
-                        @if(unserialize($tournament->moreInfo)[$p]!= null)
+                    @for($p=1 ; $p<=count(unserialize($tournament->moreInfo));$p++)
+                        @if(unserialize($tournament->moreInfo)[$p-1]!= null)
 
-                            <label for="InputFile">{!!unserialize($tournament->moreInfo)[$p]!!}</label>
-                            <input type="text" class="form-control" name="info[{{$i}}][{{$p+1}}]" value="{{Request::old("info[$i][$p+1]")}}">
+                            <label for="InputFile">{!!unserialize($tournament->moreInfo)[$p-1]!!}</label>
+                            <input type="text" class="form-control" name="info[{{$i}}][{{$p}}]" value="{{session("info[$i][$p]")}}">
+
                             <br>
                         @endif
                     @endfor
@@ -113,7 +115,7 @@
 
             <div class="form-group">
                 <label> نفر {{$t+$i}} (ذخیره) </label>
-                <input name="subst[{{$t}}]" class="form-control" type="text" value="{{Request::old("subst[$t]")}}">
+                <input name="subst[{{$t}}]" class="form-control" type="text" value="{{Request::old("subst.$t")}}">
                 <br>
                 @if(count($tournament->moreInfo)>0)
 

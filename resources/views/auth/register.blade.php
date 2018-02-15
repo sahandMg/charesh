@@ -48,7 +48,7 @@
          </div>
 
          <div class="form-group">
-             <label for="exampleInputPassword1">تکرار رمز</label>
+             <label for="exampleInputPassword1">تکرار کلمه عبور</label>
              <input name="repeat" type="password" class="form-control" id="exampleInputPassword1" placeholder="تکرار کلمه عبور">
          </div>
          <hr>

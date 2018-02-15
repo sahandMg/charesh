@@ -1,6 +1,6 @@
 @extends($auth == 1 ? 'masterUserHeader.body' : 'masterHeader.body')
 @section('location')
-    @if($tournament->matchType == 'حضوری')
+    @if($tournament->mode == 'حضوری')
 
     <meta name="geo.region" content="IR-11" />
     <meta name="geo.placename" content="{{$tournament->city}}" />
@@ -12,7 +12,7 @@
      {{$tournament->matchName}}
 @endsection
 @section('title')
-    چارش |   {{$tournament->matchName}}
+     چارش | {{$tournament->matchName}}
 @endsection
 @section('content')
     @include('masterMatch.body',['tournament'=> $tournament,'route'=>$route])
@@ -115,7 +115,7 @@
                     @if(count($users) > 0)
                         <a style="text-decoration: none"  href="{{route('generatePdf',['id'=>$tournament->id ,'matchName'=>$tournament->slug,'name'=>Auth::user()->slug])}}"> <button class="regButton responsiveClass"> دریافت نسخه pdf بلیط مسابقه </button></a>
                     @else
-                        <a style="text-decoration: none" href="{{route('overView',['id'=>$tournament,'matchName'=>$tournament->matchName])}}"> <button class="regButton">ثبت نام </button></a>
+                        <a style="text-decoration: none" href="{{route('overView',['id'=>$tournament,'matchName'=>$tournament->slug])}}"> <button class="regButton">ثبت نام </button></a>
                     @endif
                 @else
                     <a style="text-decoration: none" href="{{route('login')}}"><button class="regButton responsiveClass"> برای شرکت در مسابقه ابتدا وارد شوید</button></a>

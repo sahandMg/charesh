@@ -13,7 +13,7 @@
                     <a href="#accordion1" aria-expanded="false" aria-controls="accordion1" class="accordion-title accordionTitle js-accordionTrigger">چه نوع مسابقاتی برگزار می شود ؟</a>
                 </dt>
                 <dd class="accordion-content accordionItem is-collapsed" id="accordion1" aria-hidden="true">
-                    <p>هدف چارش، فراهم کردن پلتفرمی برای مدیریت برگزاری مسابقات در تمامی زمینه های علمی، ورزشی، بازی های رایانه ای و آنلاین و ... می باشد. </p>
+                    <p>هدف چارش، فراهم کردن پلتفرمی برای مدیریت برگزاری مسابقات در تمامی زمینه های علمی، ورزشی، بازی های رایانه ای، آنلاین و ... می باشد. </p>
                 </dd>
                 <dt>
                     <a href="#accordion2" aria-expanded="false" aria-controls="accordion2" class="accordion-title accordionTitle js-accordionTrigger">
@@ -34,7 +34,7 @@
                         چطور اعتماد کنیم ؟ </a>
                 </dt>
                 <dd class="accordion-content accordionItem is-collapsed" id="accordion4" aria-hidden="true">
-                    <p>تا اتمام مسابقه هزینه ثبت نام به برگزار کننده پردخت نمی شود و اگر شکایات متعددی از برگزاری مسابقه ای شود ، پس از بررسی شکایات در صورت ثابت شدن تخلف برگزارکننده ، سایت چارش هزینه ثبت نام را به شرکت کننده ها برمی گرداند. </p>
+                    <p>تا اتمام مسابقه، هزینه ثبت نام به برگزار کننده پرداخت نمی شود و اگر شکایات متعددی از برگزاری مسابقه ای شود ، پس از بررسی شکایات در صورت ثابت شدن تخلف برگزارکننده، تیم چارش، هزینه ثبت نام را به شرکت کنندگان برمی گرداند. </p>
                 </dd>
             </dl>
         </div>

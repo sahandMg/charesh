@@ -17,13 +17,13 @@
         <div v-for="message in messages" id="accordion" role="tablist" aria-multiselectable="true">
             {{--@for($i = 0 ; $i< count($userMessages) ; $i++)--}}
 
-            <button  class="accordion"> <span style="margin-left:40%;"> 21 روز قبل </span> </button>
+            <button  class="accordion"> <span style="margin-left:40%;"> مشاهده پیام </span> </button>
             <div class="panel">
                 {{--<p>{!!$userMessages[$i]->message!!}</p>--}}
 
                 <div v-for="msg in message" class="container2">
 
-                    <img src="{{URL::asset('storage/images')}}/@{{ msg.name }}.jpg" alt="Charesh.ir" style="width:100%;">
+                    <img src="{{URL::asset('storage/images')}}/@{{ msg.path }}" alt="Charesh.ir" style="width:100%;">
                     <p>@{{{ msg.message }}}</p>
                     <span class="time-right">@{{ msg.created_at }}</span>
                 </div>

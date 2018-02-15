@@ -22,7 +22,7 @@ class CreateMessagesTable extends Migration
             $table->integer('tournament_id')->default(0);
             $table->string('sender')->nullable();
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
+            $table->text('path')->nullable();
             $table->timestamps();
         });
     }

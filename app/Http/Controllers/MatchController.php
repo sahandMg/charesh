@@ -793,6 +793,7 @@ class MatchController extends Controller
             }
         }
 
+
 //            Single register
         if ($request->input('single') == 'single') {
 
@@ -881,16 +882,17 @@ class MatchController extends Controller
 
 //
 
-//        dd($match->subst + $match->maxMember);
+
             $sub = 0;
             $subst = 0;
-            for($s=1;$s<= $match->subst;$s++){
+            for($s=0;$s< $match->subst;$s++){
 
-                if($request->subst.$s != null){
+                if(isset($request->subst[$s])){
 
                     $subst++;
                 }
             }
+
             for($s=0;$s<count(unserialize($match->moreInfo));$s++){
 
                 if(unserialize($match->moreInfo)[$s]==null){
@@ -901,7 +903,7 @@ class MatchController extends Controller
 
             for($i = 1; $i <= ($match->maxMember); $i++) {
 
-                if(null == $request->input("teammate$i")){
+                if(null == $request->input("teammate[$i]")){
 
                     $this->validate($request, ["teammate" => 'required']);
 
@@ -911,8 +913,10 @@ class MatchController extends Controller
 
                     for($p=1 ; $p<=count(unserialize($match->moreInfo))-$sub;$p++){
 
-                        if($request->info[$i][$p] == null){
+                        session(["info[$i][$p]"=>$request->info[$i][$p]]);
 
+                        if($request->info[$i][$p] == null){
+//                            dd($request->old("teammate1"));
                             return redirect()->back()->with(['RegError'=>'بخش اطلاعات اضافه را تکمیل کنید'])->withInput();
                         }
 
@@ -934,7 +938,7 @@ class MatchController extends Controller
 
             if( null != Match::where([ ['tournament_id',$request->matchId],['user_id',Auth::id()]])->first()){
 
-                return redirect()->back()->with(['message'=>'شما پیش از این در مسابقه ثبت نام کرده اید']);
+                return redirect()->back()->with(['message'=>'شما پیش از این در مسابقه ثبت نام کرده اید'])->withInput();
 
             }
 
@@ -982,15 +986,15 @@ class MatchController extends Controller
                         }
                         $team->save();
 
+//
 
 
-
-                        for ($i = 1; $i <= ($match->maxMember + $subst); $i++) {
+                        for ($i = 1; $i <= ($match->maxMember); $i++) {
 
                             $info = [];
                             $group = new Group();
 
-                            $group->name = $request->teamName;
+                            $group->name = $request->teammate[$i];
 
                             $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
                             $group->tournament_id = $request->matchId;
@@ -1006,6 +1010,30 @@ class MatchController extends Controller
 
                         }
 
+                        if($subst>0){
+                            $s = 1 ;
+                            for($i = 0; $i < $subst; $i++){
+
+                                $info = [];
+                                $group = new Group();
+
+                                $group->name = $request->subst[$i];
+
+                                $group->team_id = Team::where('teamName', $request->teamName)->first()->id;
+                                $group->tournament_id = $request->matchId;
+                                $group->organize_id = $match->organize->id;
+
+                                for ($p = 1; $p <= count(unserialize($match->moreInfo)) - $sub; $p++) {
+
+                                    array_push($info, $request->info[$s][$p]);
+                                }
+                                $group->moreInfo = serialize($info);
+
+                                $group->save();
+                                $s++;
+                            }
+
+                        }
 //                dd(count($_POST)-4);
 //                dd(Match::where([['user_id',$userId],['tournament_id',$request->matchId]])->first());
                         $match->organize->totalTickets = $match->organize->totalTickets + 1;
@@ -1269,11 +1297,9 @@ class MatchController extends Controller
         }else{
             $msg->name = Auth::user()->username;
         }
-        if($request->input('email')){
-            $msg->email = $request->email;
-        }else{
-            $msg->email = Auth::user()->email;
-        }
+
+            $msg->path = Auth::user()->path;
+
         $msg->message = $request->message;
         $msg->sender = 'user';
         if(Auth::check()){
@@ -1381,7 +1407,7 @@ class MatchController extends Controller
 
         $name = Auth::user();
         $id = $request->id;
-        $orgName = Auth::user()->organize->name;
+//        $orgName = Auth::user()->organize->name;
         $tournament = Tournament::where('id', $id)->first();
         $teams=[];
         if(Auth::check()){
@@ -1398,7 +1424,7 @@ class MatchController extends Controller
             $route = 'participants';
 //        Group::where('tournament_id',$id);
 
-            return view('matchReg.teamProfile', compact('orgName','route', 'name', 'tournament', 'team','auth'));
+            return view('matchReg.teamProfile', compact('route', 'name', 'tournament', 'team','auth'));
         }
         else{
 
@@ -1406,7 +1432,7 @@ class MatchController extends Controller
 
 
             $route = 'participants';
-            return view('matchReg.teamProfile', compact('orgName','route', 'name', 'tournament', 'match','teams','auth'));
+            return view('matchReg.teamProfile', compact('route', 'name', 'tournament', 'match','teams','auth'));
 
         }
 

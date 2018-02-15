@@ -43,6 +43,7 @@
             </div>
       <div class="form-group">
         <label for="InputFile">توضیحات : </label>
+          <p>{!! $org->comment!!}</p>
         <textarea class="form-control" name="comment" id="summernote" rows="3"></textarea>
        </div>
        {{--<div class="form-group">--}}
@@ -321,7 +322,7 @@
    </script>
   <script>
 
-      $('#summernote').summernote('editor.pasteHTML', {!! json_encode($org->comment) !!});
+      {{--$('#summernote').summernote('editor.pasteHTML', {!! json_encode($org->comment) !!});--}}
       new Vue({
           el:'#Edit',
           data:{

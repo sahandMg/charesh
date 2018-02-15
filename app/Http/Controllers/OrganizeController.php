@@ -1221,6 +1221,8 @@ class OrganizeController extends Controller
                 $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
                 $msg->tournament_id = $request->id;
                 $msg->user_id = $leader->id;
+                $msg->sender = Auth::user()->organize->slug;
+                $msg->path = Auth::user()->organize->logo_path;
                 $msg->save();
 
                 $user =  User::where('id',$leader->id)->first();
@@ -1242,7 +1244,13 @@ class OrganizeController extends Controller
                 $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
                 $msg->tournament_id = $request->id;
                 $msg->user_id = $leader->id;
+                $msg->sender = Auth::user()->organize->slug;
+                $msg->path = Auth::user()->organize->logo_path;
                 $msg->save();
+
+                $user =  User::where('id',$leader->id)->first();
+
+                $user->update(['unread'=> $user->unread + 1]);
 
 
             } elseif ($request->user == 'all') {
@@ -1262,6 +1270,8 @@ class OrganizeController extends Controller
                     $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
                     $msg->tournament_id = $request->id;
                     $msg->user_id = $user->user_id;
+                    $msg->sender = Auth::user()->organize->slug;
+                    $msg->path = Auth::user()->organize->logo_path;
                     $msg->save();
 
                     $userInfo = User::where('id', $user->user_id)->first();
@@ -1551,23 +1561,23 @@ class OrganizeController extends Controller
 
     public function post_edit(Request $request){
 
-	 $url = 'https://www.google.com/recaptcha/api/siteverify';
-       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-// use key 'http' even if you send the request to https://...
-       $options = array(
-       'http' => array(
-       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-       'method'  => 'POST',
-       'content' => http_build_query($data),
-         ),
-       );
-       $context  = stream_context_create($options);
-       $result = file_get_contents($url, false, $context);
-       if(json_decode($result)->success === false){
-
-       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
-
-       }
+//	 $url = 'https://www.google.com/recaptcha/api/siteverify';
+//       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
+//// use key 'http' even if you send the request to https://...
+//       $options = array(
+//       'http' => array(
+//       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+//       'method'  => 'POST',
+//       'content' => http_build_query($data),
+//         ),
+//       );
+//       $context  = stream_context_create($options);
+//       $result = file_get_contents($url, false, $context);
+//       if(json_decode($result)->success === false){
+//
+//       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
+//
+//       }
 
 
         $rand = str_random('4');
@@ -1797,7 +1807,7 @@ class OrganizeController extends Controller
         $id = $request->id;
         $orgName = Auth::user()->organize->name;
         $tournament = Tournament::where('id', $id)->first();
-        $teams=[];
+        $team=[];
 
 
         if (count(Tournament::where('id', $id)->first()->teams)) {
@@ -1811,11 +1821,12 @@ class OrganizeController extends Controller
         }
         else{
 
-            $match = Match::where('user_id', User::where('username',$request->teamName)->first()->id)->first();
+
+            $match = Match::where([['user_id', User::where('username',$request->teamName)->first()->id],['tournament_id',$id]])->first();
 
 
             $route = 'participants';
-            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'match','teams'));
+            return view('organize.teamDetail', compact('orgName','route', 'name', 'tournament', 'match','team'));
 
         }
 
@@ -1832,6 +1843,7 @@ class OrganizeController extends Controller
         $message->tournament_id = 0;
         $message->name = Auth::user()->organize->slug;
         $message->sender = 'org';
+        $message->path = Auth::user()->organize->logo_path;
         $message->save();
 
         $user = User::where('id',$request->id)->first();

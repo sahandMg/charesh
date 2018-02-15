@@ -22,8 +22,8 @@
                         <table style="font-weight: normal;border-collapse: collapse;border: 0;margin: 0;padding: 0;font-family: Arial, sans-serif;">
                             <tr>
                                 <td class="head-title" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 28px;line-height: 34px;font-weight: bold; text-align: center;">
-                                    <div class="mktEditable" id="main_title">
-                                        شما با موفقیت در مسابقه فوتبال ثبت نام کردید
+                                    <div class="mktEditable" id="main_title" style="direction: rtl">
+                                        شما با موفقیت در {{$match->matchName}} ثبت نام کردید
                                     </div>
                                 </td>
                             </tr>

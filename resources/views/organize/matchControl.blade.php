@@ -6,7 +6,7 @@
 @section('content')
 
     @if(count(session('message')))
-        <div class="alert alert-success ">
+        <div class="alert alert-success " style="text-align: right">
             {{session('message')}}
         </div>
     @endif

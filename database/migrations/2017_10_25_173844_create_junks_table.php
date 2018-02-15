@@ -40,7 +40,7 @@ class CreateJunksTable extends Migration
             $table->text('address')->nullable();
             $table->text('lat')->nullable();
             $table->text('lng')->nullable();
-
+            $table->text('free')->nullable();
             $table->integer('user_id')->default('0');
             $table->integer('organize_id')->default('0');
             $table->timestamps();

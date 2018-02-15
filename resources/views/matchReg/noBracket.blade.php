@@ -4,7 +4,7 @@
 @endsection
 
 @section('title')
-    چارش |   {{$tournament->matchName}}
+    چارش | {{$tournament->matchName}}
 @endsection
 
 

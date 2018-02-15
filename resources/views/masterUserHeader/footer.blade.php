@@ -12,7 +12,8 @@
         <a href="{{route('contact')}}">ارتباط با ما</a>
         <a href="{{route('about')}}">درباره ما</a>
         <a href="#">راهنمای سایت</a>
-        <a href="{{route('matchCreate')}}">ایجاد مسابقه جدید</a>
+        <a href="{{route('faq')}}">سوالات متداول</a>
+        {{--<a href="{{route('matchCreate')}}">ایجاد مسابقه جدید</a>--}}
         <a href="{{route('chareshRule')}}">قوانین</a>
     </div>
     <br>

@@ -7,7 +7,7 @@
 <body style="background-color: #E6E6E6;">
   <div class="container3">
       <h3>تایید ایمیل</h3>
-      <h4>با تشکر ایمیل شما تایید شد</h4>
+      <h4>با تشکر. ایمیل شما تایید شد</h4>
       <p>برای ورود به سایت <a href="{{route('login')}}"> کلیک </a> کنید </p>
       <br>
       <br>

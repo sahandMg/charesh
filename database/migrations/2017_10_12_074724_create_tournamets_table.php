@@ -40,7 +40,7 @@ class CreateTournametsTable extends Migration
             $table->integer('cost');
             $table->string('city')->nullable();
             $table->mediumText('moreInfo',1200)->nullable();
-
+            $table->text('free')->nullable();
             $table->text('address',900)->nullable();
             $table->string('lng',255)->default('51.38');
             $table->string('lat',255)->default('35.69');
