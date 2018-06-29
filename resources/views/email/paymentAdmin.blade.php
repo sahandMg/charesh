@@ -20,6 +20,6 @@
     <h4>ایمیل</h4>
     <h6>{{$email}}</h6>
     <h4>مبلغ درخواستی</h4>
-    <h6 style="direction: rtl">تومان {{$org->credit*0.98}}</h6>
+    <h6 style="direction: rtl">تومان {{$org->credit*0.95}}</h6>
 </center>
 </body>

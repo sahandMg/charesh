@@ -31,7 +31,7 @@
    <div class="container">
 
 
-        <h1 style="direction: rtl" class="text-center"> لیست شرکت کنندگان مسابقه  <span style="padding-right: 10px">{{$tournament->matchName}}</span></h1>
+        <h1 style="direction: rtl" class="text-center">لیست شرکت کنندگان   <span style="padding-right: 10px">{{$tournament->matchName}}</span></h1>
        <br>
        <br>
        <h4 style="text-align: right;direction: rtl">تاریخ برگزاری : {{unserialize($tournament->startTime)[0]}} {{unserialize($tournament->startTime)[1]}} {{unserialize($tournament->startTime)[2]}}</h4>

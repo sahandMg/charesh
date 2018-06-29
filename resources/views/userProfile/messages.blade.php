@@ -134,8 +134,7 @@
 
                 axios.get({!! json_encode(route('GetMsgUser')) !!}).then(function (response) {
 
-                    vm.messages = response.data
-                    console.log(vm.messages)
+                    vm.messages = response.data.reverse()
 
 
                 })

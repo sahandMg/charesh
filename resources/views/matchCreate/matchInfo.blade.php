@@ -55,7 +55,7 @@
    </div>
        <div class="form-group" id="Timi2" style="display: none;">
            <label>  تعداد افراد ذخیره تیم  </label>
-           <input name="subst" @input="check"  v-model="subst" class="form-control" type="number" min="1" max="100" placeholder="به عدد" id="example-text-input">
+           <input name="subst" @input="check"  v-model="subst" class="form-control" type="number" min="0" max="100" placeholder="به عدد" id="example-text-input">
        </div>
 
     <div class="form-group">

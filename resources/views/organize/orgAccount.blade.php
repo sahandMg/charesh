@@ -6,11 +6,11 @@
 
     <div class="formDiv" id="account">
         <h3>حساب من</h3>
-        <h5>   {{$org->credit * 0.98}} تومان</h5>
+        <h5>   {{$org->credit * 0.95}} تومان</h5>
         <form method="POST" action="{{route('organizeAccount',['id'=>$org->id,'orgName'=>$name->organize->slug])}}">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <!-- ٍٍError message -->
-            @if(count(session('message')) && session('code') == 0)
+            @if((session('message')) && session('code') == 0)
                 <div class="alert alert-success ">
                     {{session('message')}}
                 </div>

@@ -28,7 +28,7 @@ class Supplier
         }
 
 
-        if(Tournament::where([['matchName',$request->matchName],['id',$request->id]])->first() == null ){
+        if(Tournament::where([['slug',$request->matchName],['id',$request->id]])->first() == null ){
 
             abort('404');
         }

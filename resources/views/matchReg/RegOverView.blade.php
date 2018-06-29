@@ -22,7 +22,7 @@
     @endif
 
 
-    @if(count(session('message')))
+        @if(session('message'))
 
         <div class="alert alert-success" role="alert">
             {{session('message')}}
@@ -76,7 +76,7 @@
                     <div class="js--image-preview" style=" background-image: url('{{URL::asset('images/100_100.jpg')}}'); "></div>
                     <div class="upload-options">
                         <label>
-                            <input name="background_path" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
+                            <input name="logo" type="file" class="image-upload" aria-describedby="fileHelp" accept="image/*"  />
                         </label>
                     </div>
                 </div>

@@ -26,7 +26,7 @@
     <div class="form-group" id="endTimeDivId">
       <label for="Name-input" style="width: 100%;">زمان پایان ثبت نام  </label>
         {{--<div class="endTimeReg">--}}
-        <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="1"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
+        <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="0"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
         <span @input="convertDate" class="form-control"   v-model="date">@{{date}}</span>
         <span @input="convertDate" class="form-control"   v-model="date">ساعت ۲۳:۵۹:۵۹</span>
             {{--<select name="startMonth" v-model="startMonth" style="float: right;margin-left: 1%;width: 40%;" class="form-control" id="sel1">--}}
@@ -377,7 +377,7 @@
  matchName:'',
  url:'',
  startTime:'',
- endTime:'1',
+ endTime:'0',
  comment:'',
      startDay:'',
      startMonth:'فروردین',
@@ -394,7 +394,10 @@ date:{!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!},
          axios.get({!! json_encode(route('convertDate')) !!}+'?day='+this.endTime).then(function (response) {
 
              vm.date = response.data
-         })
+          if(vm.endTime == 0  ){
+                 vm.date = {!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!}
+             }
+	 })
 
 
  if(this.endTime.length > 0 && this.startDay.length > 0 && this.startMonth.length > 0 && this.startYear.length > 0 &&  this.matchName.length > 0){

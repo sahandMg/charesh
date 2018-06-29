@@ -36,32 +36,10 @@ Route::get('list',function (){
 
 Route::get('test',function () {
 
-    for($i=0 ; $i < count(User::all()) ; $i++){
-        if(isset(Organize::all()[$i])){
-            if(  Organize::all()[$i] != null){
+ $month = jDate::forge('now')->format('date')[5].jDate::forge('now')->format('date')[6];
+        $year = jDate::forge('now')->format('%Y');
+return $month-1;
 
-                $org_ids[$i] = Organize::all()[$i]['id'];
-            }
-
-        }
-
-    }
-    $i=0;
-    for($t=0 ; $t< count(Organize::all()); $t++){
-
-
-
-        if(Message::where([['user_id', Auth::user()->id], ['organize_id', $org_ids[$t]]])->first() != null){
-
-            $messages[$i] = Message::where([['user_id',Auth::user()->id ], ['organize_id', $org_ids[$t]]])->orderBy('created_at', 'decs')->get();
-            $i++;
-        }
-
-
-
-    }
-
-    return  $messages;
 });
 
 // ---------------- Admin panel -----------------------
@@ -345,7 +323,7 @@ Route::group(['prefix'=>'organization'],function (){
     Route::post('{matchName}/edit-league-bracket2',['middleware'=> ['guest','organize','throttle:10,1'],'as'=>'leagueBracket2','uses'=>'OrganizeController@post_leagueBracket2']);
 
     Route::get('{matchName}/get-checklist',['as'=>'CheckList','uses'=>'OrganizeController@checkList']);
-    Route::get('{matchName}/get-checklist-pdf',['as'=>'CheckList','uses'=>'OrganizeController@checkListPdf']);
+    Route::get('{matchName}/get-checklist-pdf',['as'=>'CheckListPdf','uses'=>'OrganizeController@checkListPdf']);
 });
 
 
@@ -434,6 +412,7 @@ Route::get('check-round/{id}/{round?}',['as'=>'checkRound','uses'=>'OrganizeCont
 Route::get('set/date','OrganizeController@calender')->name('setDate');
 Route::get('get/calender','OrganizeController@getCalender')->name('getDate');
 Route::get('get/days','OrganizeController@getDays')->name('getDays');
+Route::get('get/days/match','MatchController@getDaysMatch')->name('getDaysMatch');
 Route::get('remove/calender','OrganizeController@rmCalender')->name('rmCalender');
 Route::get('admin/get-users-img','AdminController@getUserImg');
 Route::get('admin/remove-tournament','AdminController@removeTournament')->name('removeTournament');

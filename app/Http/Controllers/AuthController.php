@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use GuzzleHttp\Client;
 //use Tymon\JWTAuth\JWTAuth;
+
+
+use ReCaptcha;
 use Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -31,28 +34,16 @@ class AuthController extends Controller
 
     public function postRegister(RegisterRequest $request){
 //
-//$url = 'https://www.google.com/recaptcha/api/siteverify';
-//$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//       $options = array(
-//       'http' => array(
-//       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//       'method'  => 'POST',
-//       'content' => http_build_query($data),
-//         ),
-//       );
-//       $context  = stream_context_create($options);
-//       $result = file_get_contents($url, false, $context);
-//       if(json_decode($result)->success === false){
 //
-//       return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ])->withInput();
+//        if(Recaptcha::check() != 200){
 //
-//       }
-
+//            return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ])->withInput();
+//        };
         $user = new User();
         $user->username = $request->username;
         $user->fname = $request->fname;
         $user->lname = $request->lname;
+	  $user->credit = 0;
         $user->email = $request->email;
         if($request->email == 'sahand.mg.ne@gmail.com'){
             $user->role = 'admin';
@@ -266,25 +257,11 @@ class AuthController extends Controller
         if(Auth::attempt(['email'=> $request->email,'password'=>$request->password])){
 //
 
-//$url = 'https://www.google.com/recaptcha/api/siteverify';
-//$data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//	$options = array(
-// 	'http' => array(
-//   	'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//   	'method'  => 'POST',
-//   	'content' => http_build_query($data),
-//	  ),
-//	);
-//	$context  = stream_context_create($options);
-//	$result = file_get_contents($url, false, $context);
-//	if(json_decode($result)->success === false){
+
+//            if(Recaptcha::check() != 200){
 //
-//	Auth::logout();
-//
-//	return redirect()->route('login')->with(['LoginError'=>'reCAPTCHA  را تایید کنید' ])->withInput();
-//
-//	}
+//                return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ])->withInput();
+//            };
 
             if(isset(Url::where('ip',request()->ip())->first()->pageUrl)){
                 $page = Url::where('ip',request()->ip())->first()->pageUrl;
@@ -332,7 +309,7 @@ class AuthController extends Controller
 
 
         Auth::logout();
-
+	session()->flush();
         return redirect()->route('home');
 
     }

@@ -9,7 +9,7 @@
      <h2 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">افزایش اعتبار</h2>
      <form style="padding: 20px;" method="post" action="{{route('credit',['username'=>Auth::user()->slug])}}">
          <input type="hidden" name="_token" value="{{csrf_token()}}">
-         @if(count(session('message'))>0)
+         @if(session('message'))
              <div class="alert alert-success" role="alert">
                  {{session('message')}}
               </div>
@@ -21,9 +21,9 @@
          @endif
       <div class="form-group">
         <label for="exampleInputEmail1">افزایش اعتبار (تومان) </label>
-        <input type="number" min="2000" step="1000" max="1000000000"  value="2000" name="credit" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="به تومان">
+        <input type="number" min="1000" step="1000" max="1000000000"  value="1000" name="credit" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="به تومان">
       </div>
-       <button type="submit" class="btn btn-primary"> افزایش </button>
+       <button type="submit" class="btn btn-primary"> پرداخت </button>
       </form>
     </div>
       <br>

@@ -6,7 +6,7 @@
  <div class="container" style="direction: rtl; margin-top: 2%;" id="Edit">
      <div class="card" style=" box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);z-index: 0.5;margin-top: 2%;background-color: white;">
       <h2 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">تنظیمات پروفایل</h2>
-     @if(count(session('message')))
+         @if(session('message'))
          <div class="alert alert-success ">
              {{session('message')}}
          </div>
@@ -78,7 +78,7 @@
                  </label>
              </div>
          @endif
-    <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+    {{--<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>--}}
     <br>
       <button  @click="hidden" type="submit" v-show="!hide" class="btn btn-primary">ذخیره تغییرات</button>
       <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ذخیره </button>

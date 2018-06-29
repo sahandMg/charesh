@@ -44,7 +44,7 @@
            <div class="form-group" id="endTimeDivId">
                <label for="Name-input" style="width: 100%;">زمان پایان ثبت نام  </label>
                {{--<div class="endTimeReg">--}}
-               <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="1"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
+               <input class="form-control" @input="check" v-model="endTime" name="endTime" type="number" min="0"  placeholder="به روز وارد نمایید ، مثلا : 20 " id="example-text-input">
                <span @input="convertDate" class="form-control"   v-model="date">@{{date}}</span>
 
 
@@ -87,7 +87,7 @@
                    <label> تعداد تیم های شرکت کننده : </label>
                    <input type="number" @input="check" v-model="timi" name="maxAttenders" min="1" class="form-control" placeholder="به عدد" id="example-text-input">
                </div>
-            @elseif($tournament->matchType == 'فردی')
+            @elseif($tournament->matchType == 'انفرادی')
                <div class="form-group" id="fardi">
                    <label> تعداد شرکت کنندگان : </label>
                    <input type="number" v-model="fardi" @input="check" name="maxAttenders" min="1" class="form-control" placeholder="به عدد" id="example-text-input">
@@ -96,6 +96,7 @@
            <br>
           <div class="form-group">
               <label>توضیحات : </label>
+	<p> {!!$tournament->comment!!} </p>
               <textarea class="form-control"  :style="style5"  name="comment" id="summernote" rows="3"></textarea>
           </div>
         @if($tournament -> mode == "حضوری")
@@ -169,7 +170,6 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
  </script>
  <script>
-     $('#summernote').summernote('editor.pasteHTML', {!! json_encode($tournament->comment) !!});
 
 
      new Vue({
@@ -182,7 +182,7 @@
              startYear:{!! json_encode(unserialize($tournament->startTime)[2]) !!},
              startDay:{!! json_encode(unserialize($tournament->startTime)[0]) !!},
              endTime:{!! json_encode($tournament->endTimeDays) !!},
-           date:{!! json_encode(\Morilog\Jalali\jDate::forge('now')->format('date')) !!},
+           date:{!! json_encode($tournament->endTimeDays) !!},
              saveBtn:false,
              fardi:{!! json_encode($tournament->maxAttenders) !!},
              timi:{!! json_encode($tournament->maxTeam) !!},
@@ -209,7 +209,7 @@
 
             if(this.fardi != null){
 
-                if(this.endTime == null || this.endTime == 0 || this.startDay == 0 || this.startDay == null || this.fardi == 0 || this.fardi == null){
+                if(this.endTime == null || this.startDay == 0 || this.startDay == null || this.fardi == 0 || this.fardi == null){
                     this.saveBtn = true
                 }else{
 
@@ -218,7 +218,7 @@
             }else
             if(this.timi != null){
 
-                if(this.endTime == null || this.endTime == 0 || this.startDay == 0 || this.startDay == null || this.timi == 0 || this.timi == null){
+                if(this.endTime == null || this.startDay == 0 || this.startDay == null || this.timi == 0 || this.timi == null){
                     this.saveBtn = true
                 }else{
 

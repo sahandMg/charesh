@@ -149,7 +149,7 @@
 
                 <div v-for="msg in message" class="container2">
 
-                    <img src="{{URL::asset('storage/images')}}/@{{ msg.path }}.jpg" alt="Charesh.ir" style="width:100%;">
+                    <img src="{{URL::asset('storage/images')}}/@{{ msg.path }}" alt="Charesh.ir" style="width:100%;">
                     <p>@{{{ msg.message }}}</p>
                     <span class="time-right">@{{ msg.created_at }}</span>
                 </div>
@@ -265,8 +265,7 @@
 
                 axios.get({!! json_encode(route('GetMsg')) !!}).then(function (response) {
 
-                  vm.messages = response.data
-                    console.log(vm.messages)
+                  vm.messages = response.data.reverse()
 
 
                 })
@@ -304,7 +303,7 @@
                     vm = this
                     axios.post({!! json_encode(route('sendMessage')) !!},{'text':vm.text,'id':id}).then(function (response) {
 
-                        vm.messages = response.data
+                        vm.messages = response.data.reverse()
                         vm.text = ''
                         vm.btn = true
                     })

@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->text('slug')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('credit')->default('1000');
+            $table->integer('credit')->default('0');
 //            $table->integer('credit')->default('1000');
             $table->string('reset_password');
             $table->boolean('confirm')->default('0');

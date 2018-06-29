@@ -30,6 +30,8 @@ use Hekmatinasser\Verta\Verta;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Calender;
+use Morilog\Jalali\jDate;
 
 class MatchController extends Controller
 {
@@ -1439,6 +1441,15 @@ class MatchController extends Controller
 
     }
 
+
+    public function getDaysMatch(Request $request){
+
+        $month = jDate::forge('now')->format('date')[5].jDate::forge('now')->format('date')[6];
+        $year = jDate::forge('now')->format('%Y');
+        $calender = Calender::where([['tournament_id',$request->id],['year',$year]])->get();
+
+        return [$calender,$month-1];
+    }
 
 }
 

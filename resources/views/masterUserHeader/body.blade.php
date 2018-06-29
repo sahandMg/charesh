@@ -119,7 +119,7 @@
                         @else
                             <a href="{{route('OrgMsg',['orgName'=>Auth::user()->organize->slug])}}">پیام ها</a>
                         @endif
-                        <a style="direction: rtl"  href="{{route('organizeAccount',['orgName'=>Auth::user()->organize->slug])}}"> {{Auth::user()->organize->credit * 0.98}}  تومان</a>
+                        <a style="direction: rtl"  href="{{route('organizeAccount',['orgName'=>Auth::user()->organize->slug])}}"> {{Auth::user()->organize->credit * 0.95}}  تومان</a>
                         <a href="{{route('orgEdit',['orgName'=>Auth::user()->organize->slug])}}"> تنظیمات </a>
                         <a href="{{route('logout',['orgName'=>Auth::user()->organize->slug])}}">خروج</a>
                     @endif

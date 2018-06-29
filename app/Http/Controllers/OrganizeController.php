@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\View;
 use Intervention\Image\Facades\Image;
 use Morilog\Jalali\Facades\jDate;
 use phpDocumentor\Reflection\Types\Null_;
+use Recaptcha;
 
 class OrganizeController extends Controller
 {
@@ -310,12 +311,16 @@ class OrganizeController extends Controller
 
         if($request->input('endTime')){
 
-            $tournament = Tournament::where('id',$request->id)->first();
-            $today = Carbon::now();
+ 		$tournament = Tournament::where('id',$request->id)->first();
+
+            $today = Carbon::now()->addSeconds(Carbon::now()->diffInSeconds(Carbon::tomorrow()) -1);
 
             $endDate = $today->addDay($request->endTime);
 
             $tournament->update(['endTimeDays' => $request->endTime]);
+
+
+
             $tournament->update(['endRemain' => $endDate]);
             $today = Carbon::now();
             $tournament->update(['endTime' => $today->diffInSeconds($endDate)]);
@@ -340,12 +345,12 @@ class OrganizeController extends Controller
             $tournament = Tournament::where('id',$request->id)->first();
             if($tournament->matchType == 'تیمی'){
 
-                $tournament->update(['maxTeam' =>  $tournament->maxTeam + $request->maxAttenders]);
-                $tournament->update(['tickets' =>  $tournament->sold + $request->maxAttenders]);
+                $tournament->update(['maxTeam' =>   $request->maxAttenders]);
+                $tournament->update(['tickets' =>   $request->maxAttenders ]);
             }else{
 
-                $tournament->update(['maxAttenders' => $tournament->maxAttenders + $request->maxAttenders]);
-                $tournament->update(['tickets' =>  $tournament->sold +  $request->maxAttenders]);
+                $tournament->update(['maxAttenders' =>  $request->maxAttenders]);
+                $tournament->update(['tickets' =>  $request->maxAttenders ]);
             }
 
 
@@ -1221,8 +1226,9 @@ class OrganizeController extends Controller
                 $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
                 $msg->tournament_id = $request->id;
                 $msg->user_id = $leader->id;
-                $msg->sender = Auth::user()->organize->slug;
-                $msg->path = Auth::user()->organize->logo_path;
+                 $msg->sender = 'org';
+                $msg->name = Auth::user()->organize->slug;
+		$msg->path = Auth::user()->organize->logo_path;
                 $msg->save();
 
                 $user =  User::where('id',$leader->id)->first();
@@ -1244,7 +1250,8 @@ class OrganizeController extends Controller
                 $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
                 $msg->tournament_id = $request->id;
                 $msg->user_id = $leader->id;
-                $msg->sender = Auth::user()->organize->slug;
+                $msg->sender = 'org';
+                $msg->name = Auth::user()->organize->slug;
                 $msg->path = Auth::user()->organize->logo_path;
                 $msg->save();
 
@@ -1270,7 +1277,8 @@ class OrganizeController extends Controller
                     $msg->organize_id = Tournament::where('id', $request->id)->first()->organize_id;
                     $msg->tournament_id = $request->id;
                     $msg->user_id = $user->user_id;
-                    $msg->sender = Auth::user()->organize->slug;
+                    $msg->sender = 'org';
+               	    $msg->name = Auth::user()->organize->slug;
                     $msg->path = Auth::user()->organize->logo_path;
                     $msg->save();
 
@@ -1561,24 +1569,11 @@ class OrganizeController extends Controller
 
     public function post_edit(Request $request){
 
-//	 $url = 'https://www.google.com/recaptcha/api/siteverify';
-//       $data = array('secret' => '6LfjSj4UAAAAANwdj6e_ee8arRU9QHLWDmfkmdL6', 'response' => $request->input('g-recaptcha-response'));
-//// use key 'http' even if you send the request to https://...
-//       $options = array(
-//       'http' => array(
-//       'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//       'method'  => 'POST',
-//       'content' => http_build_query($data),
-//         ),
-//       );
-//       $context  = stream_context_create($options);
-//       $result = file_get_contents($url, false, $context);
-//       if(json_decode($result)->success === false){
-//
-//       return redirect()->back()->with(['settingError'=>'reCAPTCHA را تایید کنید' ]);
-//
-//       }
 
+//        if(Recaptcha::check() != 200){
+//
+//            return redirect()->route('register')->with(['message'=>'reCAPTCHA را تایید کنید' ])->withInput();
+//        };
 
         $rand = str_random('4');
         $rand2 = str_random('4');
@@ -1627,7 +1622,7 @@ class OrganizeController extends Controller
 
             $this->validate($request,['background_path'=>'image|max:1000']);
 
-            if($org->background_path != 'Blank.png'){
+            if($org->background_path != 'Blank1150_380.png'){
 
                 unlink(public_path('storage/images/'.$org->background_path));
             }
@@ -1705,7 +1700,7 @@ class OrganizeController extends Controller
 
        unlink("/var/www/html/$time.ticket.pdf");
 
-        return $this->checkListPdf( $request);
+       // return $this->checkListPdf( $request);
 
     }
 

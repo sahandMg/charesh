@@ -39,7 +39,7 @@
               <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="کلمه عبور">
           </div>
           <br>
-          <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+          {{--<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>--}}
           <br>
           <button @click="hidden" v-show="!hide" type="submit" class="btn btn-primary" id="btnReg"> ورود </button>
           <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ورود </button>
@@ -57,7 +57,7 @@
               <input type="email" name="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="ایمیل خود را وارد کنید">
           </div>
           <br>
-          <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+          {{--<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>--}}
           <br>
           <button @click="hidden" v-show="!hide" type="submit" class="btn btn-primary" id="btnReg"> ارسال </button>
           <button v-show="hide" class="btn btn-warning " :disabled="true"><i class="fa fa-spinner fa-spin" ></i> در حال ارسال </button>

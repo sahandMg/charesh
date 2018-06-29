@@ -21,7 +21,7 @@
                 <ul>
                     <li class="prev"><button class="arrow" onclick="prevMonth()" id="previous">&#10094;</button></li>
                     <li class="next"><button class="arrow" onclick="nextMonth()" id="next">&#10095;</button></li>
-                    <li><span id="monthName">ماه فلان </span><br>
+                    <li><span id="monthName">ماه </span><br>
                         <span style="font-size:18px" id="year">۱۳۹۶</span>
                     </li>
                 </ul>
@@ -245,17 +245,20 @@
 
 
         var calender
-        axios.get('{{route('getDays')}}'+'?id='+{!! json_decode($tournament->id) !!}).then(function (response) {
-            for(var i=0 ; i<response.data[0].length; i++){
+        axios.get('{{route('getDaysMatch')}}'+'?id='+{!! json_decode($tournament->id) !!}).then(function (response) {
+            
+		for(var i=0 ; i<response.data[0].length; i++){
                 calender =  response.data[0];
                 monthNumber = response.data[1];
-                if(calender[i].month == monthNumber){
+        
+		console.log('dsadsa')
+	        if(calender[i].month == monthNumber){
                     $('#'+ calender[i].day).addClass(" daySelected");
                     $('#'+ calender[i].day).attr("disabled", false);
 
                 }
-            }
 
+            }
             if( monthNumber > 5 ) {
                 // $("#day31").css("display", "none");
                 $("#day31").css("visibility", "hidden");

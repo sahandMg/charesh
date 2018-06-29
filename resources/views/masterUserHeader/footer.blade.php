@@ -1,19 +1,21 @@
 <br>
 <br>
 <div class="footer">
-    <!--<div>-->
-    <!--<a href="https://www.instagram.com/gameinja/" style="padding: 10px;"><i class="fa fa-instagram fa-lg"></i></a>-->
-    <!--<a href="https://t.me/GameInja" style="padding: 10px;"><i class="fa fa-telegram fa-lg"></i></a>-->
-    <!--</div>-->
+    <div>
+    <a href="https://www.instagram.com/charesh_official/" target="_blank" style="margin-top:1%;padding: 1%;color: white;font-size: 150%;"><i class="fa fa-instagram fa-lg"></i></a>
+    <a href="https://t.me/charesh" target="_blank" style="margin-top:1%;padding: 1%;color: white;font-size: 150%;"><i class="fa fa-telegram fa-lg"></i></a>
+    </div>
     <div class="footerCol">
-        <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+<img id='jxlzjxlznbqeoeuksizpjzpe' style='cursor:pointer' onclick='window.open("https://logo.samandehi.ir/Verify.aspx?id=112897&p=rfthrfthuiwkmcsipfvljyoe", "Popup","toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")' alt='logo-samandehi' src='https://logo.samandehi.ir/logo.aspx?id=112897&p=nbpdnbpdodrfaqgwbsiyyndt'/>
+ 
+       <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
     </div>
     <div class="footerCol" style="margin-top: 30px;">
         <a href="{{route('contact')}}">ارتباط با ما</a>
         <a href="{{route('about')}}">درباره ما</a>
         <a href="#">راهنمای سایت</a>
-        <a href="{{route('faq')}}">سوالات متداول</a>
         {{--<a href="{{route('matchCreate')}}">ایجاد مسابقه جدید</a>--}}
+        <a href="{{route('faq')}}">سوالات متداول</a>
         <a href="{{route('chareshRule')}}">قوانین</a>
     </div>
     <br>
@@ -36,11 +38,11 @@
         padding: 1rem;
         background-color: #1D2731;
         text-align: center;
-        height: 175px;
+        height: 200px;
     }
 
     .footer:after {
-        height: 175px;
+        height: 200px;
     }
     .footerCol {
         width: 50%;

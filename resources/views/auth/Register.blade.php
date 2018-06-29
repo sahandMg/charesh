@@ -18,7 +18,7 @@
           @endforeach
       </div>
          @endif
-	@if(count(session('message'))>0)
+         @if(session('message'))
 
 	 <div class="alert alert-danger" role="alert">
 	{{session('message')}}
@@ -61,7 +61,7 @@
               <input type="radio" name="radio" value="customer">
               <span class="checkmark"></span></label>
           </div>
-       <div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>
+       {{--<div class="g-recaptcha" data-sitekey="6LfjSj4UAAAAAD62COv7b0uURhIDgYYAQMRYGY0s"></div>--}}
          <div class="form-group">
            <label class="container">
              <div class="checkbox">

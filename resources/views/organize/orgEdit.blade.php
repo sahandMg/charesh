@@ -10,7 +10,7 @@
         <h2 class="card-title" style="background-color: #42CBC8;padding: 20px;color: white;">تنظیمات پروفایل برگزار کننده</h2>
         <form style="padding: 1%;" method="POST" action="{{route('orgEdit',['id'=>$org->id,'orgName'=>$name->organize->slug])}} " enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
-            @if(count(session('message')) )
+            @if(session('message'))
                 <div class="alert alert-success ">
                     {{session('message')}}
                 </div>
