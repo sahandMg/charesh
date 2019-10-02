@@ -133,7 +133,7 @@
  <script type="text/javascript" src="js/main.js"></script>
  <script type="text/javascript" src="js/bootstrap.js"></script>
  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOUQbmEcxW09DMfiP8SR96YclW5S87qec&callback=myMap">
+    src="https://maps.googleapis.com/maps/api/js?&callback=myMap">
  </script>
  <script>
   function myMap() {
